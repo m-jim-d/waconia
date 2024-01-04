@@ -224,12 +224,17 @@ window.pS = (function() {
                if (href.includes("www.timetocode")) {
                   finalHref = href.replace( "https://www.timetocode.org", "https://m-jim-d.github.io/springsandpucks");
                   $(this).attr("href", finalHref);
-                   
+               
+               } else if (href.includes("pet.timetocode")) {
+                  finalHref = href.replace( "https://pet.timetocode.org", "https://m-jim-d.github.io/pet");
+                  $(this).attr("href", finalHref);
+                  
                } else if (href.includes("waconia.timetocode")) {
                   finalHref = href.replace( "https://waconia.timetocode.org", "https://m-jim-d.github.io/waconia");
                   $(this).attr("href", finalHref);
                   
-                  // nothing yet
+               } else {
+                  // nothing yet...
                }
                
             // some other server...

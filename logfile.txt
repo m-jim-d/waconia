@@ -49,3 +49,11 @@ Exc Files : publish.bat
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git commit -am "another update" 
+[main dab9297] another update
+ 7 files changed, 53 insertions(+), 2 deletions(-)
+ create mode 100644 logfile.txt
+ create mode 100644 scheduled-task.xml
+
+C:\Users\Jim\Documents\webcontent\github-website\waconia>git push origin main 
+To https://github.com/m-jim-d/waconia.git
+   43ec3ce..dab9297  main -> main
