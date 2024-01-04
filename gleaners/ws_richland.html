@@ -1,0 +1,569 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <title></title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <style type="text/css">
+td.linenos { background-color: #f0f0f0; padding-right: 10px; }
+span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
+pre { line-height: 125%; }
+body .hll { background-color: #49483e }
+body  { background: #272822; color: #f8f8f2 }
+body .c { color: #75715e } /* Comment */
+body .err { color: #960050; background-color: #1e0010 } /* Error */
+body .k { color: #66d9ef } /* Keyword */
+body .l { color: #ae81ff } /* Literal */
+body .n { color: #f8f8f2 } /* Name */
+body .o { color: #f92672 } /* Operator */
+body .p { color: #f8f8f2 } /* Punctuation */
+body .ch { color: #75715e } /* Comment.Hashbang */
+body .cm { color: #75715e } /* Comment.Multiline */
+body .cp { color: #75715e } /* Comment.Preproc */
+body .cpf { color: #75715e } /* Comment.PreprocFile */
+body .c1 { color: #75715e } /* Comment.Single */
+body .cs { color: #75715e } /* Comment.Special */
+body .gd { color: #f92672 } /* Generic.Deleted */
+body .ge { font-style: italic } /* Generic.Emph */
+body .gi { color: #a6e22e } /* Generic.Inserted */
+body .gs { font-weight: bold } /* Generic.Strong */
+body .gu { color: #75715e } /* Generic.Subheading */
+body .kc { color: #66d9ef } /* Keyword.Constant */
+body .kd { color: #66d9ef } /* Keyword.Declaration */
+body .kn { color: #f92672 } /* Keyword.Namespace */
+body .kp { color: #66d9ef } /* Keyword.Pseudo */
+body .kr { color: #66d9ef } /* Keyword.Reserved */
+body .kt { color: #66d9ef } /* Keyword.Type */
+body .ld { color: #e6db74 } /* Literal.Date */
+body .m { color: #ae81ff } /* Literal.Number */
+body .s { color: #e6db74 } /* Literal.String */
+body .na { color: #a6e22e } /* Name.Attribute */
+body .nb { color: #f8f8f2 } /* Name.Builtin */
+body .nc { color: #a6e22e } /* Name.Class */
+body .no { color: #66d9ef } /* Name.Constant */
+body .nd { color: #a6e22e } /* Name.Decorator */
+body .ni { color: #f8f8f2 } /* Name.Entity */
+body .ne { color: #a6e22e } /* Name.Exception */
+body .nf { color: #a6e22e } /* Name.Function */
+body .nl { color: #f8f8f2 } /* Name.Label */
+body .nn { color: #f8f8f2 } /* Name.Namespace */
+body .nx { color: #a6e22e } /* Name.Other */
+body .py { color: #f8f8f2 } /* Name.Property */
+body .nt { color: #f92672 } /* Name.Tag */
+body .nv { color: #f8f8f2 } /* Name.Variable */
+body .ow { color: #f92672 } /* Operator.Word */
+body .w { color: #f8f8f2 } /* Text.Whitespace */
+body .mb { color: #ae81ff } /* Literal.Number.Bin */
+body .mf { color: #ae81ff } /* Literal.Number.Float */
+body .mh { color: #ae81ff } /* Literal.Number.Hex */
+body .mi { color: #ae81ff } /* Literal.Number.Integer */
+body .mo { color: #ae81ff } /* Literal.Number.Oct */
+body .sa { color: #e6db74 } /* Literal.String.Affix */
+body .sb { color: #e6db74 } /* Literal.String.Backtick */
+body .sc { color: #e6db74 } /* Literal.String.Char */
+body .dl { color: #e6db74 } /* Literal.String.Delimiter */
+body .sd { color: #e6db74 } /* Literal.String.Doc */
+body .s2 { color: #e6db74 } /* Literal.String.Double */
+body .se { color: #ae81ff } /* Literal.String.Escape */
+body .sh { color: #e6db74 } /* Literal.String.Heredoc */
+body .si { color: #e6db74 } /* Literal.String.Interpol */
+body .sx { color: #e6db74 } /* Literal.String.Other */
+body .sr { color: #e6db74 } /* Literal.String.Regex */
+body .s1 { color: #e6db74 } /* Literal.String.Single */
+body .ss { color: #e6db74 } /* Literal.String.Symbol */
+body .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+body .fm { color: #a6e22e } /* Name.Function.Magic */
+body .vc { color: #f8f8f2 } /* Name.Variable.Class */
+body .vg { color: #f8f8f2 } /* Name.Variable.Global */
+body .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+body .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
+
+  </style>
+</head>
+<body>
+<h2></h2>
+
+<div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">Description: An XML gleaner for collecting weather data.</span>
+
+<span class="sd">Written by: Jim Miller</span>
+
+<span class="sd">The site that is queried.</span>
+<span class="sd">http://www.wrh.noaa.gov/mesowest/getobextXml.php?sid=KRLD&amp;num=1</span>
+
+<span class="sd">An example of the XML report:</span>
+
+<span class="sd">&lt;station id=&quot;KRLD&quot; name=&quot;Richland AP AWOS&quot; elev=&quot;394&quot; lat=&quot;46.3056&quot; lon=&quot;-119.30419&quot; provider=&quot;PDTWFO&quot;&gt;</span>
+<span class="sd">    &lt;ob time=&quot;29 Apr 8:50 am PDT&quot; utime=&quot;1430322600&quot;&gt;&lt;variable var=&quot;T&quot; description=&quot;Temp&quot; unit=&quot;F&quot; value=&quot;57&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;TD&quot; description=&quot;Dewp&quot; unit=&quot;F&quot; value=&quot;32&quot;/&gt;&lt;variable var=&quot;RH&quot; description=&quot;Relh&quot; unit=&quot;%&quot; value=&quot;38&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;DD&quot; description=&quot;Direction&quot; unit=&quot;deg&quot; value=&quot;240&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;DDCARD&quot; description=&quot;Wind Card&quot; unit=&quot;direction&quot; value=&quot;WSW&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;FF&quot; description=&quot;Wind&quot; unit=&quot;mph&quot; value=&quot;13&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;FFGUST&quot; description=&quot;Gust&quot; unit=&quot;mph&quot; value=&quot;17&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;VV&quot; description=&quot;Visibility&quot; unit=&quot;miles&quot; value=&quot;10.00&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;WEA&quot; description=&quot;Weather&quot; unit=&quot;&quot; value=&quot;Fair&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;PRESWEA&quot; description=&quot;Coded Weather&quot; unit=&quot;&quot; value=&quot;&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;SKY&quot; description=&quot;Clouds&quot; unit=&quot;&quot; value=&quot;CLR&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;ALTSE&quot; description=&quot;Altimeter&quot; unit=&quot;inches&quot; value=&quot;30.19&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;P&quot; description=&quot;Station Pressure&quot; unit=&quot;inches&quot; value=&quot;29.772&quot;/&gt;</span>
+<span class="sd">        &lt;variable var=&quot;STAQUAL&quot; description=&quot;Station Quality&quot; unit=&quot;&quot; value=&quot;OK&quot;/&gt;</span>
+<span class="sd">    &lt;/ob&gt;</span>
+<span class="sd">&lt;/station&gt;</span>
+
+
+<span class="sd">Some more example queries:</span>
+
+<span class="sd">Time series, XML output (using their API and a demo token)</span>
+<span class="sd">http://api.mesowest.net/v2/stations/timeseries?stid=KMKT&amp;start=201607040000&amp;end=201607050000&amp;obtimezone=local&amp;output=xml&amp;token=1234567890</span>
+
+<span class="sd">Time series, JSON output (using API)</span>
+<span class="sd">http://api.mesowest.net/v2/stations/timeseries?stid=KMKT&amp;start=201607040000&amp;end=201607050000&amp;obtimezone=local&amp;output=json&amp;token=1234567890</span>
+
+<span class="sd">Most recent record (using API)</span>
+<span class="sd">http://api.mesowest.net/v2/stations/nearesttime?stid=KMKT&amp;within=120&amp;obtimezone=local&amp;output=xml&amp;token=1234567890</span>
+
+<span class="sd">Time series (using NOAA interface)</span>
+<span class="sd">http://www.wrh.noaa.gov/mesowest/getobextXml.php?sid=KMKT&amp;num=2</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># Import supporting modules</span>
+
+<span class="c1"># System and OS</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+
+<span class="c1"># Strings</span>
+<span class="kn">import</span> <span class="nn">string</span>
+
+<span class="c1"># HTML fetching</span>
+<span class="kn">import</span> <span class="nn">urllib2</span>
+
+<span class="c1"># Windows extensions (pywin32-220.win32-py2.7.exe)</span>
+<span class="kn">import</span> <span class="nn">win32com.client</span>
+<span class="kn">import</span> <span class="nn">pywintypes</span>  <span class="c1"># supports exceptions names</span>
+
+<span class="c1"># time and date functionality</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="c1"># In support of XML parsing</span>
+<span class="kn">from</span> <span class="nn">xml.dom.minidom</span> <span class="kn">import</span> <span class="n">parse</span> 
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">timeA_GT_global</span><span class="p">(</span><span class="n">timeA</span><span class="p">):</span>
+    <span class="c1"># Check to see if A is later than what&#39;s in the global. </span>
+    <span class="c1"># and replace the global if it is...</span>
+
+    <span class="c1"># Must declare locally to change a global. If no global declaration, the</span>
+    <span class="c1"># ASSIGNMENT statement will force this variable to be local here in this</span>
+    <span class="c1"># function.</span>
+    
+    <span class="k">global</span> <span class="n">time_datetime_maxDLSdate</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">timeA</span> <span class="o">&gt;</span> <span class="n">time_datetime_maxDLSdate</span><span class="p">):</span>
+        <span class="n">time_datetime_maxDLSdate</span> <span class="o">=</span> <span class="n">timeA</span>
+
+
+<span class="k">def</span> <span class="nf">processMultipleStations_xml</span><span class="p">(</span><span class="n">station_dictionary</span><span class="p">):</span>
+    
+    <span class="c1"># Build the URL string to run a query for one station.</span>
+    <span class="c1"># (returned on one page).</span>
+    
+    <span class="c1"># http://www.wrh.noaa.gov/mesowest/getobextXml.php?num=1&amp;sid=KRLD</span>
+    
+    <span class="n">url_base</span> <span class="o">=</span> <span class="s2">&quot;http://www.wrh.noaa.gov/mesowest/getobextXml.php?num=2&amp;sid=&quot;</span>
+
+    <span class="n">station_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">write_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># This index keeps track of successful writes that happen when attempting</span>
+    <span class="c1"># to write observations other then the first one.</span>
+    <span class="n">write_count_notFirst</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">station_name</span> <span class="ow">in</span> <span class="n">station_dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>        
+        
+        <span class="k">print</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">print</span> <span class="s2">&quot;station name =&quot;</span><span class="p">,</span> <span class="n">station_name</span>
+        
+        <span class="n">station_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">webpage_url</span> <span class="o">=</span> <span class="n">url_base</span> <span class="o">+</span> <span class="n">station_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Fetch the XML page</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">webpage_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="s1">&#39;Mozilla/5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#39;</span><span class="p">})</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span> 
+            <span class="n">message_str</span> <span class="o">=</span> <span class="s2">&quot;Error opening url for </span><span class="si">%s</span><span class="s2"> ::: </span><span class="si">%s</span><span class="s2"> ==&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">station_name</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_value</span><span class="p">)</span> 
+            <span class="n">enterInLog</span><span class="p">(</span> <span class="n">message_str</span><span class="p">)</span>
+            <span class="k">print</span> <span class="n">message_str</span> <span class="o">+</span> <span class="s2">&quot;, URL = &quot;</span> <span class="o">+</span> <span class="n">webpage_url</span>
+            <span class="c1"># Skip this site, but continue trying the others.</span>
+            <span class="k">continue</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Parse the XML</span>
+            <span class="n">dom_object</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">page</span><span class="p">)</span> 
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">message_str</span> <span class="o">=</span> <span class="s2">&quot;Error parsing XML for </span><span class="si">%s</span><span class="s2"> ::: </span><span class="si">%s</span><span class="s2"> ==&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">station_name</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_value</span><span class="p">)</span> 
+            <span class="n">enterInLog</span><span class="p">(</span> <span class="n">message_str</span><span class="p">)</span>
+            <span class="k">print</span> <span class="n">message_str</span> <span class="o">+</span> <span class="s2">&quot;, URL = &quot;</span> <span class="o">+</span> <span class="n">webpage_url</span>
+            <span class="c1"># Skip this site, but continue trying the others.</span>
+            <span class="k">continue</span>
+        
+        <span class="c1"># Get all the elements with the observation &quot;ob&quot; tag.</span>
+        <span class="n">ob_elements</span> <span class="o">=</span> <span class="n">dom_object</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;ob&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Use the first three observations or less if not available.</span>
+        <span class="k">if</span> <span class="n">ob_elements</span><span class="o">.</span><span class="n">length</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">n_elements_to_use</span> <span class="o">=</span> <span class="n">ob_elements</span><span class="o">.</span><span class="n">length</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n_elements_to_use</span> <span class="o">=</span> <span class="mi">3</span>
+        
+        <span class="c1"># Attempt to write each of the first few observations to the database.</span>
+        <span class="k">for</span> <span class="n">ob_index</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span> <span class="n">n_elements_to_use</span><span class="p">)):</span>
+            <span class="k">print</span> <span class="s2">&quot;ob_index =&quot;</span><span class="p">,</span> <span class="n">ob_index</span>
+            
+            <span class="c1"># Initialize the weather dictionary: time and sensor data.</span>
+            <span class="n">weather_dic</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;station_number&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;station_name&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;epoch_xml&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;time_xml&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;time_native_std&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>  
+                           <span class="s1">&#39;MDY&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>  
+                           <span class="s1">&#39;Hr&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>  
+                           <span class="s1">&#39;Min&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>  
+                           <span class="s1">&#39;T&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>  
+                           <span class="s1">&#39;TD&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;DD&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;DDCARD&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;FF&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;FFGUST&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;ALTSE&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;P&#39;</span><span class="p">:</span><span class="s1">&#39;Null&#39;</span><span class="p">}</span>
+            
+            <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;station_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">station_name</span>
+            <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;station_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">station_dictionary</span><span class="p">[</span><span class="n">station_name</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span>
+            
+            <span class="c1"># Get the local sensor time from the &quot;time&quot; attribute.</span>
+            <span class="n">time_value</span> <span class="o">=</span> <span class="n">ob_elements</span><span class="p">[</span><span class="n">ob_index</span><span class="p">]</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+            <span class="c1">#print &quot;time =&quot;, time_value</span>
+            
+            <span class="c1"># Get the epoch time.</span>
+            <span class="n">time_epoch</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ob_elements</span><span class="p">[</span><span class="n">ob_index</span><span class="p">]</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="s2">&quot;utime&quot;</span><span class="p">))</span>
+            <span class="c1">#print &quot;time_epoch= &quot;, time_epoch </span>
+            
+            <span class="c1"># Interpret this epoch time in the timezone of this computer (the gleaner).</span>
+            <span class="c1"># Apparently this is a DLS form of the time.</span>
+            <span class="n">time_datetime_gleaner</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">time_epoch</span><span class="p">)</span> 
+            <span class="c1">#print &quot;time_datetime_gleaner = &quot;, time_datetime_gleaner</span>
+            
+            <span class="c1"># Check if this gleaner time is daylight or standard. If daylight, convert it</span>
+            <span class="c1"># back to standard time for the database.</span>
+            
+            <span class="c1"># This check for DaylightSavings time will use the gleaner time (T=1, F=0)</span>
+            <span class="n">dlsTF</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">time_epoch</span><span class="p">))[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">dlsTF</span><span class="p">:</span>
+                <span class="n">time_datetime_gleaner_std</span> <span class="o">=</span> <span class="n">time_datetime_gleaner</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">time_datetime_gleaner_std</span> <span class="o">=</span> <span class="n">time_datetime_gleaner</span>
+            
+            <span class="k">print</span> <span class="s2">&quot;time_datetime_gleaner_std =&quot;</span><span class="p">,</span> <span class="n">time_datetime_gleaner_std</span>
+            
+            <span class="c1"># Shift this gleaner time to the native time zone (the local time zone where the sensor is).</span>
+            <span class="n">TZ_shift_net</span> <span class="o">=</span> <span class="n">station_dictionary</span><span class="p">[</span><span class="n">station_name</span><span class="p">][</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">TZShift_gleanermoved</span>
+            <span class="n">time_datetime_native_std</span> <span class="o">=</span> <span class="n">time_datetime_gleaner_std</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">TZ_shift_net</span><span class="p">)</span>
+            <span class="c1">#print &quot;time_datetime_native =&quot;, time_datetime_native</span>
+            
+            <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;epoch_xml&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">%d</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">time_epoch</span>
+            
+            <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;time_xml&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">time_value</span>
+            
+            <span class="c1"># Make a time tuple so and extract the pieces of this standard sensor time (sst).</span>
+            <span class="n">sst</span> <span class="o">=</span> <span class="n">time_datetime_native_std</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()</span>
+            <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;time_native_std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="s2">:</span><span class="si">%d</span><span class="s2">:</span><span class="si">%d</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sst</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sst</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">sst</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sst</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">sst</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+            
+            <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;MDY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sst</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sst</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">sst</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;Hr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">%d</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">sst</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;Min&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">%d</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">sst</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+            
+            <span class="c1"># Get all the &quot;variable&quot; tags from this observation node.</span>
+            <span class="n">variables</span> <span class="o">=</span> <span class="n">ob_elements</span><span class="p">[</span><span class="n">ob_index</span><span class="p">]</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;variable&quot;</span><span class="p">)</span>
+            
+            <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
+                <span class="c1"># print variable.getAttribute(&quot;var&quot;), &quot;=&quot;, variable.getAttribute(&quot;value&quot;)</span>
+                
+                <span class="c1"># Put these values into quotes for the SQL. If no data, use the unquoted Null (the default).</span>
+                <span class="n">weather_dic</span><span class="p">[</span><span class="n">variable</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="s2">&quot;var&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">variable</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+                
+                <span class="c1"># If no wind, set the wind speed and gust value to zero, and the direction to Null. This keeps</span>
+                <span class="c1"># the direction values, for these points, from contributing to the running average. Note that</span>
+                <span class="c1"># MesoWest sets the direction value to 0 in these cases (not good).</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="s2">&quot;var&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;DDCARD&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;CALM&#39;</span><span class="p">):</span>
+                    <span class="c1"># DD always appears before DDCARD in the variables object, so this works </span>
+                    <span class="c1"># to do this in this for loop.</span>
+                    <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;DD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Null&#39;</span>
+                    <span class="c1"># FF and FFGUST don&#39;t appear in the variable object (at all) if DDCARD is CALM. </span>
+                    <span class="c1"># So these won&#39;t be reset later in the loop.</span>
+                    <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;FF&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&#39;0&#39;&quot;</span>
+                    <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;FFGUST&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&#39;0&#39;&quot;</span>
+                    
+            <span class="k">if</span> <span class="p">(</span><span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;FFGUST&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Null&#39;</span><span class="p">):</span>
+                <span class="c1"># If no gust data, just make it equal to the regular wind speed.</span>
+                <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;FFGUST&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;FF&#39;</span><span class="p">]</span>
+            
+            <span class="c1"># It appears that some negative wind directions are coming from MesoWest, so</span>
+            <span class="c1"># null them if that is the case.</span>
+            <span class="c1">#print &quot;DD =&quot;, weather_dic[&#39;DD&#39;]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;DD&#39;</span><span class="p">]</span> <span class="o">&lt;&gt;</span> <span class="s1">&#39;Null&#39;</span><span class="p">):</span>
+                <span class="c1"># Strip of the quotes and then check for negative numbers.</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;DD&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="n">weather_dic</span><span class="p">[</span><span class="s1">&#39;DD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Null&#39;</span>
+            
+            <span class="c1">#print &quot;weather_dic =&quot;, weather_dic</span>
+            <span class="c1">#print &quot;T in dic =&quot;, weather_dic[&#39;T&#39;]</span>
+            <span class="c1">#print &quot;WEA in dic =&quot;, weather_dic[&#39;WEA&#39;]      </span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Develop SQL string</span>
+                <span class="n">sqlForStation</span> <span class="o">=</span> <span class="n">build_SQL_string</span><span class="p">(</span><span class="n">weather_dic</span><span class="p">)</span> 
+
+                <span class="c1"># Run the SQL (send formal SQL string and info list). If a</span>
+                <span class="c1"># successful write is indicated, bump up the counter.</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">runSQL</span><span class="p">(</span> <span class="n">sqlForStation</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sqlForStation</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+                    <span class="n">write_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">ob_index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+                        <span class="n">write_count_notFirst</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="c1"># Note the backslash is a line-continuation character.</span>
+                <span class="n">message_str</span> <span class="o">=</span> <span class="s2">&quot;general error in Station loop ::: </span><span class="si">%s</span><span class="s2"> ==&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="se">\n</span><span class="s2">Station name = </span><span class="si">%s</span><span class="s2">&quot;</span> \
+                              <span class="o">%</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_value</span><span class="p">,</span> 
+                                 <span class="n">getXMLvalueInStationGroup</span><span class="p">(</span><span class="n">dom_object</span><span class="p">,</span> <span class="n">data_index</span><span class="p">,</span> <span class="s2">&quot;station_id&quot;</span><span class="p">))</span> 
+                <span class="n">enterInLog</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
+                <span class="k">print</span> <span class="n">message_str</span>
+                <span class="k">print</span> <span class="s2">&quot;SQL construction failed.&quot;</span>
+    
+    <span class="c1"># If there was a successful write to database, make entry in log showing</span>
+    <span class="c1"># the number of successful gleans from the web site and the number of</span>
+    <span class="c1"># successful writes to the database.</span>
+    <span class="c1"># W = Writes</span>
+    <span class="c1"># P = Possible (number of stations collecting from)</span>
+    
+    <span class="n">message_str</span> <span class="o">=</span> <span class="s2">&quot;Data write record: </span><span class="si">%s</span><span class="s2"> P, </span><span class="si">%s</span><span class="s2"> W, </span><span class="si">%s</span><span class="s2"> W_NF&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">station_count</span><span class="p">,</span> <span class="n">write_count</span><span class="p">,</span> <span class="n">write_count_notFirst</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">message_str</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">write_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">enterInLog</span><span class="p">(</span> <span class="n">message_str</span><span class="p">)</span> 
+        <span class="n">attemptWriteToDaysGleaned</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+    
+
+<span class="k">def</span> <span class="nf">build_SQL_string</span><span class="p">(</span><span class="n">wd</span><span class="p">):</span>
+
+    <span class="c1"># Input parameter is the weather dictionary (wd)</span>
+
+    <span class="n">sql_names</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO FifteenMinData (&quot;</span> <span class="o">+</span>\
+                    <span class="s2">&quot;PerlTime, DateTimeStamp, LiteralDateTimeStamp, TimeMDY, TimeHr, TimeMin, &quot;</span> <span class="o">+</span>\
+                    <span class="s2">&quot;StationNumber, StationName, WindDirection, WindSpeed, WindGust, &quot;</span> <span class="o">+</span>\
+                    <span class="s2">&quot;TempAvg, DewPoint, Pressure) &quot;</span>
+    
+    <span class="n">sql_values</span> <span class="o">=</span> <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;epoch_xml&#39;</span><span class="p">],</span> <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;time_native_std&#39;</span><span class="p">],</span> <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;time_xml&#39;</span><span class="p">],</span> <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;MDY&#39;</span><span class="p">],</span> <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;Hr&#39;</span><span class="p">],</span> <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;Min&#39;</span><span class="p">],</span> 
+                    <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;station_number&#39;</span><span class="p">],</span> <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;station_name&#39;</span><span class="p">],</span> <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;DD&#39;</span><span class="p">],</span> <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;FF&#39;</span><span class="p">],</span> <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;FFGUST&#39;</span><span class="p">],</span> 
+                    <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">],</span> <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;TD&#39;</span><span class="p">],</span> <span class="n">wd</span><span class="p">[</span><span class="s1">&#39;ALTSE&#39;</span><span class="p">])</span>
+
+    <span class="n">sql_string</span> <span class="o">=</span> <span class="n">sql_names</span> <span class="o">+</span> <span class="n">sql_values</span>
+    <span class="k">print</span> <span class="s2">&quot;SQL string = &quot;</span><span class="p">,</span> <span class="n">sql_string</span>
+
+    <span class="c1"># Return SQL string and data list (to be used with error messages)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">sql_string</span><span class="p">,</span> <span class="n">sql_values</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">runSQL</span><span class="p">(</span><span class="n">sql_string</span><span class="p">,</span> <span class="n">row_ascii</span><span class="p">):</span>
+
+    <span class="c1"># row_ascii: Contains the variable names and is useful in constructing error messages.</span>
+
+    <span class="n">successful_execution</span> <span class="o">=</span> <span class="bp">False</span> 
+
+    <span class="c1"># Execute SQL string</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">database_conn</span><span class="o">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">sql_string</span><span class="p">)</span>
+        <span class="n">successful_execution</span> <span class="o">=</span> <span class="bp">True</span> 
+        
+        <span class="c1"># For testing</span>
+        <span class="c1">#print &quot;SQL = &quot;, sql_string</span>
+        <span class="c1">#print &quot;row_ascii = &quot;, row_ascii</span>
+
+    <span class="k">except</span> <span class="n">pywintypes</span><span class="o">.</span><span class="n">com_error</span><span class="p">:</span>   <span class="c1"># catch this specific error</span>
+        
+        <span class="c1"># If only a &quot;duplicate data&quot; error, don&#39;t write to the log file</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_value</span><span class="p">),</span> <span class="s2">&quot;duplicate data&quot;</span><span class="p">)</span> <span class="o">&lt;&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">print</span> <span class="s2">&quot;Data already in database (sql warning).&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">message_str</span> <span class="o">=</span> <span class="s2">&quot;SQL error ::: </span><span class="si">%s</span><span class="s2"> ==&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="se">\n</span><span class="s2">Data value = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_value</span><span class="p">,</span> <span class="n">row_ascii</span><span class="p">)</span> 
+            <span class="n">enterInLog</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
+            <span class="k">print</span> <span class="n">message_str</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">successful_execution</span><span class="p">)</span>
+
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">message_str</span> <span class="o">=</span> <span class="s2">&quot;general error ::: </span><span class="si">%s</span><span class="s2"> ==&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="se">\n</span><span class="s2">Data value = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_value</span><span class="p">,</span> <span class="n">row_ascii</span><span class="p">)</span> 
+        <span class="n">enterInLog</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
+        <span class="k">print</span> <span class="n">message_str</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">successful_execution</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># Run this block if no errors...   </span>
+        <span class="k">print</span> <span class="s2">&quot;Successful SQL execution!&quot;</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">successful_execution</span><span class="p">)</span>
+
+    <span class="c1"># # For testing, clean out any new records for this date.</span>
+    <span class="c1"># sql = &quot;DELETE * FROM [FifteenMinData] WHERE ([TimeMDY] = #6/29/2006#)&quot;</span>
+    <span class="c1"># database_conn.Execute(sql)</span>
+
+
+<span class="k">def</span> <span class="nf">enterInLog</span><span class="p">(</span> <span class="n">logentry</span><span class="p">):</span>
+    <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;==============&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;====V &#39;</span> <span class="o">+</span> <span class="n">version_number</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">logentry</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">openConnections</span><span class="p">():</span>
+
+    <span class="c1"># Open logFile</span>
+    <span class="k">global</span> <span class="n">logFile</span>
+
+    <span class="c1"># The getcwd os function returns the current working directory. Another</span>
+    <span class="c1"># similar command is os.path.abspath(&quot;&quot;). This returns &quot;C:\\waconia&quot; on</span>
+    <span class="c1"># Physics2 and &quot;C:\\code\\python\\scraper&quot; at here at home. Note that if</span>
+    <span class="c1"># this is running as a system AT job, this will return something like</span>
+    <span class="c1"># &quot;C:\\winnt\\system32&quot;</span>
+
+    <span class="n">logFileDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    
+    <span class="c1"># If it&#39;s not at home then it must be running on Physics2 </span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">logFileDir</span> <span class="o">&lt;&gt;</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">code</span><span class="se">\\</span><span class="s2">python</span><span class="se">\\</span><span class="s2">scraper&quot;</span><span class="p">):</span>
+        <span class="n">logFileDir</span> <span class="o">=</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">Jim</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">webcontent</span><span class="se">\\</span><span class="s2">waconia&quot;</span>
+    
+    <span class="n">logFileName</span> <span class="o">=</span> <span class="s2">&quot;ws_richland_log.txt&quot;</span>
+    <span class="n">logFilePath</span> <span class="o">=</span> <span class="n">logFileDir</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">logFileName</span> 
+
+    <span class="c1"># Check for the file and create a new one if none is found.</span>
+    <span class="c1"># Note: os.curdir doesn&#39;t work as a way to find the current directory when</span>
+    <span class="c1"># if this task is scheduled. So I use the absolute paths above.</span>
+    <span class="k">if</span> <span class="n">logFileName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">logFileDir</span><span class="p">):</span>   
+        <span class="k">try</span><span class="p">:</span> 
+            <span class="n">logFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">logFilePath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>  <span class="c1"># create and write </span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Error when opening log file. Script stopped!!!&quot;</span><span class="p">)</span>  <span class="c1"># Shutdown if no way to log...</span>
+
+        <span class="c1"># Header in file.</span>
+        <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;==============VERSION &#39;</span><span class="o">+</span> <span class="n">version_number</span> <span class="o">+</span><span class="s1">&#39;========================&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;File created: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;=================================================&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;=================================================&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;=================================================&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">logFilePath</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>  <span class="c1"># append</span>
+
+    <span class="c1"># Open Database connection</span>
+    <span class="k">global</span> <span class="n">database_conn</span>
+    <span class="n">database_conn</span> <span class="o">=</span> <span class="n">win32com</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Dispatch</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;ADODB.Connection&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Set path to the database.</span>
+    <span class="n">DSN</span> <span class="o">=</span> <span class="s1">&#39;PROVIDER=Microsoft.Jet.OLEDB.4.0;DATA SOURCE=C:/Users/Jim/Documents/webcontent/waconia/data/telem.mdb;&#39;</span>
+
+    <span class="k">try</span><span class="p">:</span> 
+        <span class="n">database_conn</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">DSN</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">enterInLog</span><span class="p">(</span><span class="s2">&quot;Error ::: </span><span class="si">%s</span><span class="s2"> ==&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_value</span><span class="p">))</span>
+        <span class="c1"># Close logFile on the way out.</span>
+        <span class="n">logFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> 
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Error when opening database connection. Script stopped!!!&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">closeConnections</span><span class="p">():</span>
+    <span class="n">database_conn</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>  <span class="c1"># Notice the CAPITAL C</span>
+    <span class="n">logFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>        <span class="c1"># Notice the lowercase c</span>
+
+
+<span class="k">def</span> <span class="nf">attemptWriteToDaysGleaned</span><span class="p">():</span>
+
+    <span class="c1"># This serves to keep the DaysGleaned table up to date. If this gleaner is</span>
+    <span class="c1"># the first to cross into a new day (which it should since it looks at</span>
+    <span class="c1"># central time zone sources), this should produce a successful write.</span>
+
+    <span class="c1"># Make a local tuple out of the global time_datetime_maxDLSdate</span>
+    <span class="n">dT</span> <span class="o">=</span> <span class="n">time_datetime_maxDLSdate</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()</span>
+
+    <span class="n">sql_string</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO DaysGleaned ([TimeMDY]) VALUES (&#39;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&#39;)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dT</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">dT</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">dT</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> 
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">database_conn</span><span class="o">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">sql_string</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># If not a &quot;duplicate data&quot; error, write to the log file</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_value</span><span class="p">),</span><span class="s2">&quot;duplicate data&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>  <span class="c1"># can&#39;t find it in string</span>
+            <span class="n">enterInLog</span><span class="p">(</span><span class="s2">&quot;Error ::: </span><span class="si">%s</span><span class="s2"> ==&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_value</span><span class="p">))</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Main program</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># global variables (any variable in Main that get assigned)</span>
+
+<span class="c1"># This global is used for triggering a new day in the database&#39;s daysgleaned table.</span>
+<span class="n">time_datetime_maxDLSdate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># initialize to some old date</span>
+
+<span class="c1"># This also gets written to the log file.</span>
+<span class="n">version_number</span> <span class="o">=</span> <span class="s2">&quot;1.1&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;Version Number = &quot;</span><span class="p">,</span> <span class="n">version_number</span>
+
+<span class="c1"># Prepare to write to database and log file.</span>
+<span class="n">openConnections</span><span class="p">()</span>
+
+<span class="c1"># This global is used to shift the time-zone shifts if the gleaner is ever</span>
+<span class="c1"># moved from MN.</span>
+<span class="n">TZShift_gleanermoved</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># The airport site name/number/time-zone shift.</span>
+<span class="c1"># Dictionary of dictionaries data structure used identify all the stations</span>
+<span class="c1"># to be gleaned and associated parameters. Add more stations here if you like...</span>
+
+<span class="n">station_dic</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="c1"># WA and OR</span>
+   <span class="s1">&#39;KRLD&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;318&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">},</span>   <span class="c1"># Richland, WA</span>
+   <span class="s1">&#39;HOXO&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;354&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">},</span>   <span class="c1"># Hood River, OR</span>
+   <span class="s1">&#39;KOTH&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;356&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">},</span>   <span class="c1"># North Bend, OR</span>
+   <span class="s1">&#39;KMWH&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;357&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">},</span>   <span class="c1"># Moses Lake, WA</span>
+      
+   <span class="c1"># Fritz&#39;s sites on the cape...</span>
+   <span class="s1">&#39;KHSE.2&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;358&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span>  <span class="c1"># Cape Hatteras, NC</span>
+   <span class="s1">&#39;KCQX.2&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;359&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span>  <span class="c1"># Chatham, MA</span>
+   
+   <span class="c1"># Joe and Hawaii</span>
+   <span class="s1">&#39;PHOG&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;351&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">},</span>   <span class="c1"># Maui Airport, HI</span>
+   <span class="s1">&#39;PHJR&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;352&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">},</span>   <span class="c1"># Oahu, Kalaeloa Airport, HI</span>
+   <span class="s1">&#39;PHBK&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;353&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">},</span>   <span class="c1"># Kauai, Barking Sands Airport, HI</span>
+   
+   <span class="c1"># MN</span>
+   <span class="s1">&#39;KMKT.2&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;355&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">},</span>  <span class="c1"># Mankato, MN</span>
+   
+   <span class="c1"># Columbia River (for delta-p chart)</span>
+   <span class="s1">&#39;KDLS&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;166&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">},</span>   <span class="c1"># Dalles, WA </span>
+   <span class="s1">&#39;KTTD&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;167&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">},</span>   <span class="c1"># Troutdale, OR </span>
+   <span class="s1">&#39;KHRI&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;168&#39;</span><span class="p">,</span><span class="s1">&#39;TZShift_MN&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">}</span>    <span class="c1"># Hermiston, OR </span>
+<span class="p">}</span>
+
+
+<span class="c1"># Fetch one XML page per station. Parse and write to database once for each station. </span>
+<span class="n">processMultipleStations_xml</span><span class="p">(</span><span class="n">station_dic</span><span class="p">)</span>
+
+
+<span class="c1"># Close connections to database and log file.</span>
+<span class="n">closeConnections</span><span class="p">()</span>
+</pre></div>
+</body>
+</html>

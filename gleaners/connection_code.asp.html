@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
+<html>
+<head>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<title>Exported from Notepad++</title>
+<style type="text/css">
+span {
+	font-family: 'Courier New';
+	font-size: 10pt;
+	color: #E0E2E4;
+}
+.sc15 {
+	font-weight: bold;
+	color: #D955C1;
+}
+.sc80 {
+}
+.sc81 {
+}
+.sc82 {
+	color: #66747B;
+}
+.sc84 {
+	font-weight: bold;
+	color: #93C763;
+}
+.sc85 {
+	color: #EC7600;
+}
+.sc86 {
+}
+</style>
+</head>
+<body>
+<div style="float: left; white-space: pre; line-height: 1; background: #293134; "><span class="sc15">&lt;%</span><span class="sc80">
+
+</span><span class="sc82">' Author: James D. (Jim) Miller</span><span class="sc81">
+</span><span class="sc82">' Version: 5.0</span><span class="sc81">
+</span><span class="sc82">' 9:45 PM Thu August 18, 2016</span><span class="sc81">
+
+</span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">OpenDataConnection</span><span class="sc81">( </span><span class="sc84">ByRef</span><span class="sc81"> </span><span class="sc86">objDataConnection</span><span class="sc81">, </span><span class="sc84">ByVal</span><span class="sc81"> </span><span class="sc86">strConnectString</span><span class="sc81">)
+
+   </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">objDataConnection</span><span class="sc81"> = </span><span class="sc86">Server.CreateObject</span><span class="sc81">(</span><span class="sc85">"ADODB.Connection"</span><span class="sc81">)
+   
+   </span><span class="sc86">objDataConnection.ConnectionString</span><span class="sc81"> = </span><span class="sc86">strConnectString</span><span class="sc81">
+   </span><span class="sc86">objDataConnection.Open</span><span class="sc81">
+      
+</span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+
+</span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">CloseDataConnection</span><span class="sc81">( </span><span class="sc84">ByRef</span><span class="sc81"> </span><span class="sc86">objDataConnection</span><span class="sc81">)
+
+   </span><span class="sc82">'Then finally close the data connection</span><span class="sc81">
+   </span><span class="sc86">objDataConnection.Close</span><span class="sc81">
+   </span><span class="sc84">set</span><span class="sc81"> </span><span class="sc86">objDataConnection</span><span class="sc81"> = </span><span class="sc84">nothing</span><span class="sc81">
+   
+</span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+
+</span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">PopulateStaticRecordset</span><span class="sc81">( </span><span class="sc84">ByVal</span><span class="sc81"> </span><span class="sc86">objDataConnection</span><span class="sc81">, </span><span class="sc84">ByVal</span><span class="sc81"> </span><span class="sc86">strSQL</span><span class="sc81">, </span><span class="sc84">ByRef</span><span class="sc81"> </span><span class="sc86">rstGeneralRecordSet</span><span class="sc81">)
+
+   </span><span class="sc82">'Open a recordset</span><span class="sc81">
+
+   </span><span class="sc82">'Response.Write strSQL &amp; "&lt;BR&gt;&lt;BR&gt;"</span><span class="sc81">
+   
+   </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">rstGeneralRecordSet</span><span class="sc81"> = </span><span class="sc86">Server.CreateObject</span><span class="sc81">(</span><span class="sc85">"ADODB.RecordSet"</span><span class="sc81">)
+   
+   </span><span class="sc84">If</span><span class="sc81"> (</span><span class="sc86">rstGeneralRecordSet.State</span><span class="sc81"> = </span><span class="sc86">adStateOpen</span><span class="sc81">) </span><span class="sc84">Then</span><span class="sc81"> </span><span class="sc86">rstGeneralRecordSet.Close</span><span class="sc81">   
+   
+   </span><span class="sc82">'Note: if the following line is used, it will allow for the ActiveConnection property to be</span><span class="sc81">
+   </span><span class="sc82">'set to Nothing immediately after the recordset is opened.  This essentially moves the data to</span><span class="sc81">
+   </span><span class="sc82">'the web server and takes load of the data server.  But, there is a performance ding for doing</span><span class="sc81">
+   </span><span class="sc82">'this especially if running many many queries.  Setting the ActiveConnection to nothing opens</span><span class="sc81">
+   </span><span class="sc82">'resources for other queries.  Better to leave the ActiveConnection = Nothing action in the</span><span class="sc81">
+   </span><span class="sc82">'CloseRecordset subroutine if running many many queries.</span><span class="sc81">
+   </span><span class="sc82">'Note: AdOpenStatic supports MoveLast and Recordcount.</span><span class="sc81">
+   
+   </span><span class="sc82">'rstGeneralRecordSet.CursorLocation = adUseClient</span><span class="sc81">
+   
+   </span><span class="sc86">rstGeneralRecordSet.Open</span><span class="sc81"> </span><span class="sc86">strSQL</span><span class="sc81">, </span><span class="sc86">objDataConnection</span><span class="sc81">, </span><span class="sc86">adOpenStatic</span><span class="sc81">, </span><span class="sc86">adLockBatchOptimistic</span><span class="sc81">, </span><span class="sc86">adCmdText</span><span class="sc81">
+   </span><span class="sc82">'rstGeneralRecordSet.ActiveConnection = Nothing</span><span class="sc81">
+   
+</span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+
+</span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">CloseRecordSet</span><span class="sc81">( </span><span class="sc84">ByRef</span><span class="sc81"> </span><span class="sc86">rstGeneralRecordset</span><span class="sc81">)
+
+   </span><span class="sc82">'Close the recordset</span><span class="sc81">
+
+   </span><span class="sc84">If</span><span class="sc81"> (</span><span class="sc86">rstGeneralRecordset.State</span><span class="sc81"> = </span><span class="sc86">adStateOpen</span><span class="sc81">) </span><span class="sc84">Then</span><span class="sc81"> </span><span class="sc86">rstGeneralRecordset.Close</span><span class="sc81">
+   
+   </span><span class="sc82">'See comment in the PopulateStaticRecordset subroutine.  In the case of running just a few</span><span class="sc81">
+   </span><span class="sc82">'queries, it is best to move the following command to the just after the open statement in</span><span class="sc81">
+   </span><span class="sc82">'the PopulateStaticRecordset subroutine.</span><span class="sc81">
+   </span><span class="sc86">rstGeneralRecordSet.ActiveConnection</span><span class="sc81"> = </span><span class="sc84">Nothing</span><span class="sc81">     
+   
+   </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">rstGeneralRecordset</span><span class="sc81"> = </span><span class="sc84">Nothing</span><span class="sc81">
+   
+</span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+</span><span class="sc15">%&gt;</span></div></body>
+</html>
