@@ -5,7 +5,7 @@ C:\Users\Jim\Documents\webcontent\github-website\waconia>robocopy C:\Users\Jim\D
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Thursday, January 4, 2024 4:02:01 PM
+  Started : Thursday, January 4, 2024 5:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -26,12 +26,7 @@ Exc Files : publish.bat
 ------------------------------------------------------------------------------
 
 	                  22	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
-	    Newer     		    6868	charts.html100%  
-	    Newer     		    6868	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		   73409	PressureChart.jpg100%  
-	    Newer     		   73949	TemperatureChart.jpg100%  
-	    Newer     		   85128	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                  34	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\pictures\
@@ -40,20 +35,12 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         5         0         5         0         0         1
-   Files :        88         5        83         0         0         6
-   Bytes :    4.92 m   240.4 k    4.68 m         0         0     4.8 k
+   Files :        88         0        88         0         0         6
+   Bytes :    4.92 m         0    4.92 m         0         0     4.8 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-   Ended : Thursday, January 4, 2024 4:02:01 PM
+   Ended : Thursday, January 4, 2024 5:02:00 PM
 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git commit -am "another update" 
-[main dab9297] another update
- 7 files changed, 53 insertions(+), 2 deletions(-)
- create mode 100644 logfile.txt
- create mode 100644 scheduled-task.xml
-
-C:\Users\Jim\Documents\webcontent\github-website\waconia>git push origin main 
-To https://github.com/m-jim-d/waconia.git
-   43ec3ce..dab9297  main -> main
