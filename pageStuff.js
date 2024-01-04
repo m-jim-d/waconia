@@ -222,10 +222,13 @@ window.pS = (function() {
             // github server
             } else if (window.location.href.includes("m-jim-d")) {
                if (href.includes("www.timetocode")) {
-                  finalHref = href.replace( "https://www.timetocode.org", "https://m-jim-d.github.io/ttc");
+                  finalHref = href.replace( "https://www.timetocode.org", "https://m-jim-d.github.io/springsandpucks");
                   $(this).attr("href", finalHref);
                    
-               } else {
+               } else if (href.includes("waconia.timetocode")) {
+                  finalHref = href.replace( "https://waconia.timetocode.org", "https://m-jim-d.github.io/waconia");
+                  $(this).attr("href", finalHref);
+                  
                   // nothing yet
                }
                
