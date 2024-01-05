@@ -1,3 +1,3 @@
-#Waconia
+## Waconia
 
-This is the collision of two obsessions, windsurfing and coding.
+a collision of two, windsurfing and coding
