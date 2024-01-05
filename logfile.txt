@@ -5,7 +5,7 @@ C:\Users\Jim\Documents\webcontent\github-website\waconia>robocopy C:\Users\Jim\D
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Thursday, January 4, 2024 10:02:00 PM
+  Started : Thursday, January 4, 2024 11:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -30,14 +30,14 @@ Exc Files : publish.bat
 	    Newer     		    6868	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
 	    Newer     		  121618	25DayPressureChart-1.jpg100%  
-	    Newer     		  107940	25DayPressureChart-2.jpg100%  
-	    Newer     		  106524	25DayPressureChart-3.jpg100%  
+	    Newer     		  107927	25DayPressureChart-2.jpg100%  
+	    Newer     		  106546	25DayPressureChart-3.jpg100%  
 	    Newer     		  133581	25DayTemperatureChart.jpg 98%  100%  
 	    Newer     		  150150	25DayWindChart.jpg 87%  100%  
-	    Newer     		  127975	DeltaPressureChart.jpg100%  
+	    Newer     		  128016	DeltaPressureChart.jpg100%  
 	    Newer     		   72015	PressureChart.jpg100%  
-	    Newer     		   72042	TemperatureChart.jpg100%  
-	    Newer     		   84154	WindChart.jpg100%  
+	    Newer     		   74637	TemperatureChart.jpg100%  
+	    Newer     		   85070	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                  34	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\pictures\
@@ -47,13 +47,13 @@ Exc Files : publish.bat
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         5         0         5         0         0         1
    Files :        88        11        77         0         0         6
-   Bytes :    4.92 m   966.5 k    3.97 m         0         0     4.8 k
+   Bytes :    4.92 m   970.0 k    3.97 m         0         0     4.8 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
 
 
-   Speed :            61858437 Bytes/sec.
-   Speed :            3539.568 MegaBytes/min.
-   Ended : Thursday, January 4, 2024 10:02:00 PM
+   Speed :            62081000 Bytes/sec.
+   Speed :            3552.303 MegaBytes/min.
+   Ended : Thursday, January 4, 2024 11:02:00 PM
 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
