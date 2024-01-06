@@ -5,7 +5,7 @@ C:\Users\Jim\Documents\webcontent\github-website\waconia>robocopy C:\Users\Jim\D
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Friday, January 5, 2024 5:02:00 PM
+  Started : Friday, January 5, 2024 6:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -26,7 +26,12 @@ Exc Files : publish.bat
 ------------------------------------------------------------------------------
 
 	                  22	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
+	    Newer     		    6864	charts.html100%  
+	    Newer     		    6864	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
+	    Newer     		   73244	PressureChart.jpg100%  
+	    Newer     		   74992	TemperatureChart.jpg100%  
+	    Newer     		   81408	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                  34	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\pictures\
@@ -35,18 +40,12 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         5         0         5         0         0         1
-   Files :        88         0        88         0         0         6
-   Bytes :    4.92 m         0    4.92 m         0         0     4.8 k
+   Files :        88         5        83         0         0         6
+   Bytes :    4.91 m   237.6 k    4.68 m         0         0     4.8 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-   Ended : Friday, January 5, 2024 5:02:00 PM
+   Ended : Friday, January 5, 2024 6:02:00 PM
 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git commit -am "another update" 
-[main e349394] another update
- 1 file changed, 46 insertions(+), 57 deletions(-)
-
-C:\Users\Jim\Documents\webcontent\github-website\waconia>git push origin main 
-To https://github.com/m-jim-d/waconia.git
-   9a85d8e..e349394  main -> main
