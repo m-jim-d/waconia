@@ -365,8 +365,51 @@ window.uT = (function() {
       }  
    }
   
+   /* 
+   Iterative functions for finding roots...
+   The following serve to guess the value which return 0 from the supplied function. 
+   */
+   function betterGuess( theFunc, guess) {
+      // Use Newtons method to estimate a better guess.
+      // Find the slope of the Error function at the guess point and use that slope to calculate a new guess.
+      
+      let slope, currentError, betterGuess;
+      
+      currentError = theFunc( guess);
+      slope = (currentError - theFunc( guess + 0.00005)) / 0.00005;
+      
+      if (slope == 0) {
+         betterGuess = "bad";
+      } else {
+         // To lose y amount of rise must move delta_x = y/slope from current position.
+         betterGuess = guess + (currentError / slope);
+      }
+      return betterGuess;
+   }
+   function keepGuessing( theFunction, initialGuess) {
+      let previousEstimate, estimate;
 
+      previousEstimate = initialGuess;
 
+      // Repeat until error on estimate less than criteria.
+      for (let i = 0; i < 20; i++) { 
+         estimate = betterGuess( theFunction, previousEstimate);
+         if (estimate == "bad") {
+            console.log("bad from betterGuess");
+            return initialGuess;
+         } else {
+            if (Math.abs( theFunction( estimate)) < 0.01) {
+               //console.log("solved in " + i + ", x=" + estimate + ", rootError=" + theFunction( estimate));
+               console.log("solved in " + i);
+               return estimate;
+            }
+         }
+         previousEstimate = estimate;
+      }  
+      console.log("out of guesses");
+      return initialGuess;
+   }
+  
    // Public references to objects, variables, and methods
    
    return {
@@ -388,6 +431,7 @@ window.uT = (function() {
       'setElementDisplay': setElementDisplay,
       'toggleSpanValue': toggleSpanValue,
       'getSpanValue': getSpanValue,
+      'keepGuessing': keepGuessing,
       
    };   
    

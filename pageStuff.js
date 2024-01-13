@@ -252,6 +252,7 @@ window.pS = (function() {
       let navMenu = uT.setDefault( pars.navMenu, true);
       let navDivName = uT.setDefault( pars.navDiv, "navDiv");
       let pageDesc = uT.setDefault( pars.pageDesc, null);
+      let logPage = uT.setDefault( pars.logPage, true);
       let pathSiteMap = uT.setDefault( pars.pathSiteMap, "sitemap.html?v2"); // changing the version overrides cache
       let scrollAtLoad = uT.setDefault( pars.scrollAtLoad, true);
       m_scrollAdjust = uT.setDefault( pars.scrollAdjust, 0);
@@ -279,7 +280,7 @@ window.pS = (function() {
       for (let key in m_keyMap) m_keyStates[ m_keyMap[ key]] = 'U';
       
       // Take note...
-      logEntry( pageDesc);
+      if (logPage) logEntry( pageDesc);
       
       if (navMenu) {
          // put the navigation menu into the div
