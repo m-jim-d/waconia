@@ -53,3 +53,9 @@ Exc Files : publish.bat
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git commit -am "another update" 
+[main 00230da] another update
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+C:\Users\Jim\Documents\webcontent\github-website\waconia>git push origin main 
+To https://github.com/m-jim-d/waconia.git
+   b0e75f9..00230da  main -> main
