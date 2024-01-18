@@ -5,7 +5,7 @@ C:\Users\Jim\Documents\webcontent\github-website\waconia>robocopy C:\Users\Jim\D
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Thursday, January 18, 2024 9:02:00 AM
+  Started : Thursday, January 18, 2024 10:02:00 AM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -26,19 +26,27 @@ Exc Files : publish.bat
 ------------------------------------------------------------------------------
 
 	                  22	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
-	    Newer     		    6868	charts.html100%  
-	    Newer     		    6868	charts_input.html100%  
+	    Newer     		    7167	charts.html100%  
+	    Newer     		    7167	charts_input.html100%  
+	    Newer     		    7161	charts_input_testing.html100%  
+	    Newer     		   28309	FAQ.htm100%  
+	    Newer     		    6212	HowsItDone.htm100%  
+	    Newer     		    4786	index.html100%  
+	    Newer     		   15118	Install_rosy.htm100%  
+	    Newer     		    2454	Waconia.htm100%  
+	    Newer     		    3827	weather.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
 	    Newer     		  121787	25DayPressureChart-1.jpg100%  
-	    Newer     		  118055	25DayPressureChart-2.jpg100%  
+	    Newer     		  118094	25DayPressureChart-2.jpg100%  
 	    Newer     		  106863	25DayPressureChart-3.jpg100%  
 	    Newer     		  134380	25DayTemperatureChart.jpg 97%  100%  
 	    Newer     		  162979	25DayWindChart.jpg 80%  100%  
-	    Newer     		  155326	DeltaPressureChart.jpg 84%  100%  
+	    Newer     		  155495	DeltaPressureChart.jpg 84%  100%  
 	    Newer     		   74338	PressureChart.jpg100%  
-	    Newer     		   80839	TemperatureChart.jpg100%  
-	    Newer     		   84679	WindChart.jpg100%  
+	    Newer     		   80800	TemperatureChart.jpg100%  
+	    Newer     		   84906	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
+	    Newer     		    2390	contactinfo.html100%  
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                  34	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\pictures\
 
@@ -46,14 +54,14 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         5         0         5         0         0         1
-   Files :        88        11        77         0         0         6
-   Bytes :    4.98 m    1.00 m    3.97 m         0         0     4.8 k
+   Files :        88        19        69         0         0         6
+   Bytes :    4.98 m    1.07 m    3.91 m         0         0     4.8 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
 
 
-   Speed :            75213000 Bytes/sec.
-   Speed :            4303.722 MegaBytes/min.
-   Ended : Thursday, January 18, 2024 9:02:00 AM
+   Speed :            38766655 Bytes/sec.
+   Speed :            2218.245 MegaBytes/min.
+   Ended : Thursday, January 18, 2024 10:02:01 AM
 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
