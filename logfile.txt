@@ -5,7 +5,7 @@ C:\Users\Jim\Documents\webcontent\github-website\waconia>robocopy C:\Users\Jim\D
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Friday, January 19, 2024 8:02:00 AM
+  Started : Friday, January 19, 2024 9:02:00 AM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -43,15 +43,9 @@ Exc Files : publish.bat
    Files :        88         5        83         0         0         6
    Bytes :    4.98 m   242.2 k    4.74 m         0         0     4.8 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-   Ended : Friday, January 19, 2024 8:02:00 AM
+   Ended : Friday, January 19, 2024 9:02:00 AM
 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git commit -am "another update" 
-[main 97ddd17] another update
- 6 files changed, 9 insertions(+), 15 deletions(-)
-
-C:\Users\Jim\Documents\webcontent\github-website\waconia>git push origin main 
-To https://github.com/m-jim-d/waconia.git
-   4bdbe7d..97ddd17  main -> main
