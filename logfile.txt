@@ -5,7 +5,7 @@ C:\Users\Jim\Documents\webcontent\github-website\waconia>robocopy C:\Users\Jim\D
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Saturday, January 20, 2024 12:02:00 PM
+  Started : Saturday, January 20, 2024 1:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -29,9 +29,9 @@ Exc Files : publish.bat
 	    Newer     		    6868	charts.html100%  
 	    Newer     		    6868	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		   73722	PressureChart.jpg100%  
-	    Newer     		   73549	TemperatureChart.jpg100%  
-	    Newer     		   75423	WindChart.jpg100%  
+	    Newer     		   72779	PressureChart.jpg100%  
+	    Newer     		   75234	TemperatureChart.jpg100%  
+	    Newer     		   83614	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                  34	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\pictures\
@@ -41,13 +41,9 @@ Exc Files : publish.bat
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         5         0         5         0         0         1
    Files :        88         5        83         0         0         6
-   Bytes :    4.95 m   230.8 k    4.73 m         0         0     4.8 k
+   Bytes :    4.96 m   239.6 k    4.73 m         0         0     4.8 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-
-
-   Speed :            16887857 Bytes/sec.
-   Speed :             966.330 MegaBytes/min.
-   Ended : Saturday, January 20, 2024 12:02:00 PM
+   Ended : Saturday, January 20, 2024 1:02:00 PM
 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
