@@ -237,6 +237,24 @@ window.pS = (function() {
                   // nothing yet...
                }
                
+            // triquence test site
+            } else if (window.location.href.includes("triquence")) {
+               if (href.includes("www.timetocode")) {
+                  finalHref = href.replace( "https://www.timetocode.org", "https://www.triquence.org");
+                  $(this).attr("href", finalHref);
+               
+               } else if (href.includes("pet.timetocode")) {
+                  finalHref = href.replace( "https://pet.timetocode.org", "https://pet.triquence.org");
+                  $(this).attr("href", finalHref);
+                  
+               } else if (href.includes("waconia.timetocode")) {
+                  finalHref = href.replace( "https://waconia.timetocode.org", "https://waconia.triquence.org");
+                  $(this).attr("href", finalHref);
+                  
+               } else {
+                  // nothing yet...
+               }
+               
             // github server
             } else if (window.location.href.includes("m-jim-d")) {
                if (href.includes("www.timetocode")) {
