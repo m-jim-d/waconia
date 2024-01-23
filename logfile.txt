@@ -5,7 +5,7 @@ C:\Users\Jim\Documents\webcontent\github-website\waconia>robocopy C:\Users\Jim\D
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Tuesday, January 23, 2024 10:02:00 AM
+  Started : Tuesday, January 23, 2024 11:02:00 AM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -43,11 +43,7 @@ Exc Files : publish.bat
    Files :        88         5        83         0         0         6
    Bytes :    4.95 m   241.6 k    4.71 m         0         0     4.8 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-
-
-   Speed :            17674642 Bytes/sec.
-   Speed :            1011.351 MegaBytes/min.
-   Ended : Tuesday, January 23, 2024 10:02:00 AM
+   Ended : Tuesday, January 23, 2024 11:02:00 AM
 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
