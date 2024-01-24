@@ -122,7 +122,7 @@ window.pS = (function() {
    function logEntry( eventDescription, mode='normal') {
       // If this page is coming from the production server...
       var pageURL = window.location.href;
-      if (pageURL.includes("timetocode")) {
+      if (pageURL.includes("triquence")) {
          var sheetURL = 'https://script.google.com/macros/s/AKfycbymaDOxbOAtZAzgxPwm6yIvWG8Euw8jcHM1weyQ_caVSL0BkBI/exec';
          // AJAX
          var xhttp = new XMLHttpRequest();
