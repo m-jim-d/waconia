@@ -500,6 +500,7 @@ window.pS = (function() {
 
       // Methods
       'init': initialize,
+      'logEntry': logEntry,
       'scroll': scroll,
       'viewDialog': viewDialog,
       'loadLargeImage': loadLargeImage,
