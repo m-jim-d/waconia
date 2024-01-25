@@ -300,20 +300,6 @@ var wC = (function() {
       return sheetURL;
    }
    
-   function logEntry( eventDescription, mode='normal') {
-      // If this page is coming from the production server...
-      var pageURL = window.location.href;
-      if (pageURL.includes("timetocode")) {
-         var sheetURL = 'https://script.google.com/macros/s/AKfycbymaDOxbOAtZAzgxPwm6yIvWG8Euw8jcHM1weyQ_caVSL0BkBI/exec';
-         // AJAX
-         var xhttp = new XMLHttpRequest();
-         xhttp.open('GET', sheetURL + '?mode=' + mode + '&eventDesc=' + eventDescription, true);
-         xhttp.send();
-      } else {
-         console.log( eventDescription);
-      }
-   }
-   
    function initializeModule() {
       // This gets called after page loads.
       
@@ -537,7 +523,7 @@ var wC = (function() {
       
       query.send( handleQueryResponse);
       
-      logEntry( m_station_map[ m_stationName].longName + ", " + m_selectDaysValueAtQuery + ", " + m_endDateAtQuery + " v" + m_version);
+      pS.logEntry( m_station_map[ m_stationName].longName + ", " + m_selectDaysValueAtQuery + ", " + m_endDateAtQuery + " v" + m_version);
    }
    
    function dayLightSavingsTime( dateString) {
