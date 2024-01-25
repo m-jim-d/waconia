@@ -195,7 +195,7 @@ window.pS = (function() {
    function checkForAbsoluteLinks() {
       let finalHref;
       
-      // check for absolute links...  https://www.timetocode.org
+      // check for absolute links...  https://www.triquence.org
       $('a').each( function( index, value) {
          let href = $(this).attr("href");
          
@@ -203,16 +203,16 @@ window.pS = (function() {
             
             // local server
             if (window.location.href.includes("192.168.1.106")) {
-               if (href.includes("www.timetocode")) {
-                  finalHref = href.replace( "https://www.timetocode.org", "http://192.168.1.106/ttc-root");
+               if (href.includes("www.triquence")) {
+                  finalHref = href.replace( "https://www.triquence.org", "http://192.168.1.106/ttc-root");
                   $(this).attr("href", finalHref);
                   
-               } else if (href.includes("pet.timetocode")) {
-                  finalHref = href.replace( "https://pet.timetocode.org", "http://192.168.1.106/pet-dev");
+               } else if (href.includes("pet.triquence")) {
+                  finalHref = href.replace( "https://pet.triquence.org", "http://192.168.1.106/pet-dev");
                   $(this).attr("href", finalHref);
                   
-               } else if (href.includes("waconia.timetocode")) {
-                  finalHref = href.replace( "https://waconia.timetocode.org", "http://192.168.1.106/waconia-50webs-dev");
+               } else if (href.includes("waconia.triquence")) {
+                  finalHref = href.replace( "https://waconia.triquence.org", "http://192.168.1.106/waconia-50webs-dev");
                   $(this).attr("href", finalHref);
                   
                } else {
@@ -221,34 +221,34 @@ window.pS = (function() {
                         
             // springphysics test site
             } else if (window.location.href.includes("springphysics")) {
-               if (href.includes("www.timetocode")) {
-                  finalHref = href.replace( "https://www.timetocode.org", "https://www.springphysics.org");
+               if (href.includes("www.triquence")) {
+                  finalHref = href.replace( "https://www.triquence.org", "https://www.springphysics.org");
                   $(this).attr("href", finalHref);
                
-               } else if (href.includes("pet.timetocode")) {
-                  finalHref = href.replace( "https://pet.timetocode.org", "https://pet.springphysics.org");
+               } else if (href.includes("pet.triquence")) {
+                  finalHref = href.replace( "https://pet.triquence.org", "https://pet.springphysics.org");
                   $(this).attr("href", finalHref);
                   
-               } else if (href.includes("waconia.timetocode")) {
-                  finalHref = href.replace( "https://waconia.timetocode.org", "https://waconia.springphysics.org");
+               } else if (href.includes("waconia.triquence")) {
+                  finalHref = href.replace( "https://waconia.triquence.org", "https://waconia.springphysics.org");
                   $(this).attr("href", finalHref);
                   
                } else {
                   // nothing yet...
                }
                
-            // triquence test site
-            } else if (window.location.href.includes("triquence")) {
-               if (href.includes("www.timetocode")) {
-                  finalHref = href.replace( "https://www.timetocode.org", "https://www.triquence.org");
+            // timetocode test site
+            } else if (window.location.href.includes("timetocode")) {
+               if (href.includes("www.triquence")) {
+                  finalHref = href.replace( "https://www.triquence.org", "https://www.timetocode.org");
                   $(this).attr("href", finalHref);
                
-               } else if (href.includes("pet.timetocode")) {
-                  finalHref = href.replace( "https://pet.timetocode.org", "https://pet.triquence.org");
+               } else if (href.includes("pet.triquence")) {
+                  finalHref = href.replace( "https://pet.triquence.org", "https://pet.timetocode.org");
                   $(this).attr("href", finalHref);
                   
-               } else if (href.includes("waconia.timetocode")) {
-                  finalHref = href.replace( "https://waconia.timetocode.org", "https://waconia.triquence.org");
+               } else if (href.includes("waconia.triquence")) {
+                  finalHref = href.replace( "https://waconia.triquence.org", "https://waconia.timetocode.org");
                   $(this).attr("href", finalHref);
                   
                } else {
@@ -257,16 +257,16 @@ window.pS = (function() {
                
             // github server
             } else if (window.location.href.includes("m-jim-d")) {
-               if (href.includes("www.timetocode")) {
-                  finalHref = href.replace( "https://www.timetocode.org", "https://m-jim-d.github.io/springsandpucks");
+               if (href.includes("www.triquence")) {
+                  finalHref = href.replace( "https://www.triquence.org", "https://m-jim-d.github.io/springsandpucks");
                   $(this).attr("href", finalHref);
                
-               } else if (href.includes("pet.timetocode")) {
-                  finalHref = href.replace( "https://pet.timetocode.org", "https://m-jim-d.github.io/pet");
+               } else if (href.includes("pet.triquence")) {
+                  finalHref = href.replace( "https://pet.triquence.org", "https://m-jim-d.github.io/pet");
                   $(this).attr("href", finalHref);
                   
-               } else if (href.includes("waconia.timetocode")) {
-                  finalHref = href.replace( "https://waconia.timetocode.org", "https://m-jim-d.github.io/waconia");
+               } else if (href.includes("waconia.triquence")) {
+                  finalHref = href.replace( "https://waconia.triquence.org", "https://m-jim-d.github.io/waconia");
                   $(this).attr("href", finalHref);
                   
                } else {
