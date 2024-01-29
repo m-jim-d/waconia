@@ -5,7 +5,7 @@ C:\Users\Jim\Documents\webcontent\github-website\waconia>robocopy C:\Users\Jim\D
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Sunday, January 28, 2024 7:02:00 PM
+  Started : Sunday, January 28, 2024 8:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -29,9 +29,9 @@ Exc Files : publish.bat
 	    Newer     		    6864	charts.html100%  
 	    Newer     		    6864	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		   72508	PressureChart.jpg100%  
-	    Newer     		   73667	TemperatureChart.jpg100%  
-	    Newer     		   86127	WindChart.jpg100%  
+	    Newer     		   73269	PressureChart.jpg100%  
+	    Newer     		   73939	TemperatureChart.jpg100%  
+	    Newer     		   88692	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                  34	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\pictures\
@@ -41,13 +41,13 @@ Exc Files : publish.bat
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         5         0         5         0         0         1
    Files :        88         5        83         0         0         6
-   Bytes :    4.96 m   240.2 k    4.72 m         0         0     4.8 k
+   Bytes :    4.96 m   243.7 k    4.72 m         0         0     4.8 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
 
 
-   Speed :            35147142 Bytes/sec.
-   Speed :            2011.135 MegaBytes/min.
-   Ended : Sunday, January 28, 2024 7:02:00 PM
+   Speed :            35661142 Bytes/sec.
+   Speed :            2040.546 MegaBytes/min.
+   Ended : Sunday, January 28, 2024 8:02:00 PM
 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
