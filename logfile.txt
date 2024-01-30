@@ -5,7 +5,7 @@ C:\Users\Jim\Documents\webcontent\github-website\waconia>robocopy C:\Users\Jim\D
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Tuesday, January 30, 2024 12:02:00 PM
+  Started : Tuesday, January 30, 2024 1:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -27,6 +27,7 @@ Exc Files : publish.bat
 ------------------------------------------------------------------------------
 
 	                  22	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
+	    Newer     		    4481	index.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
@@ -36,10 +37,10 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         5         0         5         0         0         1
-   Files :        88         0        88         0         0         7
-   Bytes :    4.96 m         0    4.96 m         0         0     5.9 k
+   Files :        88         1        87         0         0         7
+   Bytes :    4.96 m     4.3 k    4.96 m         0         0     5.9 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-   Ended : Tuesday, January 30, 2024 12:02:00 PM
+   Ended : Tuesday, January 30, 2024 1:02:00 PM
 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
