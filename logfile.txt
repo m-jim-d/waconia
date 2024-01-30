@@ -1,11 +1,11 @@
 
-C:\Users\Jim\Documents\webcontent\github-website\waconia>robocopy C:\Users\Jim\Documents\webcontent\waconia\50webs-dev  C:\Users\Jim\Documents\webcontent\github-website\waconia             /XD .git             /XF publish.bat create.bat .gitignore README.md session* scheduled-task.xml logfile.txt             /MIR /R:3 /W:5 
+C:\Users\Jim\Documents\webcontent\github-website\waconia>robocopy C:\Users\Jim\Documents\webcontent\waconia\50webs-dev  C:\Users\Jim\Documents\webcontent\github-website\waconia             /XD .git             /XF publish.bat create.bat .gitignore README.md LICENSE.txt session* scheduled-task.xml logfile.txt             /MIR /R:3 /W:5 
 
 -------------------------------------------------------------------------------
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Tuesday, January 30, 2024 8:02:00 AM
+  Started : Tuesday, January 30, 2024 9:02:00 AM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -15,6 +15,7 @@ Exc Files : publish.bat
 	    create.bat
 	    .gitignore
 	    README.md
+	    LICENSE.txt
 	    scheduled-task.xml
 	    logfile.txt
 	    session*
@@ -35,18 +36,12 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         5         0         5         0         0         1
-   Files :        88         0        88         0         0         6
-   Bytes :    4.96 m         0    4.96 m         0         0     4.8 k
+   Files :        88         0        88         0         0         7
+   Bytes :    4.96 m         0    4.96 m         0         0     5.9 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-   Ended : Tuesday, January 30, 2024 8:02:00 AM
+   Ended : Tuesday, January 30, 2024 9:02:00 AM
 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git add . 
 
 C:\Users\Jim\Documents\webcontent\github-website\waconia>git commit -am "another update" 
-[main d25c6ab] another update
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-C:\Users\Jim\Documents\webcontent\github-website\waconia>git push origin main 
-To https://github.com/m-jim-d/waconia.git
-   aaca23a..d25c6ab  main -> main
