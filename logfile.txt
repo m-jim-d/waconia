@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Friday, February 2, 2024 7:02:00 AM
+  Started : Friday, February 2, 2024 8:02:00 AM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -29,11 +29,11 @@ Exc Files : publish.bat
 	    Newer     		    6949	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
 	    Newer     		  116453	25DayPressureChart-1.jpg100%  
-	    Newer     		  117402	25DayPressureChart-2.jpg100%  
-	    Newer     		  106074	25DayPressureChart-3.jpg100%  
+	    Newer     		  117407	25DayPressureChart-2.jpg100%  
+	    Newer     		  106107	25DayPressureChart-3.jpg100%  
 	    Newer     		  163323	25DayTemperatureChart.jpg 80%  100%  
 	    Newer     		  158762	25DayWindChart.jpg 82%  100%  
-	    Newer     		  111032	DeltaPressureChart.jpg100%  
+	    Newer     		  111193	DeltaPressureChart.jpg100%  
 	    Newer     		   71942	PressureChart.jpg100%  
 	    Newer     		   72487	TemperatureChart.jpg100%  
 	    Newer     		   73863	WindChart.jpg100%  
@@ -46,11 +46,11 @@ Exc Files : publish.bat
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         5         0         5         0         0         1
    Files :        89        11        78         0         0         7
-   Bytes :    4.93 m   981.6 k    3.98 m         0         0     6.5 k
+   Bytes :    4.93 m   981.8 k    3.98 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
 
 
-   Speed :            71802571 Bytes/sec.
-   Speed :            4108.576 MegaBytes/min.
-   Ended : Friday, February 2, 2024 7:02:00 AM
+   Speed :            71816785 Bytes/sec.
+   Speed :            4109.389 MegaBytes/min.
+   Ended : Friday, February 2, 2024 8:02:00 AM
 
