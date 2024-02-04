@@ -44,7 +44,7 @@ window.pS = (function() {
    var m_keyMap;
    
    function scroll( targetID, pars={}) {
-      let mode = uT.setDefault( pars.mode, 'jump');      
+      let mode = uT.setDefault( pars.mode, 'jump');
       let addToHistory = uT.setDefault( pars.addToHistory, true);
       let scrollDuration = uT.setDefault( pars.scrollDuration, 300);
       let toPageTop = false;
@@ -369,7 +369,7 @@ window.pS = (function() {
             // Bailed on using hash parameter in URL. Native jumps to anchors are confusing. So sidestepping that mess by using query parameters.
             //var hashID = window.location.hash;
             
-            // Discard everything after the "&".
+            // Discard everything after the "&". Don't usually need this unless something (unwanted) gets appended to the URL by a server.
             var queryStringInURL = window.location.search.split("&")[0];
             // Then use the part after the "?".
             var queryID = queryStringInURL.slice(1);
