@@ -7,7 +7,8 @@ Licensed under the BSD license, see LICENSE for details.
 -->
 <html>
 <head>
-  <title></title>
+  <link rel='canonical' href='https://waconia.triquence.org/gleaners/pythonURLfetch.html' />
+  <title>pythonURLfetch</title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <style type="text/css">
 /*
@@ -102,10 +103,11 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="kn">import</span> <span class="n">Timeout</span>
 <span class="kn">import</span> <span class="nn">codecs</span>
-  
+<span class="kn">import</span> <span class="nn">sys</span>  
+
 <span class="k">try</span><span class="p">:</span>
     <span class="c1"># This is used by geturl.pl to fetch the HMS page.</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://www.hanford.gov/c.cfm/hms/realtime.cfm&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://www.hanford.gov/c.cfm/hms/realtime.cfm&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     
     <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;C:</span><span class="se">\\</span><span class="s1">Users</span><span class="se">\\</span><span class="s1">Jim</span><span class="se">\\</span><span class="s1">Documents</span><span class="se">\\</span><span class="s1">webcontent</span><span class="se">\\</span><span class="s1">waconia</span><span class="se">\\</span><span class="s1">urldump.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -117,6 +119,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     
 <span class="k">except</span><span class="p">:</span>
     <span class="nb">print</span> <span class="s1">&#39;Request to Hanford page has failed.&#39;</span>
+    
 </pre></div>
 </body>
 </html>
