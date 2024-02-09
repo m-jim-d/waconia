@@ -64,3 +64,11 @@ Exc Files : publish.bat
    Speed :            3725.498 MegaBytes/min.
    Ended : Friday, February 9, 2024 2:02:00 PM
 
+[main c7c464c] another update
+ 18 files changed, 47 insertions(+), 25 deletions(-)
+ rename FAQ.htm => faq.html (98%)
+ rename HowsItDone.htm => howsitdone.html (97%)
+ rename Install_rosy.htm => install_rosy.html (99%)
+ rename Waconia.htm => waconia.html (96%)
+To https://github.com/m-jim-d/waconia.git
+   897e0b0..c7c464c  main -> main
