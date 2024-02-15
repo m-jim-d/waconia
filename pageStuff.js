@@ -218,56 +218,47 @@ window.pS = (function() {
                } else {
                   // nothing yet...
                }
-                        
-            // springphysics test site
-            } else if (window.location.href.includes("springphysics")) {
-               if (href.includes("https://triquence.org")) {
-                  finalHref = href.replace( "https://triquence.org", "https://springphysics.org");
-                  $(this).attr("href", finalHref);
-               
-               } else if (href.includes("pet.triquence")) {
-                  finalHref = href.replace( "https://pet.triquence.org", "https://pet.springphysics.org");
-                  $(this).attr("href", finalHref);
-                  
-               } else if (href.includes("waconia.triquence")) {
-                  finalHref = href.replace( "https://waconia.triquence.org", "https://waconia.springphysics.org");
-                  $(this).attr("href", finalHref);
-                  
-               } else {
-                  // nothing yet...
-               }
-               
-            // timetocode test site
-            } else if (window.location.href.includes("timetocode")) {
-               if (href.includes("https://triquence.org")) {
-                  finalHref = href.replace( "https://triquence.org", "https://timetocode.org");
-                  $(this).attr("href", finalHref);
-               
-               } else if (href.includes("pet.triquence")) {
-                  finalHref = href.replace( "https://pet.triquence.org", "https://pet.timetocode.org");
-                  $(this).attr("href", finalHref);
-                  
-               } else if (href.includes("waconia.triquence")) {
-                  finalHref = href.replace( "https://waconia.triquence.org", "https://waconia.timetocode.org");
-                  $(this).attr("href", finalHref);
-                  
-               } else {
-                  // nothing yet...
-               }
-               
+                                       
             // github server
             } else if (window.location.href.includes("m-jim-d")) {
                if (href.includes("https://triquence.org")) {
                   finalHref = href.replace( "https://triquence.org", "https://m-jim-d.github.io/springsandpucks");
-                  $(this).attr("href", finalHref);
                
                } else if (href.includes("pet.triquence")) {
                   finalHref = href.replace( "https://pet.triquence.org", "https://m-jim-d.github.io/pet");
-                  $(this).attr("href", finalHref);
                   
                } else if (href.includes("waconia.triquence")) {
                   finalHref = href.replace( "https://waconia.triquence.org", "https://m-jim-d.github.io/waconia");
-                  $(this).attr("href", finalHref);
+                  
+               } else {
+                  // nothing yet...
+               }
+               
+            // firebase server (web.app)
+            } else if (window.location.href.includes("web.app")) {
+               if (href.includes("https://triquence.org")) {
+                  finalHref = href.replace( "https://triquence.org", "https://ttcorg-64150.web.app");
+               
+               } else if (href.includes("pet.triquence")) {
+                  finalHref = href.replace( "https://pet.triquence.org", "https://pet-ttc.web.app");
+                  
+               } else if (href.includes("waconia.triquence")) {
+                  finalHref = href.replace( "https://waconia.triquence.org", "https://waconia-ttc.web.app");
+                         
+               } else {
+                  // nothing yet...
+               }
+               
+            // firebase server (firebaseapp.com)
+            } else if (window.location.href.includes("firebaseapp.com")) {
+               if (href.includes("https://triquence.org")) {
+                  finalHref = href.replace( "https://triquence.org", "https://ttcorg-64150.firebaseapp.com");
+               
+               } else if (href.includes("pet.triquence")) {
+                  finalHref = href.replace( "https://pet.triquence.org", "https://pet-ttc.firebaseapp.com");
+                  
+               } else if (href.includes("waconia.triquence")) {
+                  finalHref = href.replace( "https://waconia.triquence.org", "https://waconia-ttc.firebaseapp.com");
                   
                } else {
                   // nothing yet...
@@ -277,8 +268,9 @@ window.pS = (function() {
             } else {
                // nothing yet
             }
+            
+            //$(this).attr("href", finalHref);
          }
-         
       });      
    }
       
