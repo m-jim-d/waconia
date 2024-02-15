@@ -198,6 +198,7 @@ window.pS = (function() {
       // check for absolute links...  https://triquence.org
       $('a').each( function( index, value) {
          let href = $(this).attr("href");
+         finalHref = null;
          
          if (href && (href != "")) {
             
@@ -205,20 +206,17 @@ window.pS = (function() {
             if (window.location.href.includes("192.168.1.106")) {
                if (href.includes("https://triquence.org")) {
                   finalHref = href.replace( "https://triquence.org", "http://192.168.1.106/ttc-root");
-                  $(this).attr("href", finalHref);
                   
                } else if (href.includes("pet.triquence")) {
                   finalHref = href.replace( "https://pet.triquence.org", "http://192.168.1.106/pet-dev");
-                  $(this).attr("href", finalHref);
                   
                } else if (href.includes("waconia.triquence")) {
                   finalHref = href.replace( "https://waconia.triquence.org", "http://192.168.1.106/waconia-50webs-dev");
-                  $(this).attr("href", finalHref);
                   
                } else {
                   // nothing yet...
                }
-                                       
+                   
             // github server
             } else if (window.location.href.includes("m-jim-d")) {
                if (href.includes("https://triquence.org")) {
@@ -269,7 +267,8 @@ window.pS = (function() {
                // nothing yet
             }
             
-            //$(this).attr("href", finalHref);
+            // If an absolute link was found, use finalHref.
+            if (finalHref) $(this).attr("href", finalHref);
          }
       });      
    }
