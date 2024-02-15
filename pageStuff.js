@@ -193,12 +193,10 @@ window.pS = (function() {
    }  
 
    function checkForAbsoluteLinks() {
-      let finalHref;
-      
-      // check for absolute links...  https://triquence.org
+      // check for absolute links...  https://triquence.org, pet.triquence, waconia.triquence
       $('a').each( function( index, value) {
          let href = $(this).attr("href");
-         finalHref = null;
+         let finalHref = null;
          
          if (href && (href != "")) {
             
@@ -267,7 +265,7 @@ window.pS = (function() {
                // nothing yet
             }
             
-            // If an absolute link was found, use finalHref.
+            // If an absolute link was found, use the edited version, finalHref.
             if (finalHref) $(this).attr("href", finalHref);
          }
       });      
