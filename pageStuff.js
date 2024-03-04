@@ -278,7 +278,7 @@ window.pS = (function() {
       let navDivName = uT.setDefault( pars.navDiv, "navDiv");
       let pageDesc = uT.setDefault( pars.pageDesc, null);
       let logPage = uT.setDefault( pars.logPage, true);
-      let pathSiteMap = uT.setDefault( pars.pathSiteMap, "sitemap.html?v3"); // changing the version overrides cache
+      let pathSiteMap = uT.setDefault( pars.pathSiteMap, "sitemap.html?v5"); // changing the version overrides cache
       let scrollAtLoad = uT.setDefault( pars.scrollAtLoad, true);
       m_scrollAdjust = uT.setDefault( pars.scrollAdjust, 0);
       
