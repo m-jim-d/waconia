@@ -123,7 +123,6 @@ window.pS = (function() {
       // If this page is coming from the production server...
       var pageURL = window.location.href;
       if (pageURL.includes("triquence")) {
-         //var sheetURL = 'https://script.google.com/macros/s/AKfycbymaDOxbOAtZAzgxPwm6yIvWG8Euw8jcHM1weyQ_caVSL0BkBI/exec';
          var sheetURL = 'https://script.google.com/macros/s/AKfycbzfivtrNUyClOX6_6UA2HTWhtk6dmqsbE1sLTUXoC8gSC5zQdZq0uF75hQfIHlSpaQm/exec';
          // AJAX
          var xhttp = new XMLHttpRequest();
