@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Monday, March 18, 2024 6:02:00 PM
+  Started : Monday, March 18, 2024 7:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -28,15 +28,9 @@ Exc Files : publish.bat
 	    Newer     		    6944	charts.html100%  
 	    Newer     		    6944	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		  110380	25DayPressureChart-1.jpg100%  
-	    Newer     		  115266	25DayPressureChart-2.jpg100%  
-	    Newer     		  108020	25DayPressureChart-3.jpg100%  
-	    Newer     		  200296	25DayTemperatureChart.jpg 65%  100%  
-	    Newer     		  119085	25DayWindChart.jpg100%  
-	    Newer     		   88611	DeltaPressureChart.jpg100%  
-	    Newer     		   73443	PressureChart.jpg100%  
-	    Newer     		   72744	TemperatureChart.jpg100%  
-	    Newer     		   74144	WindChart.jpg100%  
+	    Newer     		   72217	PressureChart.jpg100%  
+	    Newer     		   75866	TemperatureChart.jpg100%  
+	    Newer     		   85409	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                  34	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\pictures\
@@ -45,12 +39,8 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         5         0         5         0         0         1
-   Files :        87        11        76         0         0         7
-   Bytes :    4.88 m   953.0 k    3.95 m         0         0     6.5 k
+   Files :        87         5        82         0         0         7
+   Bytes :    4.89 m   241.5 k    4.66 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-
-
-   Speed :            32529233 Bytes/sec.
-   Speed :            1861.337 MegaBytes/min.
-   Ended : Monday, March 18, 2024 6:02:00 PM
+   Ended : Monday, March 18, 2024 7:02:00 PM
 
