@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Wednesday, March 20, 2024 7:02:00 AM
+  Started : Wednesday, March 20, 2024 8:02:00 AM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -42,5 +42,9 @@ Exc Files : publish.bat
    Files :        87         5        82         0         0         7
    Bytes :    4.90 m   250.1 k    4.66 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-   Ended : Wednesday, March 20, 2024 7:02:00 AM
+
+
+   Speed :            18296571 Bytes/sec.
+   Speed :            1046.938 MegaBytes/min.
+   Ended : Wednesday, March 20, 2024 8:02:00 AM
 
