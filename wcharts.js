@@ -583,8 +583,8 @@ var wC = (function() {
          m_legendPosition = "top";
          
       } else if (nDays == 2) {
-         m_width_px = 700;
-         m_chartArea.width = "75%";
+         m_width_px = 800;
+         m_chartArea.width = "80%";
          m_chartArea.height = cA_height; // 83
          m_hAxis_format = 'EEE d'; // haa  hh aa  EEE d
          m_hAxis_gridLineCount = 6; // 3
