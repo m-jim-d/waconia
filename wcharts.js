@@ -39,7 +39,7 @@ var wC = (function() {
    google.charts.setOnLoadCallback( queryGoogleSheet);
    
    // Names starting with m_ indicate module-scope globals.
-   var m_version = 1.5;
+   var m_version = 1.6;
    console.log('wC version ' + m_version);
    
    var m_temperatureChart = null;
