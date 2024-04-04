@@ -39,7 +39,7 @@ var wC = (function() {
    google.charts.setOnLoadCallback( queryGoogleSheet);
    
    // Names starting with m_ indicate module-scope globals.
-   var m_version = 1.6;
+   var m_version = 1.7;
    console.log('wC version ' + m_version);
    
    var m_temperatureChart = null;
@@ -215,7 +215,7 @@ var wC = (function() {
       
       // Alaska...
       'PABR':{'longName':'Barrow, AK', 'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'aw'},      
-      'PAWI':{'longName':'Wainwright, AK', 'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'meso'},      
+      'PAWI':{'longName':'Wainwright AP, AK', 'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'meso'},      
       
       // Hatteras
       'KHSE':{'longName':'Cape Hatteras, NC (AW)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'aw'},
