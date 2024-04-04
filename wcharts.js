@@ -215,6 +215,7 @@ var wC = (function() {
       
       // Alaska...
       'PABR':{'longName':'Barrow, AK', 'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'aw'},      
+      'PAWI':{'longName':'Wainwright, AK', 'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'meso'},      
       
       // Hatteras
       'KHSE':{'longName':'Cape Hatteras, NC (AW)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'aw'},
