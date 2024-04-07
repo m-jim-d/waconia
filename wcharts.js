@@ -217,6 +217,7 @@ var wC = (function() {
       'PABR':{'longName':'Barrow, AK (AW)',     'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'aw'},      
       'PABR.2':{'longName':'Barrow, AK (Meso)', 'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'meso'},      
       'PAWI':{'longName':'Wainwright AP, AK',   'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'meso'},
+      'PAQT':{'longName':'Nuiqsut, AK',         'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'meso'},
       
       // Hatteras
       'KHSE':{'longName':'Cape Hatteras, NC (AW)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'aw'},
