@@ -129,12 +129,12 @@ var wC = (function() {
       
       // Alaska
       'PABR.2':{'longName':'Utqiagvik/Barrow (Meso)', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},      
-      'PAWI':{'longName':'Wainwright AP',   'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
-      'PAQT':{'longName':'Nuiqsut',         'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
-      'PASI':{'longName':'Sitka',           'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
+      'PAWI':{'longName':'Wainwright AP',             'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
+      'PAQT':{'longName':'Nuiqsut AP',                'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
+      'PASI':{'longName':'Sitka',                     'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       
       // BC Canada
-      'CYAZ':{'longName':'Tofino, BC', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},        
+      'CYAZ':{'longName':'Tofino, BC', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},
       
       // Oregon
       'HOXO':{'longName':'Hood River, OR', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},    
