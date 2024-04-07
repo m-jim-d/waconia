@@ -127,6 +127,12 @@ var wC = (function() {
       'KNOW':{'longName':'Port Angeles, WA', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},  
       'K0S9':{'longName':'Port Townsend, WA', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'}, 
       
+      // Alaska
+      'PABR.2':{'longName':'Barrow (Meso)', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},      
+      'PAWI':{'longName':'Wainwright AP',   'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
+      'PAQT':{'longName':'Nuiqsut',         'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
+      'PASI':{'longName':'Sitka',           'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
+      
       // BC Canada
       'CYAZ':{'longName':'Tofino, BC', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},        
       
@@ -210,14 +216,11 @@ var wC = (function() {
       'KANE':{'longName':'Blaine', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'aw'},      
       'KSTP':{'longName':'Saint Paul', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'aw'},  
       
-      // Fritz's sites on the cape...
-      'KCQX':{'longName':'Chatham, MA (AW)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'aw'},      
+      // Fritz's site on the cape...
+      'KCQX':{'longName':'Chatham, MA (AW)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'aw'},
       
       // Alaska...
-      'PABR':{'longName':'Barrow, AK (AW)',     'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'aw'},      
-      'PABR.2':{'longName':'Barrow, AK (Meso)', 'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'meso'},      
-      'PAWI':{'longName':'Wainwright AP, AK',   'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'meso'},
-      'PAQT':{'longName':'Nuiqsut, AK',         'tz':'AK', 'dst':true, 'region':'misc', 'sheet':'meso'},
+      'PABR':{'longName':'Barrow (AW)', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'aw'},      
       
       // Hatteras
       'KHSE':{'longName':'Cape Hatteras, NC (AW)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'aw'},
@@ -375,7 +378,6 @@ var wC = (function() {
       m_selectRegions.addEventListener('change', regionChange);
       function regionChange() {
          populateSelectStations( m_selectRegions.value);
-         //console.log( "region=" + m_selectRegions.value);
          if (m_selectRegions.value == "mn") {
             m_selectStations.value = "KMKT.2";
             
@@ -384,6 +386,9 @@ var wC = (function() {
             
          } else if (m_selectRegions.value == "Hawaii") {
             m_selectStations.value = "PHOG";
+            
+         } else if (m_selectRegions.value == "ak") {
+            m_selectStations.value = "PASI";
             
          } else if (m_selectRegions.value == "hanford") {
             m_selectStations.value = "RMTN";
@@ -1216,14 +1221,11 @@ var wC = (function() {
          
          google.visualization.events.addListener(m_temperatureChart, 'ready', readyHandler);
          function readyHandler() {
-            //console.log("from readyHandler");
             $("#updateButton").html("Update");
             m_readyForNewQuery = true;
             let stationCheck = (m_dataTable.getValue(0,7) != m_stationName);
-            //console.log("stationCheck="+stationCheck);
             let endDateCheck = (m_selectEndDate.value != m_endDateAtQuery);
             let nDaysCheck = (m_selectDaysValueAtQuery != m_selectDays.value);
-            //console.log("endDateCheck=" + endDateCheck + ", SV=" + m_selectEndDate.value + ", QV=" + m_endDateAtQuery);
             if ((stationCheck || endDateCheck || nDaysCheck) && (m_retry_count <= 3)) {
                queryGoogleSheet();
                console.log("retry count = " + m_retry_count);
