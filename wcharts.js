@@ -75,7 +75,7 @@ var wC = (function() {
    var m_temperatureTicks = null;
    var m_pressureTicks = null;
    
-   var m_dp_allNull, m_bp_allNull;
+   var m_db_allNull, m_dp_allNull, m_bp_allNull;
    var m_legendPosition = null;
    
    var m_readyForNewQuery = null;
@@ -661,13 +661,18 @@ var wC = (function() {
       function aN( value, sensor) {
          // check if sensor has any non-null values (i.e. can be plotted)
          if (value) {
-            if      (sensor == "dp") {m_dp_allNull = false}
-            else if (sensor == "bp") {m_bp_allNull = false};
+            if (sensor == "db") {
+               m_db_allNull = false;
+            } else if (sensor == "dp") {
+               m_dp_allNull = false;
+            } else if (sensor == "bp") {
+               m_bp_allNull = false;
+            }
          }
          return value;
       }
       
-      m_dp_allNull = true; m_bp_allNull = true;
+      m_db_allNull = true; m_dp_allNull = true; m_bp_allNull = true;
       let tempRange = {min:200, max:-200};
       let pressureRange = {min:200, max:-200};
       m_epochMax = 0;
@@ -721,7 +726,7 @@ var wC = (function() {
          
          // Populate the array (of row arrays) that will be the source for the smoothing operations.
          editedArray = editedArray.concat( [[shifted_date, shifted_epoch_msec, 
-            dryBulb, 
+            aN( dryBulb, "db"), 
             aN( dewPoint, "dp"),
             aN( pressure, "bp"), 
             wind_speed, 
@@ -904,7 +909,7 @@ var wC = (function() {
       
       chartAmbientConditions( smoother_CB_state);
       chartWind( smoother_CB_state);
-      //displayTables();
+      displayTables();
    }
    
    function stepByDays( direction) {
