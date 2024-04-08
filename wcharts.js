@@ -132,6 +132,7 @@ var wC = (function() {
       'PAWI':{'longName':'Wainwright AP',             'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       'PAQT':{'longName':'Nuiqsut AP',                'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       'PASI':{'longName':'Sitka',                     'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
+      'PAFA':{'longName':'Fairbanks Int AP',          'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       
       // BC Canada
       'CYAZ':{'longName':'Tofino, BC', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},
