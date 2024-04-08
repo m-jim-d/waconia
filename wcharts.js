@@ -1116,24 +1116,26 @@ var wC = (function() {
       if (smoothed) {
          var dataView = new google.visualization.DataView( m_editedDataTable);
          if (m_dp_allNull & ( ! m_bp_allNull)) {
-            viewArray = [0,2,4];
-         } else if (m_bp_allNull & ( ! m_dp_allNull)) {
-            viewArray = [0,2,3];
+            viewArray = [0,2,4];   // time, drybulb, ________, bp
+         } else if (( ! m_db_allNull) && ( ! m_dp_allNull) && (   m_bp_allNull)) {
+            viewArray = [0,2,3];   // time, drybulb, dewpoint, __
          } else if (m_dp_allNull && m_bp_allNull) {
-            viewArray = [0,2];
+            viewArray = [0,2];     // time, drybulb, ________, __
+         } else if (m_db_allNull && m_dp_allNull && ( ! m_bp_allNull)) {
+            viewArray = [0,2];     // time, _______, ________, bp            
          } else {
-            viewArray = [0,2,3,4];
+            viewArray = [0,2,3,4]; // time, drybulb, dewpoint, bp
          }
       } else {
          var dataView = new google.visualization.DataView( m_dataTable);
          if (m_dp_allNull & ( ! m_bp_allNull)) {
-            viewArray = [0,1,6];
+            viewArray = [0,1,6];   // time, drybulb, ________, bp
          } else if (m_bp_allNull & ( ! m_dp_allNull)) {
-            viewArray = [0,1,2];
+            viewArray = [0,1,2];   // time, drybulb, dewpoint, __
          } else if (m_dp_allNull && m_bp_allNull) {
-            viewArray = [0,1];
+            viewArray = [0,1];     // time, drybulb, ________, __
          } else {
-            viewArray = [0,1,2,6];
+            viewArray = [0,1,2,6]; // time, drybulb, dewpoint, bp
          }
       }
       
