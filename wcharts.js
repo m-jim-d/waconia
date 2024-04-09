@@ -39,7 +39,7 @@ var wC = (function() {
    google.charts.setOnLoadCallback( queryGoogleSheet);
    
    // Names starting with m_ indicate module-scope globals.
-   var m_version = 1.7;
+   var m_version = 1.71;
    console.log('wC version ' + m_version);
    
    var m_temperatureChart = null;
@@ -1115,22 +1115,22 @@ var wC = (function() {
       let viewArray = [];
       if (smoothed) {
          var dataView = new google.visualization.DataView( m_editedDataTable);
-         if (m_dp_allNull & ( ! m_bp_allNull)) {
+         if (( ! m_db_allNull) && m_dp_allNull && ( ! m_bp_allNull)) {
             viewArray = [0,2,4];   // time, drybulb, ________, bp
-         } else if (( ! m_db_allNull) && ( ! m_dp_allNull) && (   m_bp_allNull)) {
+         } else if (( ! m_db_allNull) && ( ! m_dp_allNull) && m_bp_allNull) {
             viewArray = [0,2,3];   // time, drybulb, dewpoint, __
-         } else if (m_dp_allNull && m_bp_allNull) {
+         } else if (( ! m_db_allNull) && m_dp_allNull && m_bp_allNull) {
             viewArray = [0,2];     // time, drybulb, ________, __
          } else if (m_db_allNull && m_dp_allNull && ( ! m_bp_allNull)) {
-            viewArray = [0,2];     // time, _______, ________, bp            
+            viewArray = [0,4];     // time, _______, ________, bp            
          } else {
             viewArray = [0,2,3,4]; // time, drybulb, dewpoint, bp
          }
       } else {
          var dataView = new google.visualization.DataView( m_dataTable);
-         if (m_dp_allNull & ( ! m_bp_allNull)) {
+         if (m_dp_allNull && ( ! m_bp_allNull)) {
             viewArray = [0,1,6];   // time, drybulb, ________, bp
-         } else if (m_bp_allNull & ( ! m_dp_allNull)) {
+         } else if (m_bp_allNull && ( ! m_dp_allNull)) {
             viewArray = [0,1,2];   // time, drybulb, dewpoint, __
          } else if (m_dp_allNull && m_bp_allNull) {
             viewArray = [0,1];     // time, drybulb, ________, __
@@ -1213,16 +1213,28 @@ var wC = (function() {
          }, 
       }
       
-      if (m_dp_allNull) {
+      console.log("Nulls:" + m_db_allNull + "," + m_dp_allNull + "," + m_bp_allNull);
+      if (m_dp_allNull && ( ! m_bp_allNull)) {
+         console.log("A");
          options.series[1] = pressure_line;
          options.series[2] = null;
       } else if (m_bp_allNull) {
+         console.log("B");
          options.series[1] = dewpoint_line;
          options.series[2] = null;
-      } else if (m_dp_allNull && m_bp_allNull) {
+      } else if (m_db_allNull && m_dp_allNull) {
+         console.log("C");
+         console.log("good spot");
+         options.series[0] = pressure_line;
          options.series[1] = null;
          options.series[2] = null;
-      }      
+      } else if (m_dp_allNull && m_bp_allNull) {
+         console.log("D");
+         options.series[1] = null;
+         options.series[2] = null;
+      } else {
+         console.log("E");
+      }    
       
       if ( ! m_temperatureChart) { 
          m_temperatureChart = new google.visualization.LineChart( document.getElementById( "chartDivA"));
