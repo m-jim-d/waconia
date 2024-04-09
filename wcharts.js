@@ -1206,27 +1206,21 @@ var wC = (function() {
          }, 
       }
       
-      console.log("Nulls:" + m_db_allNull + "," + m_dp_allNull + "," + m_bp_allNull);
       if (( ! m_db_allNull) && m_dp_allNull && ( ! m_bp_allNull)) {
-         console.log("A");
          options.series[1] = pressure_line;
          options.series[2] = null;
       } else if (m_bp_allNull) {
-         console.log("B");
          options.series[1] = dewpoint_line;
          options.series[2] = null;
       } else if (m_db_allNull && m_dp_allNull) {
-         console.log("C");
          options.series[0] = pressure_line;
          options.series[1] = null;
          options.series[2] = null;
       } else if (m_dp_allNull && m_bp_allNull) {
-         console.log("D");
          options.series[1] = null;
          options.series[2] = null;
       } else {
          // no changes to the options
-         console.log("E");
       }    
       
       if ( ! m_temperatureChart) { 
