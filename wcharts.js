@@ -1113,21 +1113,30 @@ var wC = (function() {
    function chartAmbientConditions( smoothed=true) {
       // Don't chart dewpoint and/or pressure sensors that have all null values.      
       let viewArray = [];
-      if (smoothed) {
-         var dataView = new google.visualization.DataView( m_editedDataTable);
+      let dataTable = (smoothed) ? m_editedDataTable : m_dataTable;
+      let dataView = new google.visualization.DataView( dataTable);
+      //if (smoothed) {
+         //var dataView = new google.visualization.DataView( m_editedDataTable);
          if (( ! m_db_allNull) && m_dp_allNull && ( ! m_bp_allNull)) {
-            viewArray = [0,2,4];   // time, drybulb, ________, bp
+            // time, drybulb, ________, bp
+            viewArray = (smoothed) ? [0,2,4] : [0,1,6];   
          } else if (( ! m_db_allNull) && ( ! m_dp_allNull) && m_bp_allNull) {
-            viewArray = [0,2,3];   // time, drybulb, dewpoint, __
+            // time, drybulb, dewpoint, __
+            viewArray = (smoothed) ? [0,2,3] : [0,1,2];   
          } else if (( ! m_db_allNull) && m_dp_allNull && m_bp_allNull) {
-            viewArray = [0,2];     // time, drybulb, ________, __
+            // time, drybulb, ________, __
+            viewArray = (smoothed) ? [0,2] : [0,1];     
          } else if (m_db_allNull && m_dp_allNull && ( ! m_bp_allNull)) {
-            viewArray = [0,4];     // time, _______, ________, bp            
+            // time, _______, ________, bp 
+            viewArray = (smoothed) ? [0,4] : [0,6];                
          } else {
-            viewArray = [0,2,3,4]; // time, drybulb, dewpoint, bp
+            // time, drybulb, dewpoint, bp
+            viewArray = (smoothed) ? [0,2,3,4] : [0,1,2,6]; 
          }
+      
+      /*
       } else {
-         var dataView = new google.visualization.DataView( m_dataTable);
+         //var dataView = new google.visualization.DataView( m_dataTable);
          if (m_dp_allNull && ( ! m_bp_allNull)) {
             viewArray = [0,1,6];   // time, drybulb, ________, bp
          } else if (m_bp_allNull && ( ! m_dp_allNull)) {
@@ -1138,6 +1147,7 @@ var wC = (function() {
             viewArray = [0,1,2,6]; // time, drybulb, dewpoint, bp
          }
       }
+      */
       
       let viewArrayPlus = [];
       let annotation = {sourceColumn: 8, type: 'string', role: 'annotation'};
