@@ -1214,7 +1214,7 @@ var wC = (function() {
       }
       
       console.log("Nulls:" + m_db_allNull + "," + m_dp_allNull + "," + m_bp_allNull);
-      if (m_dp_allNull && ( ! m_bp_allNull)) {
+      if (( ! m_db_allNull) && m_dp_allNull && ( ! m_bp_allNull)) {
          console.log("A");
          options.series[1] = pressure_line;
          options.series[2] = null;
