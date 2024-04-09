@@ -39,7 +39,7 @@ var wC = (function() {
    google.charts.setOnLoadCallback( queryGoogleSheet);
    
    // Names starting with m_ indicate module-scope globals.
-   var m_version = 1.71;
+   var m_version = 1.8;
    console.log('wC version ' + m_version);
    
    var m_temperatureChart = null;
@@ -644,6 +644,8 @@ var wC = (function() {
          m_readyForNewQuery = true;
          if (m_temperatureChart) m_temperatureChart.clearChart();
          if (m_windChart) m_windChart.clearChart();
+         document.getElementById('tableDiv').innerHTML = "";
+         document.getElementById('editedTableDiv').innerHTML = "";
          return
       } else {
          if ( ! m_problemWithURLSearch) document.getElementById("statusSpan").textContent="";
@@ -909,7 +911,7 @@ var wC = (function() {
       
       chartAmbientConditions( smoother_CB_state);
       chartWind( smoother_CB_state);
-      displayTables();
+      //displayTables();
    }
    
    function stepByDays( direction) {
@@ -1115,35 +1117,19 @@ var wC = (function() {
       let viewArray = [];
       let dataTable = (smoothed) ? m_editedDataTable : m_dataTable;
       let dataView = new google.visualization.DataView( dataTable);
-      //if (smoothed) {
-         //var dataView = new google.visualization.DataView( m_editedDataTable);
-         if (( ! m_db_allNull) && m_dp_allNull && ( ! m_bp_allNull)) {
-            viewArray = (smoothed) ? [0,2,4] : [0,1,6];     // time, drybulb, ________, bp
-         } else if (( ! m_db_allNull) && ( ! m_dp_allNull) && m_bp_allNull) {
-            viewArray = (smoothed) ? [0,2,3] : [0,1,2];     // time, drybulb, dewpoint, __
-         } else if (( ! m_db_allNull) && m_dp_allNull && m_bp_allNull) {
-            viewArray = (smoothed) ? [0,2] : [0,1];         // time, drybulb, ________, __
-         } else if (m_db_allNull && m_dp_allNull && ( ! m_bp_allNull)) {
-            viewArray = (smoothed) ? [0,4] : [0,6];         // time, _______, ________, bp              
-         } else {
-            viewArray = (smoothed) ? [0,2,3,4] : [0,1,2,6]; // time, drybulb, dewpoint, bp
-         }
-      
-      /*
+         
+      if (( ! m_db_allNull) && m_dp_allNull && ( ! m_bp_allNull)) {
+         viewArray = (smoothed) ? [0,2,  4] : [0,1,  6]; // time, drybulb, ________, bp
+      } else if (( ! m_db_allNull) && ( ! m_dp_allNull) && m_bp_allNull) {
+         viewArray = (smoothed) ? [0,2,3  ] : [0,1,2  ]; // time, drybulb, dewpoint, __
+      } else if (( ! m_db_allNull) && m_dp_allNull && m_bp_allNull) {
+         viewArray = (smoothed) ? [0,2    ] : [0,1    ]; // time, drybulb, ________, __
+      } else if (m_db_allNull && m_dp_allNull && ( ! m_bp_allNull)) {
+         viewArray = (smoothed) ? [0,    4] : [0,    6]; // time, _______, ________, bp              
       } else {
-         //var dataView = new google.visualization.DataView( m_dataTable);
-         if (m_dp_allNull && ( ! m_bp_allNull)) {
-            viewArray = [0,1,6];   // time, drybulb, ________, bp
-         } else if (m_bp_allNull && ( ! m_dp_allNull)) {
-            viewArray = [0,1,2];   // time, drybulb, dewpoint, __
-         } else if (m_dp_allNull && m_bp_allNull) {
-            viewArray = [0,1];     // time, drybulb, ________, __
-         } else {
-            viewArray = [0,1,2,6]; // time, drybulb, dewpoint, bp
-         }
+         viewArray = (smoothed) ? [0,2,3,4] : [0,1,2,6]; // time, drybulb, dewpoint, bp
       }
-      */
-      
+            
       let viewArrayPlus = [];
       let annotation = {sourceColumn: 8, type: 'string', role: 'annotation'};
       for (let i = 0; i < viewArray.length; i++) {
@@ -1370,18 +1356,11 @@ var wC = (function() {
       Note that I sometimes comment out the DIVs, the "containers" for these tables. 
       So, might have to uncomment them (on the weather.html) page before running this.
       */
-      if (m_dataTable.getNumberOfRows() > 0) {
-         if ( ! m_rawVisTable) m_rawVisTable = new google.visualization.Table( document.getElementById('tableDiv'));
-         m_rawVisTable.draw( m_dataTable, null);
-         
-         if ( ! m_smoothedVisTable) m_smoothedVisTable = new google.visualization.Table( document.getElementById('editedTableDiv'));
-         m_smoothedVisTable.draw( m_editedDataTable, null);
-         
-      } else {
-         document.getElementById('tableDiv').innerHTML = "";
-         document.getElementById('editedTableDiv').innerHTML = "";
-      }
+      if ( ! m_rawVisTable) m_rawVisTable = new google.visualization.Table( document.getElementById('tableDiv'));
+      m_rawVisTable.draw( m_dataTable, null);
       
+      if ( ! m_smoothedVisTable) m_smoothedVisTable = new google.visualization.Table( document.getElementById('editedTableDiv'));
+      m_smoothedVisTable.draw( m_editedDataTable, null);
    }
    
    return {
