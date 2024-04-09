@@ -1118,20 +1118,15 @@ var wC = (function() {
       //if (smoothed) {
          //var dataView = new google.visualization.DataView( m_editedDataTable);
          if (( ! m_db_allNull) && m_dp_allNull && ( ! m_bp_allNull)) {
-            // time, drybulb, ________, bp
-            viewArray = (smoothed) ? [0,2,4] : [0,1,6];   
+            viewArray = (smoothed) ? [0,2,4] : [0,1,6];     // time, drybulb, ________, bp
          } else if (( ! m_db_allNull) && ( ! m_dp_allNull) && m_bp_allNull) {
-            // time, drybulb, dewpoint, __
-            viewArray = (smoothed) ? [0,2,3] : [0,1,2];   
+            viewArray = (smoothed) ? [0,2,3] : [0,1,2];     // time, drybulb, dewpoint, __
          } else if (( ! m_db_allNull) && m_dp_allNull && m_bp_allNull) {
-            // time, drybulb, ________, __
-            viewArray = (smoothed) ? [0,2] : [0,1];     
+            viewArray = (smoothed) ? [0,2] : [0,1];         // time, drybulb, ________, __
          } else if (m_db_allNull && m_dp_allNull && ( ! m_bp_allNull)) {
-            // time, _______, ________, bp 
-            viewArray = (smoothed) ? [0,4] : [0,6];                
+            viewArray = (smoothed) ? [0,4] : [0,6];         // time, _______, ________, bp              
          } else {
-            // time, drybulb, dewpoint, bp
-            viewArray = (smoothed) ? [0,2,3,4] : [0,1,2,6]; 
+            viewArray = (smoothed) ? [0,2,3,4] : [0,1,2,6]; // time, drybulb, dewpoint, bp
          }
       
       /*
@@ -1170,6 +1165,8 @@ var wC = (function() {
       let stationName = m_dataTable.getValue(0,7);
       let longName_clean = m_station_map[ stationName].longName.split("(")[0];
       let titleString = "" + longName_clean; // + " (" + stationName + ")";
+      // Show the horizontal pressure lines if pressure is the only trace. Otherwise, hide them (transparent). 
+      let pressureColorMode = (m_db_allNull && m_dp_allNull && ( ! m_bp_allNull)) ? 'lightgray' : 'transparent';
       let options = {
          title: titleString,
          chartArea: m_chartArea,
@@ -1210,7 +1207,7 @@ var wC = (function() {
             1: {title: 'Pressure (Inches Hg)', 
                textStyle: {fontSize: 12}, 
                titleTextStyle: {fontSize: 16, italic: false}, 
-               gridlines: {color: 'transparent'}, // 'transparent' 'lightgray'
+               gridlines: {color: pressureColorMode}, // hide (transparent) if db and dp plotted 
                //minValue:29.6, maxValue:30.2, //minValue:29.9, maxValue:29.9,
                ticks: m_pressureTicks,
             }, 
