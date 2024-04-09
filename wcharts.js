@@ -1224,7 +1224,6 @@ var wC = (function() {
          options.series[2] = null;
       } else if (m_db_allNull && m_dp_allNull) {
          console.log("C");
-         console.log("good spot");
          options.series[0] = pressure_line;
          options.series[1] = null;
          options.series[2] = null;
@@ -1233,6 +1232,7 @@ var wC = (function() {
          options.series[1] = null;
          options.series[2] = null;
       } else {
+         // no changes to the options
          console.log("E");
       }    
       
