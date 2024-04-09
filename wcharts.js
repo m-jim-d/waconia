@@ -1370,11 +1370,18 @@ var wC = (function() {
       Note that I sometimes comment out the DIVs, the "containers" for these tables. 
       So, might have to uncomment them (on the weather.html) page before running this.
       */
-      if ( ! m_rawVisTable) m_rawVisTable = new google.visualization.Table( document.getElementById('tableDiv'));
-      m_rawVisTable.draw( m_dataTable, null);
+      if (m_dataTable.getNumberOfRows() > 0) {
+         if ( ! m_rawVisTable) m_rawVisTable = new google.visualization.Table( document.getElementById('tableDiv'));
+         m_rawVisTable.draw( m_dataTable, null);
+         
+         if ( ! m_smoothedVisTable) m_smoothedVisTable = new google.visualization.Table( document.getElementById('editedTableDiv'));
+         m_smoothedVisTable.draw( m_editedDataTable, null);
+         
+      } else {
+         document.getElementById('tableDiv').innerHTML = "";
+         document.getElementById('editedTableDiv').innerHTML = "";
+      }
       
-      if ( ! m_smoothedVisTable) m_smoothedVisTable = new google.visualization.Table( document.getElementById('editedTableDiv'));
-      m_smoothedVisTable.draw( m_editedDataTable, null);
    }
    
    return {
