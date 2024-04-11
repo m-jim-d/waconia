@@ -133,7 +133,8 @@ var wC = (function() {
       'PAQT':{'longName':'Nuiqsut AP',                'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       'PASI':{'longName':'Sitka',                     'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       'PAFA':{'longName':'Fairbanks Int AP',          'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
-      'PATQ':{'longName':'Atqasuk AP',                'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
+      'PATQ':{'longName':'Atqasuk',                   'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
+      'PANC':{'longName':'Anchorage',                 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       
       // BC Canada
       'CYAZ':{'longName':'Tofino, BC', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},
