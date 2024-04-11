@@ -300,7 +300,7 @@ var wC = (function() {
    function getSheetURL( station) {
       let workBook_python = "https://docs.google.com/spreadsheets/d/1o6-x2GLbAt3XbBRaMEcGkO7e7gGcCdIu-uwHy5PybwI/edit?usp=sharing";
       let workBook_perl =   "https://docs.google.com/spreadsheets/d/1WIhBWjSpB7atJ3_k0-rR93e7AQ_fZib2aeTvnI0DRXQ/edit?usp=sharing";
-      let bookMap = {'meso': workBook_python, 'aw': workBook_python, 'hanford':workBook_perl, 'noaa':workBook_perl};
+      let bookMap = {'meso':workBook_python, 'aw':workBook_python, 'hanford':workBook_perl, 'noaa':workBook_perl};
       
       let sheetName = m_station_map[ station].sheet;
       // note: adding "&headers=1" would return a header row.
