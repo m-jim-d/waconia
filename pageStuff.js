@@ -215,6 +215,21 @@ window.pS = (function() {
                   // nothing yet...
                }
                    
+            // localhost
+            } else if (window.location.href.includes("localhost")) {
+               if (href.includes("https://triquence.org")) {
+                  finalHref = href.replace( "https://triquence.org", "https://localhost/ttc-root");
+                  
+               } else if (href.includes("pet.triquence")) {
+                  finalHref = href.replace( "https://pet.triquence.org", "https://localhost/pet-dev");
+                  
+               } else if (href.includes("waconia.triquence")) {
+                  finalHref = href.replace( "https://waconia.triquence.org", "https://localhost/waconia-50webs-dev");
+                  
+               } else {
+                  // nothing yet...
+               }
+                   
             // github server
             } else if (window.location.href.includes("m-jim-d")) {
                if (href.includes("https://triquence.org")) {
