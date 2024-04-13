@@ -200,7 +200,7 @@ window.pS = (function() {
          
          if (href && (href != "")) {
             
-            // local server
+            // IP address on local network
             if (window.location.href.includes("192.168.1.106")) {
                if (href.includes("https://triquence.org")) {
                   finalHref = href.replace( "https://triquence.org", "http://192.168.1.106/ttc-root");
@@ -215,7 +215,22 @@ window.pS = (function() {
                   // nothing yet...
                }
                    
-            // localhost
+            // nuc on local network
+            } else if (window.location.href.includes("nuc/")) {
+               if (href.includes("https://triquence.org")) {
+                  finalHref = href.replace( "https://triquence.org", "http://nuc/ttc-root");
+                  
+               } else if (href.includes("pet.triquence")) {
+                  finalHref = href.replace( "https://pet.triquence.org", "http://nuc/pet-dev");
+                  
+               } else if (href.includes("waconia.triquence")) {
+                  finalHref = href.replace( "https://waconia.triquence.org", "http://nuc/waconia-50webs-dev");
+                  
+               } else {
+                  // nothing yet...
+               }
+                   
+            // secure localhost only on local server
             } else if (window.location.href.includes("localhost")) {
                if (href.includes("https://triquence.org")) {
                   finalHref = href.replace( "https://triquence.org", "https://localhost/ttc-root");
