@@ -128,8 +128,8 @@ var wC = (function() {
       'K0S9':{'longName':'Port Townsend, WA', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'}, 
       
       // Alaska
-      'PABR.2':{'longName':'Utqiagvik/Barrow (Meso)', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},      
-      'PAWI':{'longName':'Wainwright AP',             'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
+      //'PABR.2':{'longName':'Utqiagvik/Barrow (Meso)', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},      
+      //'PAWI':{'longName':'Wainwright AP',             'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       'PAQT':{'longName':'Nuiqsut AP',                'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       'PASI':{'longName':'Sitka',                     'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       'PAFA':{'longName':'Fairbanks Int AP',          'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
@@ -223,7 +223,7 @@ var wC = (function() {
       'KCQX':{'longName':'Chatham, MA (AW)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'aw'},
       
       // Alaska...
-      'PABR':{'longName':'Utqiagvik/Barrow (AW)', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'aw'},      
+      'PABR':{'longName':'Utqiagvik', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'aw'},      
       
       // Hatteras
       'KHSE':{'longName':'Cape Hatteras, NC (AW)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'aw'},
@@ -463,6 +463,22 @@ var wC = (function() {
       changeDays( false); // "false" initializes the chart settings without submitting the query.
    }
    
+   function changeUpdateButton( state) {
+      if (state == "wait") {
+         $("#updateButton").html("Wait");
+         $("#updateButton").css("background-color", "#505050");
+         $("#updateButton").css("color", "white");
+         $("#updateButton").css("border-width", "0px");
+      } else if (state == "update") {
+         $("#updateButton").html("Update");
+         $("#updateButton").css("background-color", "#F0F0F0");
+         $("#updateButton").css("color", "black");
+         $("#updateButton").css("border-width", "1px");
+      } else {
+         // nothing
+      }
+   }
+   
    function queryGoogleSheet() {
       
       let endTimeLocal;
@@ -474,9 +490,7 @@ var wC = (function() {
       m_selectDaysValueAtQuery = m_selectDays.value;
       m_nDaysAtQuery = m_nDays;
       
-      $("#updateButton").html("Wait");
-      $("#updateButton").css("background-color", "black");
-      $("#updateButton").css("color", "white");
+      changeUpdateButton("wait");
       m_readyForNewQuery = false;
       if ( ! m_problemWithURLSearch) document.getElementById("statusSpan").textContent="";
       
@@ -644,7 +658,7 @@ var wC = (function() {
       
       if (m_dataTable.getNumberOfRows() < 3) {
          document.getElementById("statusSpan").textContent="No data returned for this date and station. Please try again.";
-         $("#updateButton").html("Update");
+         changeUpdateButton("update");
          m_readyForNewQuery = true;
          if (m_temperatureChart) m_temperatureChart.clearChart();
          if (m_windChart) m_windChart.clearChart();
@@ -1232,9 +1246,7 @@ var wC = (function() {
          
          google.visualization.events.addListener(m_temperatureChart, 'ready', readyHandler);
          function readyHandler() {
-            $("#updateButton").html("Update");
-            $("#updateButton").css("background-color", "#F0F0F0");
-            $("#updateButton").css("color", "black");
+            changeUpdateButton("update");
             m_readyForNewQuery = true;
             let stationCheck = (m_dataTable.getValue(0,7) != m_stationName);
             let endDateCheck = (m_selectEndDate.value != m_endDateAtQuery);
@@ -1254,7 +1266,7 @@ var wC = (function() {
             //console.log("from errorHandler");
             if (m_temperatureChart) m_temperatureChart.clearChart();
             document.getElementById("statusSpan").textContent="Temperature chart for this station has an error. Please try again.";
-            $("#updateButton").html("Update");
+            changeUpdateButton("update");
             m_readyForNewQuery = true;
          }
       }
