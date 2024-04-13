@@ -475,6 +475,8 @@ var wC = (function() {
       m_nDaysAtQuery = m_nDays;
       
       $("#updateButton").html("Wait");
+      $("#updateButton").css("background-color", "black");
+      $("#updateButton").css("color", "white");
       m_readyForNewQuery = false;
       if ( ! m_problemWithURLSearch) document.getElementById("statusSpan").textContent="";
       
@@ -1231,6 +1233,8 @@ var wC = (function() {
          google.visualization.events.addListener(m_temperatureChart, 'ready', readyHandler);
          function readyHandler() {
             $("#updateButton").html("Update");
+            $("#updateButton").css("background-color", "#F0F0F0");
+            $("#updateButton").css("color", "black");
             m_readyForNewQuery = true;
             let stationCheck = (m_dataTable.getValue(0,7) != m_stationName);
             let endDateCheck = (m_selectEndDate.value != m_endDateAtQuery);
