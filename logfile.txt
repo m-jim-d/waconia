@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Thursday, April 25, 2024 9:02:00 AM
+  Started : Thursday, April 25, 2024 10:02:00 AM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -28,15 +28,9 @@ Exc Files : publish.bat
 	    Newer     		    6948	charts.html100%  
 	    Newer     		    6948	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		  112737	25DayPressureChart-1.jpg100%  
-	    Newer     		  108286	25DayPressureChart-2.jpg100%  
-	    Newer     		  107032	25DayPressureChart-3.jpg100%  
-	    Newer     		  161410	25DayTemperatureChart.jpg 81%  100%  
-	    Newer     		  125116	25DayWindChart.jpg100%  
-	    Newer     		   91573	DeltaPressureChart.jpg100%  
-	    Newer     		   71956	PressureChart.jpg100%  
-	    Newer     		   72914	TemperatureChart.jpg100%  
-	    Newer     		   81500	WindChart.jpg100%  
+	    Newer     		   72775	PressureChart.jpg100%  
+	    Newer     		   76269	TemperatureChart.jpg100%  
+	    Newer     		   93667	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                  34	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\pictures\
@@ -45,8 +39,8 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         5         0         5         0         0         1
-   Files :        87        11        76         0         0         7
-   Bytes :    4.86 m   924.2 k    3.95 m         0         0     6.5 k
+   Files :        87         5        82         0         0         7
+   Bytes :    4.87 m   250.5 k    4.63 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-   Ended : Thursday, April 25, 2024 9:02:00 AM
+   Ended : Thursday, April 25, 2024 10:02:00 AM
 
