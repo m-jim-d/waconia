@@ -78,12 +78,12 @@ window.uT = (function() {
    }
    
    function oneOfThese( demoList, captureName) {
-      // "demoList" is an array of strings, usually a list of demos.
+      // "demoList" is an array of substrings, usually a list of demos.
       // "captureName" is a demo name or corresponding capture name with an extension in the name.
       // The map array method applies the includes string method to see if any of the strings in the array is a 
       // substring of the capture name. Map returns an array (of boolean results) which is then
       // checked for any True values.
-      // This can be used to check if a capture name has a match against a list of demos.  
+      // This can be used to check if a capture name has a match against a list of demos.
       return demoList.map( (nameInList) => captureName.includes( nameInList) ).includes(true);
    }
    
