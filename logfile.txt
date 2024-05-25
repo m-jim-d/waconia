@@ -56,3 +56,8 @@ Exc Files : publish.bat
    Speed :             308.228 MegaBytes/min.
    Ended : Saturday, May 25, 2024 1:02:00 PM
 
+[main c7a9e0a7] another update
+ 13 files changed, 95 insertions(+), 62 deletions(-)
+ create mode 100644 images/menu.svg
+To https://github.com/m-jim-d/waconia.git
+   eb16cec7..c7a9e0a7  main -> main
