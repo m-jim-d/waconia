@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Saturday, May 25, 2024 1:02:00 PM
+  Started : Saturday, May 25, 2024 2:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -25,39 +25,18 @@ Exc Files : publish.bat
 ------------------------------------------------------------------------------
 
 	                  21	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
-	    Newer     		    6942	charts.html100%  
-	    Newer     		    6942	charts_input.html100%  
-	    Newer     		    6950	charts_input_testing.html100%  
-	    Newer     		    6950	charts_testing.html100%  
-	    Newer     		   28205	faq.html100%  
-	    Newer     		    4482	index.html100%  
-	    Newer     		   14903	install_rosy.html100%  
-	    Newer     		    3515	sitemap.css100%  
-	    Newer     		    1097	weather.css100%  
-	    Newer     		    3721	weather.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
-	    Newer     		    2177	contactinfo.html100%  
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
-	  New Dir          1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
-	    New File  		     303	menu.svg 92%  100%  
+	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
 	                  34	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\pictures\
 
 ------------------------------------------------------------------------------
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
-    Dirs :         6         1         5         0         0         1
-   Files :        88        12        76         0         0         7
-   Bytes :    4.84 m    84.1 k    4.75 m         0         0     6.5 k
+    Dirs :         6         0         6         0         0         1
+   Files :        88         0        88         0         0         7
+   Bytes :    4.84 m         0    4.84 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
+   Ended : Saturday, May 25, 2024 2:02:00 PM
 
-
-   Speed :             5386687 Bytes/sec.
-   Speed :             308.228 MegaBytes/min.
-   Ended : Saturday, May 25, 2024 1:02:00 PM
-
-[main c7a9e0a7] another update
- 13 files changed, 95 insertions(+), 62 deletions(-)
- create mode 100644 images/menu.svg
-To https://github.com/m-jim-d/waconia.git
-   eb16cec7..c7a9e0a7  main -> main
