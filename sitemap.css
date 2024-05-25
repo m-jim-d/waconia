@@ -1,5 +1,5 @@
 /*
-Based how-to example:
+Based on:
 http://www.w3schools.com/howto/howto_js_fullscreen_overlay.asp
 */
 
@@ -64,7 +64,7 @@ http://www.w3schools.com/howto/howto_js_fullscreen_overlay.asp
    .overlay .closebtn {
       position: absolute;
       top: -6px;
-      left: 0px;
+      left: 5px;
       font-size: 45px;
    }
    
@@ -72,7 +72,11 @@ http://www.w3schools.com/howto/howto_js_fullscreen_overlay.asp
    .menuicon {
       position: fixed; /* tried "relative" but liked "fixed" best overall for cellphone and desktop. */
       /*      top R   Bot L  */
-      margin: 0px 0px 0px 0px;
+      margin: 3px 0px 0px 0px;
+      
+      /* Note: the menu icon is now an SVG file. */
+      width:25px; 
+      height: auto; 
    } 
 
    /* Styles that take effect for small screens. Commas are effectively an OR operator. */

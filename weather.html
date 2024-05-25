@@ -14,7 +14,7 @@
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
    <link href="sitemap.css?v=10" rel="stylesheet" type="text/css">
-   <link href="weather.css?v=11" rel="stylesheet" type="text/css">
+   <link href="weather.css?v=10" rel="stylesheet" type="text/css">
    <style>
    </style>
 
@@ -52,7 +52,8 @@
 <!-- The navigation menu -->
 <div id="navDiv"></div>
 <div class='pageblock'>
-<span class="menuicon" id="opener" style="font-size:19px; cursor:pointer;">&#9776;</span>
+<img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
+<div class='controls'>
 <button id="updateButton" onclick="wC.queryGoogleSheet()" title="Resubmit the query to update the chart.">Update</button>
 <input type="checkbox" class="largerCheckbox" id="chkSmoother" title="
 Check to smooth the temperature, pressure and wind direction readings." onClick="wC.handleSmootherThenDraw()" checked>
@@ -85,6 +86,8 @@ with those at the same time yesterday (left edge).
    <option value=10>10d</option>
 </select>
 <br><br>
+</div>
+
 <!--style="max-width:700px; height:400px" -->
 <div id="statusSpan"></div>
 <div id="chartDivA" style="max-width:1200px; max-height:900px"></div>

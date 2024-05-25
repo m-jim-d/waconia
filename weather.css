@@ -34,6 +34,11 @@ div.pageblock {
    max-width: 1050px;
 }
 
+div.controls {
+   /*        top R   Bot L */
+   margin: -29px 0px 0px 35px;  
+}
+
 /* This css file loads in after sitemap.css and overrides the following corresponding values. */ 
 .closebtn {
    margin-left: 5px;
