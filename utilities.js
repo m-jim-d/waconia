@@ -87,6 +87,14 @@ window.uT = (function() {
       return demoList.map( (nameInList) => captureName.includes( nameInList) ).includes(true);
    }
    
+   function allOfThese( listOfSubstrings, theString) {
+      let allInThere = true;
+      for (let substring in listOfSubstrings) {
+         if ( ! theString.includes( substring)) allInThere = false;
+      }
+      return allInThere;
+   }
+   
    function toggleElementDisplay( id, displayStyle) {
       var e = document.getElementById( id);
       // Use ternary operator (?):   condition ? expr1 : expr2
@@ -426,6 +434,7 @@ window.uT = (function() {
       'setDefaultVector': setDefaultVector,
       'isPrimitive': isPrimitive,
       'oneOfThese': oneOfThese,
+      'allOfThese': allOfThese,
       'fixed': fixed,
       'toggleElementDisplay': toggleElementDisplay,
       'setElementDisplay': setElementDisplay,
