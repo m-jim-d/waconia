@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Monday, June 17, 2024 11:02:00 AM
+  Started : Monday, June 17, 2024 12:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -27,15 +27,16 @@ Exc Files : publish.bat
 	                  21	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
 	    Newer     		    6938	charts.html100%  
 	    Newer     		    6938	charts_input.html100%  
+	    Newer     		   18496	utilities.js100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		  102472	25DayPressureChart-1.jpg100%  
-	    Newer     		  108331	25DayPressureChart-2.jpg100%  
-	    Newer     		  105412	25DayPressureChart-3.jpg100%  
-	    Newer     		  134290	25DayTemperatureChart.jpg 97%  100%  
-	    Newer     		  139535	25DayWindChart.jpg 93%  100%  
-	    Newer     		   83128	DeltaPressureChart.jpg100%  
-	    Newer     		   79408	TemperatureChart.jpg100%  
-	    Newer     		   85074	WindChart.jpg100%  
+	    Newer     		  102521	25DayPressureChart-1.jpg100%  
+	    Newer     		  108338	25DayPressureChart-2.jpg100%  
+	    Newer     		  105450	25DayPressureChart-3.jpg100%  
+	    Newer     		  134464	25DayTemperatureChart.jpg 97%  100%  
+	    Newer     		  139605	25DayWindChart.jpg 93%  100%  
+	    Newer     		   83284	DeltaPressureChart.jpg100%  
+	    Newer     		   79363	TemperatureChart.jpg100%  
+	    Newer     		   84936	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
@@ -45,12 +46,12 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         6         0         6         0         0         1
-   Files :        88        10        78         0         0         7
-   Bytes :    4.84 m   831.5 k    4.03 m         0         0     6.5 k
+   Files :        88        11        77         0         0         7
+   Bytes :    4.84 m   849.9 k    4.01 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
 
 
-   Speed :            53220375 Bytes/sec.
-   Speed :            3045.294 MegaBytes/min.
-   Ended : Monday, June 17, 2024 11:02:00 AM
+   Speed :            54395812 Bytes/sec.
+   Speed :            3112.553 MegaBytes/min.
+   Ended : Monday, June 17, 2024 12:02:00 PM
 

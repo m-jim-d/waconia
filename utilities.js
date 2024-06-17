@@ -87,9 +87,18 @@ window.uT = (function() {
       return demoList.map( (nameInList) => captureName.includes( nameInList) ).includes(true);
    }
    
+   function oneOfTheseV2( listOfSubstrings, theString) {
+      // This is similar to oneOfThese, except, uses a for loop and startsWith.
+      let oneInThere = false;
+      for (let substring of listOfSubstrings) {
+         if (theString.startsWith( substring)) oneInThere = true;
+      }
+      return oneInThere;
+   }
+   
    function allOfThese( listOfSubstrings, theString) {
       let allInThere = true;
-      for (let substring in listOfSubstrings) {
+      for (let substring of listOfSubstrings) {
          if ( ! theString.includes( substring)) allInThere = false;
       }
       return allInThere;
@@ -434,6 +443,7 @@ window.uT = (function() {
       'setDefaultVector': setDefaultVector,
       'isPrimitive': isPrimitive,
       'oneOfThese': oneOfThese,
+      'oneOfTheseV2': oneOfTheseV2,
       'allOfThese': allOfThese,
       'fixed': fixed,
       'toggleElementDisplay': toggleElementDisplay,
