@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Thursday, July 4, 2024 11:02:00 AM
+  Started : Thursday, July 4, 2024 12:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -28,8 +28,14 @@ Exc Files : publish.bat
 	    Newer     		    6942	charts.html100%  
 	    Newer     		    6942	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		   83440	TemperatureChart.jpg100%  
-	    Newer     		   78297	WindChart.jpg100%  
+	    Newer     		  100777	25DayPressureChart-1.jpg100%  
+	    Newer     		  108003	25DayPressureChart-2.jpg100%  
+	    Newer     		  106460	25DayPressureChart-3.jpg100%  
+	    Newer     		  155847	25DayTemperatureChart.jpg 84%  100%  
+	    Newer     		  130954	25DayWindChart.jpg100%  
+	    Newer     		   80167	DeltaPressureChart.jpg100%  
+	    Newer     		   92917	TemperatureChart.jpg100%  
+	    Newer     		   85779	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
@@ -39,8 +45,8 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         6         0         6         0         0         1
-   Files :        88         4        84         0         0         7
-   Bytes :    4.84 m   171.5 k    4.68 m         0         0     6.5 k
+   Files :        88        10        78         0         0         7
+   Bytes :    4.86 m   854.2 k    4.03 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-   Ended : Thursday, July 4, 2024 11:02:00 AM
+   Ended : Thursday, July 4, 2024 12:02:00 PM
 
