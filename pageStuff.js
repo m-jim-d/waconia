@@ -38,6 +38,7 @@ window.pS = (function() {
    var m_scrollAdjust;
    var m_scrollContainer;
    var m_dialog, m_cookieLink;
+   var m_generalDialog;
    
    var m_scrollHistory = {}; // this is revealed below, so MUST do this here and not in initialize.
    var m_keyStates;
@@ -153,6 +154,48 @@ window.pS = (function() {
    }
    function cookieCheck() {
       return document.cookie.includes("youtube-consent");
+   }
+   
+   function viewGeneralDialog( pars={}) {
+      let message = uT.setDefault( pars.message, "something to say...");
+      let title = uT.setDefault( pars.title, "HEADS UP");
+      let label_accept = uT.setDefault( pars.label_accept, null);
+      let label_reject = uT.setDefault( pars.label_reject, null);
+      let label_close  = uT.setDefault( pars.label_close, null);
+      let purpose = uT.setDefault( pars.purpose, null);
+      
+      document.getElementById('gD-purpose').innerHTML = purpose;
+      
+      if (m_generalDialog) {
+         let button_accept = document.getElementById("gD-accept");
+         if (label_accept) {
+            button_accept.innerHTML = label_accept;
+            button_accept.style.display = "inline";
+         } else {
+            button_accept.style.display = "none";
+         }
+         
+         let button_reject = document.getElementById("gD-reject");
+         if (label_reject) {
+            button_reject.innerHTML = label_reject;
+            button_reject.style.display = "inline";
+         } else {
+            button_reject.style.display = "none";
+         }
+         
+         let button_close = document.getElementById("gD-close");
+         if (label_close) {
+            button_close.innerHTML = label_close;
+            button_close.style.display = "inline";
+         } else {
+            button_close.style.display = "none";
+         }
+         
+         jQuery("#title").text( title);
+         jQuery("#dialogMessage").html( message);
+         
+         m_generalDialog.showModal();
+      }
    }
    
    function viewDialog( pars={}) {
@@ -304,6 +347,7 @@ window.pS = (function() {
    function initialize( pars={}) {
       /*  */
       let dialogOptions = uT.setDefault( pars.dialogOptions, false);
+      let generalDialog = uT.setDefault( pars.generalDialog, false);
       let navMenu = uT.setDefault( pars.navMenu, true);
       let navDivName = uT.setDefault( pars.navDiv, "navDiv");
       let pageDesc = uT.setDefault( pars.pageDesc, null);
@@ -441,6 +485,31 @@ window.pS = (function() {
          }
       }, {capture: false});
       
+      if (generalDialog) {
+         m_generalDialog = document.getElementById("generalDialog");
+         
+         m_generalDialog.addEventListener("close", function() {
+            const value = m_generalDialog.returnValue;
+            const purpose = document.getElementById('gD-purpose').innerHTML;
+            
+            console.log("purpose = " + purpose);
+            if (value == "accept") {
+               //console.log('gd = accept');
+               if (purpose == "post-normal") { 
+                  cR.postCaptureToCF({'action':'postOne', 'actionType':'normal'});
+               } else if (purpose == "post-update") {
+                  cR.postCaptureToCF({'action':'postOne', 'actionType':'update'});
+               } else if (purpose == "post-delete") {
+                  cR.postCaptureToCF({'action':'postOne', 'actionType':'delete'});
+               }
+            } else if (value == "reject") {
+               //console.log('gd = reject');
+               
+            } else if (value == "close") {
+               //console.log('gd = close');
+            }
+         });
+      }
       
       // dialogOptions is True for all the pages with YouTube videos.
       if (dialogOptions) {
@@ -455,7 +524,7 @@ window.pS = (function() {
             if (value == "accept") {
                cookieSet();
                //console.log("cookie = " + document.cookie);
-            } else if (value == "reject")  {
+            } else if (value == "reject") {
                cookieRemove();
             } else if (value == "close") {
                console.log('Cookies stay the same.');
@@ -522,8 +591,8 @@ window.pS = (function() {
       'logEntry': logEntry,
       'scroll': scroll,
       'viewDialog': viewDialog,
-      'loadLargeImage': loadLargeImage,
-      
+      'viewGeneralDialog': viewGeneralDialog,
+      'loadLargeImage': loadLargeImage
    };
 
 })();
