@@ -191,7 +191,7 @@ window.pS = (function() {
             button_close.style.display = "none";
          }
          
-         jQuery("#title").text( title);
+         jQuery("#title").html( title);
          jQuery("#dialogMessage").html( message);
          
          m_generalDialog.showModal();

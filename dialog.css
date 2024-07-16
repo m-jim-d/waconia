@@ -26,6 +26,14 @@ button.dialog, button.dialog-cancel {
    transition: all 0.1s ease;
 }
 
+ul.dialog {
+   font-size:14px;
+}
+
+li.dialog {
+    margin-bottom: 5px;
+}
+
 button.dialog:hover {
    color: black;
    background-color: cyan; /* lightgreen */
