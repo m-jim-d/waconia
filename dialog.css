@@ -1,0 +1,37 @@
+/* For the cookie dialog */
+
+h2.dialog {
+   margin: 3px 0px;
+}
+button.dialog, button.dialog-cancel {
+   color: white;
+   background-color: black;
+   
+   border-width: 0px;
+   border-color: black;
+   
+   border-radius: 0px;
+   
+   padding: 6px 10px;
+   margin-left: 2px;
+   margin-right: 2px;
+   
+   /* prevent accidental cursor selection of button text */
+   user-select: none;
+}
+
+button.dialog:hover {
+   color: black;
+   background-color: cyan; /* lightgreen */
+   
+   border-width: 0px;
+   border-color: black;
+}
+
+button.dialog-cancel:hover {
+   color: black;
+   background-color: yellow;  /* yellow cyan */
+   
+   border-width: 0px;
+   border-color: black;
+}

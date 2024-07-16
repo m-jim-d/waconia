@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Tuesday, July 16, 2024 3:02:00 PM
+  Started : Tuesday, July 16, 2024 4:02:01 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -24,18 +24,19 @@ Exc Files : publish.bat
 
 ------------------------------------------------------------------------------
 
-	                  21	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
+	                  22	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
 	    Newer     		    6940	charts.html100%  
 	    Newer     		    6940	charts_input.html100%  
+	    New File  		     698	dialog.css100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		  102000	25DayPressureChart-1.jpg100%  
-	    Newer     		  108640	25DayPressureChart-2.jpg100%  
-	    Newer     		  106340	25DayPressureChart-3.jpg100%  
-	    Newer     		  130057	25DayTemperatureChart.jpg100%  
-	    Newer     		  132039	25DayWindChart.jpg 99%  100%  
-	    Newer     		   79799	DeltaPressureChart.jpg100%  
-	    Newer     		  112662	TemperatureChart.jpg100%  
-	    Newer     		   83573	WindChart.jpg100%  
+	    Newer     		  102020	25DayPressureChart-1.jpg100%  
+	    Newer     		  108699	25DayPressureChart-2.jpg100%  
+	    Newer     		  106355	25DayPressureChart-3.jpg100%  
+	    Newer     		  130187	25DayTemperatureChart.jpg100%  
+	    Newer     		  132174	25DayWindChart.jpg 99%  100%  
+	    Newer     		   80032	DeltaPressureChart.jpg100%  
+	    Newer     		   76222	TemperatureChart.jpg100%  
+	    Newer     		   85381	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
@@ -45,12 +46,12 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         6         0         6         0         0         1
-   Files :        88        10        78         0         0         7
-   Bytes :    4.86 m   848.6 k    4.03 m         0         0     6.5 k
+   Files :        89        11        78         0         0         7
+   Bytes :    4.83 m   816.0 k    4.03 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
 
 
-   Speed :            62070714 Bytes/sec.
-   Speed :            3551.714 MegaBytes/min.
-   Ended : Tuesday, July 16, 2024 3:02:00 PM
+   Speed :            43981473 Bytes/sec.
+   Speed :            2516.640 MegaBytes/min.
+   Ended : Tuesday, July 16, 2024 4:02:01 PM
 
