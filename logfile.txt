@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Saturday, July 20, 2024 12:02:00 PM
+  Started : Saturday, July 20, 2024 1:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -28,8 +28,8 @@ Exc Files : publish.bat
 	    Newer     		    6942	charts.html100%  
 	    Newer     		    6942	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		   75817	TemperatureChart.jpg100%  
-	    Newer     		   84223	WindChart.jpg100%  
+	    Newer     		  105336	TemperatureChart.jpg100%  
+	    Newer     		   79189	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
@@ -40,11 +40,7 @@ Exc Files : publish.bat
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         6         0         6         0         0         1
    Files :        89         4        85         0         0         7
-   Bytes :    4.83 m   169.8 k    4.66 m         0         0     6.5 k
+   Bytes :    4.85 m   193.7 k    4.66 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-
-
-   Speed :            43481000 Bytes/sec.
-   Speed :            2488.002 MegaBytes/min.
-   Ended : Saturday, July 20, 2024 12:02:00 PM
+   Ended : Saturday, July 20, 2024 1:02:00 PM
 
