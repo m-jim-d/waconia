@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Sunday, July 21, 2024 12:02:00 PM
+  Started : Sunday, July 21, 2024 1:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -29,13 +29,13 @@ Exc Files : publish.bat
 	    Newer     		    6938	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
 	    Newer     		  101950	25DayPressureChart-1.jpg100%  
-	    Newer     		  108019	25DayPressureChart-2.jpg100%  
+	    Newer     		  108028	25DayPressureChart-2.jpg100%  
 	    Newer     		  105859	25DayPressureChart-3.jpg100%  
 	    Newer     		  130792	25DayTemperatureChart.jpg100%  
 	    Newer     		  136012	25DayWindChart.jpg 96%  100%  
-	    Newer     		   80632	DeltaPressureChart.jpg100%  
-	    Newer     		  131034	TemperatureChart.jpg100%  
-	    Newer     		   83114	WindChart.jpg100%  
+	    Newer     		   80815	DeltaPressureChart.jpg100%  
+	    Newer     		  130993	TemperatureChart.jpg100%  
+	    Newer     		   82923	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
@@ -50,7 +50,7 @@ Exc Files : publish.bat
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
 
 
-   Speed :            63663428 Bytes/sec.
-   Speed :            3642.850 MegaBytes/min.
-   Ended : Sunday, July 21, 2024 12:02:00 PM
+   Speed :            55703000 Bytes/sec.
+   Speed :            3187.351 MegaBytes/min.
+   Ended : Sunday, July 21, 2024 1:02:00 PM
 
