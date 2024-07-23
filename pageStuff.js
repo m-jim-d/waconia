@@ -345,7 +345,6 @@ window.pS = (function() {
    }
       
    function initialize( pars={}) {
-      /*  */
       let dialogOptions = uT.setDefault( pars.dialogOptions, false);
       let generalDialog = uT.setDefault( pars.generalDialog, false);
       let navMenu = uT.setDefault( pars.navMenu, true);
@@ -453,8 +452,8 @@ window.pS = (function() {
       
       // event listener for keyboard operations with the scrolling history
       document.addEventListener("keydown", function(e) {
-         if (e.keyCode in m_keyMap) {
-            let key = m_keyMap[ e.keyCode];
+         if (e.code in m_keyMap) {
+            let key = m_keyMap[ e.code];
             
             if (m_keyStates[ key] == 'U') { // inhibit key repeats
                m_keyStates[ key] = 'D';
@@ -480,8 +479,8 @@ window.pS = (function() {
          }
       }, {capture: false}); //This "false" makes this fire in the bubbling phase (not capturing phase).
       document.addEventListener("keyup", function(e) {
-         if (e.keyCode in m_keyMap) {
-            m_keyStates[ m_keyMap[ e.keyCode]] = 'U';               
+         if (e.code in m_keyMap) {
+            m_keyStates[ m_keyMap[ e.code]] = 'U';               
          }
       }, {capture: false});
       
