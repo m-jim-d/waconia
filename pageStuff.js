@@ -370,10 +370,10 @@ window.pS = (function() {
       m_scrollHistory.index = 0;
       m_keyStates = {};
       m_keyMap = {
-         '16':'key_shift',
-         '17':'key_ctrl', 
-         '18':'key_alt', // both left and right alt key on Windows
-         '37':'key_leftArrow', '38':'key_upArrow', '39':'key_rightArrow', '40':'key_downArrow',
+         'ShiftLeft':'key_shift', 'ShiftRight':'key_shift', 
+         'ControlLeft':'key_ctrl', 'ControlRight':'key_ctrl', 
+         'AltLeft':'key_alt', 'AltRight':'key_alt',
+         'ArrowLeft':'key_leftArrow', 'ArrowUp':'key_upArrow', 'ArrowRight':'key_rightArrow', 'ArrowDown':'key_downArrow',
       };
       for (let key in m_keyMap) m_keyStates[ m_keyMap[ key]] = 'U';
       
