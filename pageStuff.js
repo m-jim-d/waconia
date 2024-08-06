@@ -211,6 +211,8 @@ window.pS = (function() {
          }
          jQuery("#dialog-status").text( statusMessage);
       }
+      // When the page loads, if the dialog is needed, the first button get focus (by default).
+      // So, this counters that native behavior.
       document.getElementById("firstDialogButton").blur();
    }
    
