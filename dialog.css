@@ -9,6 +9,10 @@ h2.dialog {
    margin: 3px 0px;
 }
 
+div.center-close-button {
+   display: flex;
+   justify-content: center;
+}
 button.dialog, button.dialog-cancel {   
    color: white;
    background-color: black;
