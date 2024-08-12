@@ -492,8 +492,8 @@ window.pS = (function() {
          m_generalDialog.addEventListener("close", function() {
             const value = m_generalDialog.returnValue;
             const purpose = document.getElementById('gD-purpose').innerHTML;
+            //console.log("purpose = " + purpose);
             
-            console.log("purpose = " + purpose);
             if (value == "accept") {
                //console.log('gd = accept');
                if (purpose == "post-normal") { 
@@ -503,6 +503,7 @@ window.pS = (function() {
                } else if (purpose == "post-delete") {
                   cR.postCaptureToCF({'action':'postOne', 'actionType':'delete'});
                }
+               
             } else if (value == "reject") {
                //console.log('gd = reject');
                
