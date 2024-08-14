@@ -62,18 +62,28 @@ window.uT = (function() {
    
    function fixed( numberValue, nDigits, padding=(nDigits+5) ) {
       let absValue = Math.abs( numberValue);
-      let stringValue = absValue.toFixed( nDigits);
-      let signChar;
-      let small = 1/Math.pow(10,nDigits+1);
-      if (numberValue < (-small)) {
-         signChar = "-"; //String.fromCharCode(8722);
-      } else if (numberValue > (+small)) {
-         signChar = "+";
+      
+      let paddedStringValue;
+      
+      // scientific notation
+      if (absValue > 999.9) {
+         paddedStringValue = numberValue.toExponential(1).padStart( padding, " ");
+         
       } else {
-         signChar = " ";
+         let stringValue = absValue.toFixed( nDigits);
+         let signChar;
+         let small = 1/Math.pow(10,nDigits+1);
+         if (numberValue < (-small)) {
+            signChar = "-"; //String.fromCharCode(8722);
+         } else if (numberValue > (+small)) {
+            signChar = "+";
+         } else {
+            signChar = " ";
+         }
+         stringValue = signChar + stringValue;
+         paddedStringValue = stringValue.padStart( padding, ' ');
       }
-      stringValue = signChar + stringValue;
-      let paddedStringValue = stringValue.padStart( padding, ' ');      
+      
       return paddedStringValue;
    }
    
