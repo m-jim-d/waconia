@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Wednesday, September 4, 2024 4:02:01 PM
+  Started : Wednesday, September 4, 2024 5:02:01 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -28,14 +28,14 @@ Exc Files : publish.bat
 	    Newer     		    6954	charts.html100%  
 	    Newer     		    6954	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		  112421	25DayPressureChart-1.jpg100%  
-	    Newer     		  108456	25DayPressureChart-2.jpg100%  
-	    Newer     		  105978	25DayPressureChart-3.jpg100%  
-	    Newer     		  125086	25DayTemperatureChart.jpg100%  
-	    Newer     		  148816	25DayWindChart.jpg 88%  100%  
-	    Newer     		   94447	DeltaPressureChart.jpg100%  
-	    Newer     		   88848	TemperatureChart.jpg100%  
-	    Newer     		   81897	WindChart.jpg100%  
+	    Newer     		  112458	25DayPressureChart-1.jpg100%  
+	    Newer     		  108548	25DayPressureChart-2.jpg100%  
+	    Newer     		  105962	25DayPressureChart-3.jpg100%  
+	    Newer     		  125220	25DayTemperatureChart.jpg100%  
+	    Newer     		  148901	25DayWindChart.jpg 88%  100%  
+	    Newer     		   94518	DeltaPressureChart.jpg100%  
+	    Newer     		   91116	TemperatureChart.jpg100%  
+	    Newer     		   81939	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
@@ -46,7 +46,7 @@ Exc Files : publish.bat
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         6         0         6         0         0         1
    Files :        89        10        79         0         0         7
-   Bytes :    4.87 m   859.2 k    4.03 m         0         0     6.5 k
+   Bytes :    4.87 m   861.8 k    4.03 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-   Ended : Wednesday, September 4, 2024 4:02:01 PM
+   Ended : Wednesday, September 4, 2024 5:02:01 PM
 
