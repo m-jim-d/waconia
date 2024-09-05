@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Thursday, September 5, 2024 3:02:00 PM
+  Started : Thursday, September 5, 2024 4:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -28,14 +28,14 @@ Exc Files : publish.bat
 	    Newer     		    6952	charts.html100%  
 	    Newer     		    6952	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		  112549	25DayPressureChart-1.jpg100%  
-	    Newer     		  108463	25DayPressureChart-2.jpg100%  
+	    Newer     		  112583	25DayPressureChart-1.jpg100%  
+	    Newer     		  108537	25DayPressureChart-2.jpg100%  
 	    Newer     		  105933	25DayPressureChart-3.jpg100%  
-	    Newer     		  125775	25DayTemperatureChart.jpg100%  
-	    Newer     		  148297	25DayWindChart.jpg 88%  100%  
-	    Newer     		   93959	DeltaPressureChart.jpg100%  
-	    Newer     		   75872	TemperatureChart.jpg100%  
-	    Newer     		   81631	WindChart.jpg100%  
+	    Newer     		  125860	25DayTemperatureChart.jpg100%  
+	    Newer     		  148458	25DayWindChart.jpg 88%  100%  
+	    Newer     		   94262	DeltaPressureChart.jpg100%  
+	    Newer     		   92065	TemperatureChart.jpg100%  
+	    Newer     		   81255	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
@@ -46,11 +46,11 @@ Exc Files : publish.bat
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         6         0         6         0         0         1
    Files :        89        10        79         0         0         7
-   Bytes :    4.86 m   846.0 k    4.03 m         0         0     6.5 k
+   Bytes :    4.87 m   862.1 k    4.03 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
 
 
-   Speed :            61884500 Bytes/sec.
-   Speed :            3541.059 MegaBytes/min.
-   Ended : Thursday, September 5, 2024 3:02:00 PM
+   Speed :            63061214 Bytes/sec.
+   Speed :            3608.391 MegaBytes/min.
+   Ended : Thursday, September 5, 2024 4:02:00 PM
 
