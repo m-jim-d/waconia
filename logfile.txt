@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Sunday, September 8, 2024 8:02:00 AM
+  Started : Sunday, September 8, 2024 9:02:00 AM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -28,14 +28,8 @@ Exc Files : publish.bat
 	    Newer     		    6948	charts.html100%  
 	    Newer     		    6948	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		  112736	25DayPressureChart-1.jpg100%  
-	    Newer     		  108266	25DayPressureChart-2.jpg100%  
-	    Newer     		  105345	25DayPressureChart-3.jpg100%  
-	    Newer     		  124868	25DayTemperatureChart.jpg100%  
-	    Newer     		  146309	25DayWindChart.jpg 89%  100%  
-	    Newer     		   92238	DeltaPressureChart.jpg100%  
-	    Newer     		   74738	TemperatureChart.jpg100%  
-	    Newer     		   82278	WindChart.jpg100%  
+	    Newer     		   88498	TemperatureChart.jpg100%  
+	    Newer     		   77904	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                  11	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
@@ -45,8 +39,8 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         6         0         6         0         0         1
-   Files :        89        10        79         0         0         7
-   Bytes :    4.85 m   840.5 k    4.03 m         0         0     6.5 k
+   Files :        89         4        85         0         0         7
+   Bytes :    4.86 m   176.0 k    4.69 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-   Ended : Sunday, September 8, 2024 8:02:00 AM
+   Ended : Sunday, September 8, 2024 9:02:00 AM
 
