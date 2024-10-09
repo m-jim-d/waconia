@@ -171,6 +171,7 @@ var wC = (function() {
       
       // Peg's home (Laurie's friend)
       'KAPF':{'longName':'Naples, FL', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'meso'},       
+      'KSRQ':{'longName':'Sarasota, FL', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'meso'},       
             
       //==================================================
       // Stations from the AW XML gleaner
