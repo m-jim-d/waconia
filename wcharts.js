@@ -169,6 +169,9 @@ var wC = (function() {
       'KSOM5':{'longName':'Kasota Prairie', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'MN073':{'longName':'Mankato HW169-BER', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       
+      // Peg's home (Laurie's friend)
+      'KAPF':{'longName':'Naples, FL', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'meso'},       
+            
       //==================================================
       // Stations from the AW XML gleaner
       //==================================================
