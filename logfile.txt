@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Sunday, January 5, 2025 1:02:00 PM
+  Started : Sunday, January 5, 2025 2:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -28,8 +28,14 @@ Exc Files : publish.bat
 	    Newer     		    6944	charts.html100%  
 	    Newer     		    6944	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		   71525	TemperatureChart.jpg100%  
-	    Newer     		   76968	WindChart.jpg100%  
+	    Newer     		  115938	25DayPressureChart-1.jpg100%  
+	    Newer     		  110279	25DayPressureChart-2.jpg100%  
+	    Newer     		  108040	25DayPressureChart-3.jpg100%  
+	    Newer     		  188842	25DayTemperatureChart.jpg 69%  100%  
+	    Newer     		  139769	25DayWindChart.jpg 93%  100%  
+	    Newer     		  104348	DeltaPressureChart.jpg100%  
+	    Newer     		   74796	TemperatureChart.jpg100%  
+	    Newer     		   82799	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                   7	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
@@ -39,12 +45,12 @@ Exc Files : publish.bat
 
                Total    Copied   Skipped  Mismatch    FAILED    Extras
     Dirs :         6         0         6         0         0         1
-   Files :        86         4        82         0         0         7
-   Bytes :    4.68 m   158.5 k    4.53 m         0         0     6.5 k
+   Files :        86        10        76         0         0         7
+   Bytes :    4.69 m   916.6 k    3.79 m         0         0     6.5 k
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
 
 
-   Speed :            40595250 Bytes/sec.
-   Speed :            2322.878 MegaBytes/min.
-   Ended : Sunday, January 5, 2025 1:02:00 PM
+   Speed :            72207615 Bytes/sec.
+   Speed :            4131.752 MegaBytes/min.
+   Ended : Sunday, January 5, 2025 2:02:00 PM
 
