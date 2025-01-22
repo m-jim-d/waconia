@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Wednesday, January 22, 2025 1:02:15 AM
+  Started : Wednesday, January 22, 2025 2:02:00 AM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -37,6 +37,6 @@ Exc Files : publish.bat
     Dirs :         6         0         6         0         0         1
    Files :        86         0        86         0         0         7
    Bytes :    4.74 m         0    4.74 m         0         0     6.5 k
-   Times :   0:00:08   0:00:00                       0:00:00   0:00:08
-   Ended : Wednesday, January 22, 2025 1:02:26 AM
+   Times :   0:00:00   0:00:00                       0:00:00   0:00:00
+   Ended : Wednesday, January 22, 2025 2:02:00 AM
 
