@@ -3,7 +3,7 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : Monday, January 27, 2025 12:02:00 PM
+  Started : Monday, January 27, 2025 1:02:00 PM
    Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
      Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
 
@@ -28,14 +28,14 @@ Exc Files : publish.bat
 	    Newer     		    6944	charts.html100%  
 	    Newer     		    6944	charts_input.html100%  
 	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
-	    Newer     		  129447	25DayPressureChart-1.jpg100%  
+	    Newer     		  129489	25DayPressureChart-1.jpg100%  
 	    Newer     		  116010	25DayPressureChart-2.jpg100%  
 	    Newer     		  107560	25DayPressureChart-3.jpg100%  
-	    Newer     		  229720	25DayTemperatureChart.jpg 57%  100%  
-	    Newer     		  166427	25DayWindChart.jpg 78%  100%  
-	    Newer     		   97868	DeltaPressureChart.jpg100%  
-	    Newer     		  116042	TemperatureChart.jpg100%  
-	    Newer     		   82180	WindChart.jpg100%  
+	    Newer     		  229846	25DayTemperatureChart.jpg 57%  100%  
+	    Newer     		  166607	25DayWindChart.jpg 78%  100%  
+	    Newer     		   97997	DeltaPressureChart.jpg100%  
+	    Newer     		  115734	TemperatureChart.jpg100%  
+	    Newer     		   82229	WindChart.jpg100%  
 	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
 	                   7	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
 	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
@@ -50,7 +50,7 @@ Exc Files : publish.bat
    Times :   0:00:00   0:00:00                       0:00:00   0:00:00
 
 
-   Speed :            35304733 Bytes/sec.
-   Speed :            2020.153 MegaBytes/min.
-   Ended : Monday, January 27, 2025 12:02:00 PM
+   Speed :            70624000 Bytes/sec.
+   Speed :            4041.137 MegaBytes/min.
+   Ended : Monday, January 27, 2025 1:02:00 PM
 
