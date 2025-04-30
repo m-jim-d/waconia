@@ -1,0 +1,61 @@
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : Wednesday, April 30, 2025 10:02:00 AM
+   Source : C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
+     Dest : C:\Users\Jim\Documents\webcontent\github-website\waconia\
+
+    Files : *.*
+	    
+Exc Files : publish.bat
+	    publish-cleanup.bat
+	    create.bat
+	    .gitignore
+	    README.md
+	    LICENSE.txt
+	    scheduled-task.xml
+	    logfile.txt
+	    session*
+	    
+ Exc Dirs : .git
+	    
+  Options : *.* /S /E /DCOPY:DA /COPY:DAT /PURGE /MIR /R:3 /W:5 
+
+------------------------------------------------------------------------------
+
+	                  23	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\
+	    Newer     		    6946	charts.html100%  
+	    Newer     		    6946	charts_input.html100%  
+	                   9	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\chart-images\
+	    Newer     		  106795	25DayPressureChart-1.jpg100%  
+	    Newer     		  107908	25DayPressureChart-2.jpg100%  
+	    Newer     		  107078	25DayPressureChart-3.jpg100%  
+	    Newer     		  126896	25DayTemperatureChart.jpg100%  
+	    Newer     		  130344	25DayWindChart.jpg100%  
+	    Newer     		   83494	DeltaPressureChart.jpg100%  
+	    Newer     		   74876	TemperatureChart.jpg100%  
+	    Newer     		   81343	WindChart.jpg100%  
+	                  12	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\coder\
+	                   7	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\gleaners\
+	                   1	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\images\
+	                  34	C:\Users\Jim\Documents\webcontent\waconia\50webs-dev\pictures\
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :         6         0         6         0         0         1
+   Files :        86        10        76         0         0         8
+   Bytes :    4.59 m   813.1 k    3.79 m         0         0     7.3 k
+   Times :   0:00:00   0:00:00                       0:00:00   0:00:00
+
+
+   Speed :            52039125 Bytes/sec.
+   Speed :            2977.702 MegaBytes/min.
+   Ended : Wednesday, April 30, 2025 10:02:00 AM
+
+[main dfa2c08] another update
+ 12 files changed, 20 insertions(+), 17 deletions(-)
+To https://github.com/m-jim-d/waconia.git
+   27df2cf..dfa2c08  main -> main

@@ -1,0 +1,109 @@
+/*
+Based on:
+http://www.w3schools.com/howto/howto_js_fullscreen_overlay.asp
+*/
+
+   .overlay {
+      height: 0%; /* The overlay pulls down. This must start at 0. */
+      width: 100%;
+      position: fixed;
+      z-index: 1;  /* rendering stack; higher numbers are on top. */
+      top: 0;
+      left: 0;
+      background-color: rgba(50,50,50, 0.90); /* dark gray with some transparency */
+      overflow-y: hidden;
+      transition: 0.5s;
+   }
+
+   .overlay-content {
+      position: relative;
+      top: 4%; /* Note that this can affect the bottom part of the selection area for the close icon. */
+      text-align: left;
+      margin-bottom: 50px;
+   }
+
+   /* Apply to the "a" elements inside the overlay */
+   .overlay a {
+      padding: 3px;
+      text-decoration: none;
+      color: white; /* lightgray #b37700; #818181; E0E0E0 */
+      font-size: 24px;
+      font-weight: normal;
+      /* display: block; */
+      transition: 0.2s;
+   }
+   /* Apply to the section (class) headings in the overlay */
+   .overlay a.section {
+      color: white; /* #ffdd99; */
+      /* font-style: italic; */
+      font-size: 26px;
+      font-weight: bold; /* 550 */
+   }
+   /* Apply to the "a:hover" AND "a:focus" elements inside the overlay. Notice the comma here */
+   .overlay a:hover, .overlay a:focus {
+      color: rgba(70,70,70, 1.00); /* #626262; #ffdd99; #f1f1f1; */
+      text-decoration: none; /* underline */
+      background-color: lightgray;
+   }
+   
+   /* No bullets in the site map list */
+   .overlay ul, .overlay li {
+      list-style-type: none;
+   }
+   /* Spacing between list items */
+   .overlay li {
+      /*      top R/L bottom  */
+      margin: 7px 0px 7px;
+   }
+   /* Spacing at the bottom of each ul group */
+   .overlay ul {
+      margin-bottom: 10px;
+   }
+
+   /* Apply to any element with the closebtn class that is inside the overlay  */
+   .overlay .closebtn {
+      position: absolute;
+      top: -6px;
+      left: 5px;
+      font-size: 45px;
+   }
+   
+   /* This potentially gets changed by the small-screen cases below. */
+   .menuicon {
+      position: fixed; /* tried "relative" but liked "fixed" best overall for cellphone and desktop. */
+      /*      top R   Bot L  */
+      margin: 3px 0px 0px 0px;
+      
+      /* Note: the menu icon is now an SVG file. */
+      width:25px; 
+      height: auto; 
+   } 
+
+   /* Styles that take effect for small screens. Commas are effectively an OR operator. */
+   @media screen and (orientation: landscape) and (max-device-width: 980px) {
+      /* body {background-color: lightgreen;} */
+      .menuicon {position: fixed;}
+      .overlay {overflow-y: auto;}
+      /* .overlay a {font-size: 18px}  smaller */
+      .overlay .closebtn {
+         top: -2px;
+         left: 4px;
+         right: 0px;
+         font-size: 35px;
+      }
+      .overlay-content {top: 6%;} /* Note that this can affect the bottom part of the selection area for close icon. */
+   }
+   /* Like the one above but for portrait orientation. */
+   @media screen and (orientation: portrait) and (max-device-width: 980px) {
+      /* body {background-color: lightblue;} */
+      .menuicon {position: fixed;}
+      .overlay {overflow-y: auto;}
+      /* .overlay a {font-size: 25px}  30px larger */
+      .overlay .closebtn {
+         top: -10px;
+         left: 0px;
+         right: 0px;
+         font-size: 50px; /* 70px */
+      }
+      .overlay-content {top: 3%;} /* 6% 8% */
+   }

@@ -1,0 +1,527 @@
+<!doctype html>
+
+<html lang="en" id="helpScroller">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="some details about using the charts at waconia.triquence.org">
+   
+   <title>Q&A</title>
+   
+   <link rel="canonical" href="https://waconia.triquence.org/faq.html" />
+   
+   <!-- The navigation menu -->
+   <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">   
+   <script src="jquery-3.7.1.min.js?v=5"></script>
+   <script src="utilities.js?v=45"></script>
+   <script src="pageStuff.js?v=5"></script>
+
+   <script>
+      // Version 1.1 (12:15 PM Mon June 24, 2019)
+      // Written by: James D. Miller
+      
+      // After the page loads...
+      $(window).on('load', function() {
+         pS.init({"pageDesc":"Waconia: Q and A", "scrollAdjust":-13});
+      });
+
+   </script>
+
+   <style>
+      b {
+         color: #008080;
+      }
+      a.page {
+         color: maroon;
+         text-decoration: underline;
+      }
+      a.page:hover {
+         color: maroon;
+         text-decoration: none;
+         background: #FFF1E3;
+      }
+      div.pageblock {
+         padding-top:  6px;
+         margin-left: 30px;   
+         min-width: 650px;
+         max-width: 1000px;
+      }
+      .auto-style1 {
+         margin-left: 40px;
+      }
+      .auto-style2 {
+         margin-left: 80px;
+      }
+
+      /* All the links that don't have href attributes, e.g. anchors that scroll the page */
+      a:not([href]) {
+         cursor: pointer;
+      }
+      
+      /* */
+   </style>
+</head>
+
+<!-- #9BBDBD  #ffcc99  -->
+<body bgcolor="#ffcc99" style="FONT-FAMILY: Arial">
+
+<!-- The navigation menu -->
+<div id="navDiv"></div>
+<img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
+
+<div class="pageblock">
+	<p><a name="TOP"></a><b><font face="Arial" size="5">Weather Charts Q&amp;A</font></b></p>
+	
+   <p><b>The new</b>:</p>
+   <p>
+   <a class="page scroll-link" data-scroll-target="PastAndFuture" href="#">What's the past and present for this site?</a><br>	
+   <a class="page scroll-link" data-scroll-target="contrast" href="#">What's different about the new chart?</a><br>
+   <a class="page scroll-link" data-scroll-target="newstuff" href="#">What's the latest?</a><br>
+   <a class="page scroll-link" data-scroll-target="DataSources" href="#">What are the data sources?</a><br>
+   </p>
+	<p><b>The original</b>:</p>
+	<p>
+	<a class="page scroll-link" data-scroll-target="Install" href="#">How do I install the original charting software?</a><br>
+	<a class="page scroll-link" data-scroll-target="makeChart" href="#">How do I make a chart?</a><br>
+   <a class="page scroll-link" data-scroll-target="Fresh" href="#">How do I get the freshest data?</a><br>
+	<a class="page scroll-link" data-scroll-target="24hrPlot" href="#">What is the &quot;24h&quot; checkbox?</a><br>
+	<a class="page scroll-link" data-scroll-target="RunningAverage" href="#">What is the &quot;RA&quot; checkbox?</a><br>
+	<a class="page scroll-link" data-scroll-target="theURL" href="#">What is all that stuff in the URL?</a><br>
+   <a class="page scroll-link" data-scroll-target="2" href="#">Why does a two-day chart has fewer points than a one-day chart.</a><br>
+   <a class="page scroll-link" data-scroll-target="9" href="#">What data is shown in the table?</a><br>
+   <a class="page scroll-link" data-scroll-target="3" href="#">How should I interpret the time axis?</a><br>
+   <a class="page scroll-link" data-scroll-target="yaxis2" href="#">When plotting wind speed, what is the secondary-y axis?</a><br>
+   <a class="page scroll-link" data-scroll-target="windoptions" href="#">Why are there two wind options, Wind (0-36) and Wind (0-40)?</a><br>
+   <a class="page scroll-link" data-scroll-target="5" href="#">Why do some charts grow taller?</a><br>
+	<a class="page scroll-link" data-scroll-target="11" href="#">What is the delta-P charting option (Columbia Basin sites)?</a><br>
+	<a class="page scroll-link" data-scroll-target="7" href="#">How is the direction data aggregated, especially when the wind is out of the north?</a><br>
+   <a class="page scroll-link" data-scroll-target="8" href="#">What kind of software is used to make this all work?</a><br>
+   <a class="page scroll-link" data-scroll-target="Counters" href="#">What are the little numbers, in the upper left hand corner, to the right of the <strong>home</strong> link?</a>
+   </p>
+	<hr>
+	<p><a name="PastAndFuture"></a>What's the past and present for this site?&nbsp;
+	<a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<p class="auto-style1">For nearly 20 years Waconia had been hosted by 
+   <a class="page" href="https://www.pnnl.gov/">PNNL</a> or 
+   <a class="page" href="https://www.gustavus.edu/">Gustavus</a>.
+   With my retirement, came an end to this free hosting for the 
+	database and the server-sided scripting that was behind the charting page. 
+	(If you would like to host Waconia inside your local network, here is the
+	<a class="page" href="install_rosy.html">installation guide</a>.)</p>
+	<p class="auto-style1">Now there's a 
+	<a class="page" href="https://waconia.triquence.org/weather.html?station=KRLD&amp;days=5">client</a> page built 
+	around <a class="page" href="https://developers.google.com/chart/">Google Charts</a>. 
+	It queries weather data stored in
+	Google spreadsheets (cloud). All client sided; all without hosting costs.</p>
+	<p class="auto-style1">The gleaner <a class="page scroll-link" data-scroll-target="DataSources" href="#">scripts</a> 
+	continue to run, now 
+	feeding the Google spreadsheets, still hosted on a little Intel NUC 
+	existing quietly on my home network.</p>
+	<p class="auto-style1">The scripts also feed a local database for my 
+	at-home version of the old Waconia. So the old site lives on in the comfort 
+	of my basement. The current sample charts are produced by posting to this 
+	at-home Waconia and then publishing (to a hosting service) the resulting chart images in a static html page
+	(yes, another <a class="page" href="gleaners/getChartsFor50webs.html">Python script</a>).</p>
+	
+	
+	<p align="left"><a name="contrast"></a>What's different about the 
+	<a class="page" href="weather.html?station=KRLD&amp;days=5">new chart</a>?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<ul>
+		<li>
+		<p align="left">All six sensors are now in 
+		<a class="page" href="weather.html?station=KRLD&amp;days=5">one view</a>, ambient conditions 
+		in the top chart, wind in the bottom.</p>
+		</li>
+		<li>
+		<p align="left">Each data point has hover tips details, time and 
+		values.</p>
+		</li>
+		<li>
+		<p align="left">The nature of the 24hrs chart has changed. The 
+		strip-chart paint-over approach in the original chart has been replaced 
+		with a continuous display of the latest 24 hours of data. The most 
+		recent data is always on the right side of the chart. The 24hrs options 
+		is now chosen via the &quot;number of days&quot; select box.</p>
+		</li>
+		<li>
+		<p align="left">There is now no hourly 
+		aggregation. Smoothing is applied to all but the wind speed and gust 
+		data. Use the checkbox to view the raw (not smoothed) data.</p>
+		</li>
+		<li>
+		<p align="left">The delta-P, 25-day, and latest-record features are not 
+		in the new chart. Also the y dimensions of the chart area to not change 
+		with data range.</p>
+		</li>
+	</ul>	
+	<p align="left"><a name="newstuff"></a>What's the latest?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<p align="left" class="auto-style1">New (misc) stations: Tokyo,&nbsp; 
+	Amundsen-Scott (South Pole), Saint Simons Island in Georgia, Joplin Regional Airport in Missouri.<br></p>
+
+	<p><a name="DataSources"></a>What are the data sources?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<blockquote>
+		<p>Data is collected from four sources:</p>
+      <ul>
+         <li type="disc">Waconia's first data source was the HMS web page (<a class="page" href="http://www.hanford.gov/c.cfm/hms/realtime.cfm">http://www.hanford.gov/c.cfm/hms/realtime.cfm</a>).&nbsp;A gleaner script runs every&nbsp;5 minutes and collects all the 
+         text from that page and then parses out wind, temperature, and pressure 
+         data.&nbsp;This data is written to a MS Access database. Here is a <a class="page" href="http://www.hanford.gov/page.cfm/HMS/RealTimeMetData">map</a> 
+         of the 30 HMS sites.<br>
+         (Perl 
+         and Python scripts: <a class="page" href="gleaners/geturl.html">geturl.pl</a>, <a class="page" href="gleaners/pythonPostToSheet.html">pythonPostToSheet.py</a>, <a class="page" href="gleaners/pythonURLfetch.html">pythonURLfetch.py</a>)<br>
+         <br></li>
+         <li type="disc">Later, NOAA data was added from
+         <a class="page" href="http://forecast.weather.gov/product.php?site=CRH&amp;product=RWR&amp;issuedby=WA">
+         Washington</a> 
+         and 
+         <a class="page" href="http://forecast.weather.gov/product.php?site=CRH&amp;product=RWR&amp;issuedby=OR">
+         Oregon</a> pages.&nbsp;These NOAA sites provide data for Portland, The Dalles, and other cities 
+         in the Columbia river basin not covered by HMS.&nbsp; This additional gleaning is used to make the
+         <a class="page scroll-link" data-scroll-target="11" href="#">delta-P</a> charting option available.<br>
+         (Perl 
+         and Python scripts: <a class="page" href="gleaners/getnoaa.html">getnoaa.pl</a>, <a class="page" href="gleaners/pythonPostToSheet.html">pythonPostToSheet.py</a>)<br><br></li>
+         <li type="disc">Started data collection for Minnesota in 2006. The 
+         XML feeder is
+         <a class="page" href="https://aviationweather.gov">https://aviationweather.gov</a>. 
+         Here is an example single-station
+         <a class="page" href="https://aviationweather.gov/cgi-bin/data/dataserver.php?dataSource=metars&requestType=retrieve&format=xml&mostrecentforeachstation=constraint&hoursBeforeNow=2&stationString=KMKT">
+         call</a> to the feeder.
+         <!--
+         and a list of the available
+         <a class="page" href="https://aviationweather.gov/docs/metar/stations.txt" target="_blank">stations</a>. 
+         -->
+         A Google Earth image, <a class="page" href="pictures/mn_sites.jpg">MN sites</a>, shows the 
+         airports observed by this gleaner. Faribault should be handy for those that sail at Cannon Lake.<br>
+         (Python script: <a class="page" href="gleaners/ws_new.html">ws_new.py</a>)<br>&nbsp;</li>
+         <li type="disc">In 2020, added collection from the Mesonet 
+         JSON feeder. Here are links to 
+         <a class="page" href="https://synopticdata.com/" target="_blank">Synoptic Data</a>, 
+         the <a class="page" href="https://developers.synopticdata.com/mesonet/" target="_blank">API</a> 
+         and the <a class="page" href="https://mesowest.utah.edu/cgi-bin/droman/mesomap.cgi?state=WA&amp;rawsflag=3" target="_blank">MesoWest</a> station viewer.<br>
+         (Python script: <a class="page" href="gleaners/ws_richland_json.html">ws_richland_json.py</a>)<br>
+         </li>
+      </ul>
+	</blockquote>
+	
+	<p><a name="Install"></a>How do I install the original charting software?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<blockquote>
+      <p>If you would like to try running the gleaners and the 
+      original Waconia web site on your local network, here is the
+      <a class="page" href="install_rosy.html">installation guide</a>. The guide 
+      focuses on the following: </p>
+      <ul>
+         <li>Configuring Microsoft IIS for classic Asp.</li>
+         <li>Installation of the supporting charting software.</li>
+         <li>Scheduling the gleaners.</li>
+      </ul>
+   </blockquote>
+   
+	<p><a name="makeChart"></a>How do I make a chart?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+   <blockquote>
+      <p>First you'll need to <a class="page" href="install_rosy.html">
+      install</a> some stuff to support the gleaners and the
+      <a class="page" href="gleaners/rosy.asp.html">rosy.asp</a> charting page. Then come back 
+      here...</p>
+      <p>Use the five drop-down lists to control what data is presented. Click 
+         the &quot;Update&quot; button to refresh the plot.&nbsp;The drop-down lists 
+         set the following parameters (from left to right):</p>
+      <ul>
+         <li><b>Region</b>: Pick a region. This selection affects the location 
+            options.</li>
+         <li><b>Location</b>:&nbsp; Select from any of the listed weather monitoring 
+            sites.</li>
+         <li><b>Sensor</b>:&nbsp; Select wind (default), temperature, pressure, 
+            or delta-pressure (available on for the Columbia Basin sites). </li>
+         <li><b>End date</b>:&nbsp; Select the last day of data to be shown in 
+            the chart (default is today).</li>
+         <li>&quot;<b>Days</b>&quot;:&nbsp; Select the total number of days to 
+            be presented in the chart (default is 1).</li>
+      </ul>
+      <p>The &quot;<b>&lt;</b>&quot; and &quot;<b>&gt;</b>&quot; buttons (to the 
+         right of the &quot;Days&quot; control) step the chart backward (&quot;<b>&lt;</b>&quot;) 
+         or forward (&quot;<b>&gt;</b>&quot;) in time. The size of the step is determined 
+         by the value of the &quot;Days&quot; control. The &quot;<b>&gt;</b>&quot; 
+      button (to the right of the stations select list) acts to step through the 
+      stations list.</p>
+      <p>Select the &quot;24h&quot; checkbox to display 
+      single-day data in the <a class="page scroll-link" data-scroll-target="24hrPlot" href="#">24-hour mode</a>. When viewing 
+      today's data, this mode will present the most recent 24 hours of readings, 
+      including some of yesterday's data.</p>
+      <p>Select the &quot;Timer&quot; checkbox to put the chart into
+      <a class="page scroll-link" data-scroll-target="Fresh" href="#">auto-update</a> mode.</p>
+      <p>A brief help tip for each control can be viewed by letting the mouse 
+         cursor remain (still) on it for about one second.</p>
+   </blockquote>
+	
+   <p><a name="Fresh"></a>How do I get the freshest data?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">
+	top</a></p>
+	<blockquote>
+		<p>You can set Waconia to auto-refresh every 5 minutes by selecting the &quot;Timer&quot; 
+		checkbox. This feature automatically syncs your browser to refresh 
+		10 seconds after the 5-minute updates on the Whitebear server and insures 
+		that you have the freshest data available. Another useful indicator is the 
+		difference (in minutes) between the current time and the time stamp on the 
+		latest data record. This is shown in the last set of parentheses in the 
+		string of numbers to the right of the home link.</p>
+	</blockquote>
+	
+   <p><a name="24hrPlot"></a>What is the &quot;24h&quot; checkbox?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">
+	top</a></p>
+	<p class="auto-style1">Selecting this option enables the 24-hour mode for 
+	the 1-day plot. This displays the most recent 24 hours of data including readings from 
+	yesterday. The effect of this mode is only 
+	apparent when selecting the most recent day in the day list.</p>
+	<p class="auto-style1">There are two black vertical lines that indicate the time of the 
+	most recent reading (left line) and the current time (right line). The 
+	distance between these two lines indicates the age of the most recent data. 
+	Note that this &quot;age&quot; is also indicated by the minutes in parentheses 
+	() just to 
+	right of the server time. Readings from yesterday are displayed to the 
+	right of the most-recent-reading line. Yesterday's data is indicated with 
+	thinner trace lines and the direction markers are gray.</p>
+	<p class="auto-style1">Why do this? First, it gives you a complete diurnal 
+	cycle in one consistant view. Also, it presents a contrast between today's 
+	latest reading and what was happening at that same time yesterday. The two 
+	vertical lines give a quick visual indication of the lag in the most recent 
+	reading. You can think of the left-vertical line as painting over 
+	yesterday's data as the day progresses (as it slowly moves from left to 
+	right throughout the day).</p>
+	
+   <p><a name="RunningAverage"></a>What is the &quot;RA&quot; checkbox?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">
+	top</a></p>
+	<p class="auto-style1">Selecting this option smooths the data with a 3-point 
+	running average. This feature uses a special technique to deal with 
+	near-North wind-direction data. It converts individual wind-direction 
+	observations into x and y components, averages the components, then 
+	calculates the wind direction from the component averages.</p>
+	<p><a name="theURL"></a>What is all that stuff in the URL (web address)?&nbsp;
+	<a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<p class="auto-style1">The URL (web page address) is now parameterized. This 
+	allows you to e-mail a link for a particular day and location, or to save a 
+	shortcut that will give you the latest data at your favorite site.</p>
+	<p class="auto-style1">To create a URL that gives the latest data, just trim 
+	the URL back to the sensor parameter. For example, here is a URL string for the latest wind data 
+		for the Faribault, MN airport:</p>
+	<p class="auto-style1">
+	rosy.asp?region=MN&amp;jS=T&amp;hT=T&amp;pT=F&amp;Location=KFBL&amp;Sensor=Wind40</p>
+	<p><a name="2"></a>Why does a two-day chart has fewer points than a one-day chart?&nbsp;
+	<a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<blockquote>
+		<p>Charts of two or more days of data will show hourly aggregates of the 
+		raw 15-minute data. For example,&nbsp; if the HMS web site presents data 
+		at 14:00, 14:15, 14:30, and 14:45, the chart will represent those four points 
+		with a single aggregate point at 2 p.m. PST (14/24 = 0.583 day fraction).</p>
+	</blockquote>
+	
+   <p><a name="9"></a>What data is shown in the table?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<blockquote>
+		<p>The table at the top shows today's latest reading for the selected site.&nbsp;This 
+		is a raw fifteen minute reading and is equivalent to the current data shown 
+		at the source site. It is also equivalent to the last point on a one-day 
+		chart.</p>
+	</blockquote>
+	
+   <p><a name="3"></a>How should I interpret the time axis?&nbsp;<a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<blockquote>
+		<p>Here are a few things to consider:</p>
+		<ul>
+			<li>A data point at 2:15 p.m. is an aggregate of high-frequency sampling 
+			during the 15-minutes prior to the 2:15 timestamp of the report.&nbsp; 
+			In other words, a point at 2:15 reflects conditions between 2:00 p.m. 
+			and 2:15 p.m. </li>
+			<li>When charting more than one day, the axis converts to a day format 
+			and the charted points are hourly aggregates.&nbsp; A point at the half-day 
+			mark corresponds with an aggregate of the 12th hour (12n = 12 noon) 
+			reports (that is, conditions between noon and 1 p.m.).&nbsp; A point 
+			at the day mark corresponds to the 0th hour (12 midnight) reports (that 
+			is, conditions between midnight and 1 a.m.). </li>
+			<li>In the summer, day light savings time is automatically taken into account.
+            <ul>
+               <li>Timestamps in the table, both the server time and the &quot;latest 
+               reading&quot; time, indicate day light savings time with a &quot;PDT&quot; 
+               (Pacific Daylight Time).&nbsp; A &quot;PST&quot; indicates Pacific 
+               Standard Time. </li>
+               <li>Whether the chart itself uses PST or PDT is determined by the 
+               end time of the chart selected.&nbsp; Multi-day charts that <u>end</u> 
+               with a date within PDT will use (for the whole chart) PDT time values.
+               </li>
+               <li>For the curious out there, the database is all recorded in PST.&nbsp; 
+               Code in the ASP page handles the conversion to PDT when needed for 
+               clarity to the user. </li>
+            </ul>
+			</li>
+		</ul>
+	</blockquote>
+	
+   <p><a name="yaxis2"></a>When plotting wind speed, what is the secondary-y axis?&nbsp;<a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<p class="auto-style1">The y-axis on the right side of the plot is for wind 
+	direction. This scale is used to determine the values of the square point 
+	markers. Also see the discussion in the next FAQ.</p>
+	<p><a name="windoptions"></a>Why are there two wind options, Wind (0-36) and Wind (0-40)?&nbsp;
+	<a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<blockquote>
+		<p>Both options provide wind direction and wind speed information. The direction 
+		is defined by the secondary y-axis on the right side of the chart.</p>
+		<p>The 0-40 option is the most used wind direction charting option. In this 
+		case the direction data is scaled so that the compass points correspond 
+		with the 5 mph grid lines on the chart.</p>
+		<p>The 0-36 option is a good choice for people that are comfortable thinking 
+		of direction in terms of degrees (0-360). 180 degrees on the right axis 
+		corresponds with 18 mph on the left axis; a scaling factor of 1/10. One 
+		frequent user, a sailplane pilot, prefers this wind charting option.</p>
+		<p>In either case, the secondary-y axis makes it straightforward to interpret 
+		the direction data.</p>
+		<p>For the curious, some history and development details: The chart-image&nbsp;module 
+		used in Waconia (ASPChart) unfortunately does not have an option for a secondary 
+		y-axis. The secondary axis that you currently see is actually a hand-built 
+		static image (a transparent gif), overlaid on the chart. Through the magic 
+		of HTML, CSS, and JavaScript, the two images are revealed simultaneously 
+		to the give the appearance of a single image. In earlier releases of Waconia, 
+		a simple compromise (using no secondary axis and no overlay image) was&nbsp;implemented, 
+		through which&nbsp;the wind-direction data was&nbsp;scaled by the ratio 
+		40/360 (for the 0-40 option)&nbsp;or 1/10 (for the 0-36 option). Without 
+		a secondary axis, the user was left to interpret the direction points using 
+		only the speed axis and the clues in the image legend. Thanks to the image 
+		overlay in the current release, the legend has now been simplified; it's 
+		way better.</p>
+	</blockquote>
+	<font size="2"></font>
+	
+   <p><a name="5"></a>Why do some charts grow taller ?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<blockquote>
+		<p>There is an image scaling feature for the wind, temperature and delta-p 
+		charts.&nbsp;&nbsp;</p>
+		<ul>
+			<li>If the wind exceeds 40 mph, the number of pixels in the chart scales 
+			(grows) with the max speed in the chart; this give an accurate visual 
+			impression of those big wind days.&nbsp; This feature is especially 
+			useful when you look at the wind up on Rattlesnake mountain. </li>
+			<li>For the temperature chart, the auto scaling is based on the difference 
+			between the minimum and maximum points.&nbsp; If this differential exceeds&nbsp;40 
+			degrees, the number of pixels (along the temperature axis) scales with 
+			the differential.&nbsp; If the differential is less than&nbsp;40 degrees, 
+			the data is centered within the&nbsp;40 degrees of range of the temperature 
+			axis. </li>
+			<li>For the delta-p chart, if the min to max range exceeds 0.26 (the 
+			default range on the y axis), the charts image size scales. </li>
+		</ul>
+	</blockquote>
+	
+   <p><a name="11"></a>What is the delta-P charting option (Columbia Basin sites)?&nbsp;<a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<blockquote>
+		<p>This option plots differential pressures between four sites: Portland, 
+		The Dalles, Roosevelt, and Richland. The differentials are defined in the 
+		chart legend. For example, the trace named &quot;Portland - The Dalles&quot; 
+		is calculated as the pressure difference between Portland and TheDalles 
+		(using sea-level corrected pressures).</p>
+		<p>Pressure differentials can be useful in predicting wind at Roosevelt 
+		WA. Pressure gradients often move from west to east so a good differential 
+		between Portland and The Dalles can be a good indicator of wind to come 
+		at Rosy. Differentials over about 0.05 inches Hg generally indicate sailable 
+		wind.</p>
+	</blockquote>
+	
+   <p><a name="7"></a>How is the direction data aggregated, especially when the wind is out of the north?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<blockquote>
+		<p>For charts of two or more days, I have not implemented a method for aggregating 
+		near-North direction data (that is, directions that are bouncing back and 
+		forth between slightly greater than 0 and slightly less than 360). So I 
+		simply use the average of the 4 direction readings. This method can produce 
+		an erroneous result of approximately 180 (or 20 using Waconia direction 
+		notation) if the direction is near North (example:&nbsp; (3 + 359 + 2 + 
+		358)/ 4 = 180.5).</p>
+		<p>In the one-day charts this is not an issue because there is no aggregation 
+		of the HMS 15-minute data.</p>
+		<p>Note that the <a class="page scroll-link" data-scroll-target="RunningAverage" href="#">RA feature</a> properly 
+		performs a running average on direction data for one-day charts.</p>
+	</blockquote>
+	
+   <p><a name="8"></a>What kind of software is used to make this all work?&nbsp;
+	<a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
+	<blockquote>
+		<p>ASP (Active Server Pages), Perl, Python, JavaScript, and VBScript&nbsp; are the main tools. 
+		For a little more detail, take a look at the &quot;<a class="page" href="howsitdone.html">about 
+		the technology behind the viewer</a>&quot; page and the
+		<a class="page" href="install_rosy.html">installation</a> page.</p>
+	</blockquote>
+	
+   <p><a name="Counters"></a>What are the little numbers in the upper left hand 
+	corner, to the right of the <strong>home</strong> link?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">
+	top</a></p>
+	<blockquote>
+		<p>There are three categories of information in this string of numbers:</p>
+      <ol>
+         <li>The first set indicates the number of image requests in the last 
+         24 hours (1d = one day) and the last 72 hours (3d = 3 days). </li>
+         <li>And just to the right of these numbers is the time on the server 
+         when the page was generated. </li>
+         <li>And farthest to the right, in parentheses, is the difference in 
+         minutes between the server time and the time stamp of the latest data 
+         record. </li>
+      </ol>
+	</blockquote>
+	<p>&nbsp;</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+	<p>.</p>
+</div>
+
+</body>
+
+</html>

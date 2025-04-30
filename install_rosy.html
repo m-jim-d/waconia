@@ -1,0 +1,283 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="details about installations needed to run rosy.asp at waconia.triquence.org">
+   
+   <title>Installation Guide</title>
+   
+   <link rel="canonical" href="https://waconia.triquence.org/install_rosy.html" />
+
+   <!-- The navigation menu -->
+   <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">   
+   <script src="jquery-3.7.1.min.js?v=3"></script>
+   <script src="utilities.js?v=45"></script>
+   <script src="pageStuff.js?v=3"></script>
+
+   <script>
+      window.addEventListener('load', function() {
+         pS.init({'pageDesc':"Waconia: Rosy Install"});
+      });
+   </script>
+
+   <style>
+      a.page {
+         color: maroon;
+         text-decoration: underline;
+      }
+      a.page:hover {
+         color: maroon;
+         text-decoration: none;
+         background: #FFF1E3;
+      }
+      div.pageblock {
+         padding-top:  6px;
+         margin-left: 30px;   
+         min-width: 650px;
+         max-width: 1000px;
+      }
+      .indent-1 {
+         margin-left: 40px;
+      }
+      .indent-2 {
+         margin-left: 60px;
+      }
+      .SectionHeading-1 {
+         font-weight: bold;
+         color: #800000;
+         font-size: 18px;
+      }
+      .MainHeading {
+         font-size: 24px;
+         font-weight: bold;
+         color: #008080;
+      }
+      .SectionHeading-2 {
+         font-weight: bold;
+         color: #008080;
+         font-size: 18px;
+      }
+      .auto-style1 {
+         margin-left: 80px;
+      }
+   </style>
+</head>
+
+<!-- #9BBDBD  #ffcc99  link="#006666" vlink="#006666"  -->
+<body bgcolor="#ffcc99" style="FONT-FAMILY: Arial">
+
+<!-- The navigation menu -->
+<div id="navDiv"></div>
+<img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
+
+<div class="pageblock">
+	<p><span class="MainHeading">Installation Guide</span></p>
+	<p class="indent-1">This guide provides instructions for the installation of the 
+	parts that make up the original Waconia: the data gleaners, 
+	the database, and the <a class="page" href="gleaners/rosy.asp.html">rosy.asp</a> charting page. The end result is a gleaning 
+	and charting process that runs on your local network, periodically using 
+	your internet connection to glean weather data. A web browser is used to access the rosy.asp web page 
+	(from any computer on your local network) and present the data in charts.</p>
+	<p class="indent-1">Note that I cannot recommend serving this out through 
+	your local-network firewall. It's just fine to do this on an internal 
+	network. But this all might pose a security risk to the host computer if the 
+	Waconia web site is accessible from the internet. Having said that (my 
+	disclaimer), I did exactly that for about 20 years and served this site out 
+	through two different company firewalls. Never had a problem.</p>
+	<p class="indent-1">It is best if you have:</p>
+	<ul class="indent-2">
+		<li>A Windows computer (7, 8, or 10)<ul>
+			<li>It will need to be on all the time (so the gleaners can run)</li>
+		</ul>
+		</li>
+		<ul>
+			<li>Installations (needed, but not covered here):<ul>
+				<li>Microsoft Access</li>
+				<li>Python 2</li>
+				<li>Perl (optional, but needed if you want to use the two 
+				gleaners that are written in Perl)</li>
+			</ul>
+			</li>
+		</ul>
+		<li>Some basic experience with:<ul>
+			<li>Microsoft's web server (IIS)</li>
+			<li>Setting folder permissions</li>
+			<li>A script-file editor (like
+			<a class="page" href="https://notepad-plus-plus.org/">Notepad++</a>).</li>
+		</ul>
+		</li>
+	</ul>
+	<p class="indent-1">Note that in 2023 I added features to the gleaners so 
+	that they can write to the Google spreadsheets which are the data source for 
+	the <a class="page" href="weather.html">new</a> charting page. Also, the 
+	Perl gleaner that collects readings from the HMS site, now uses secondary 
+	Python scripts that facilitate the page fetch and the post to the sheet. 
+	These features will only work if there is a target Google sheet. So for the 
+	gleaners to behave as they did for the original web site, those sections of 
+	the code should be disabled (commented). Someday (TBD) I may add to this 
+	page to include instructions to support the new charting page.</p>
+	<p class="indent-1">What follows is relative to Windows 10, but much of this 
+	stuff is very similar in Windows 7 and 8. If you've had a good breakfast, 
+	this installation exercise might serve as a&nbsp;useful introduction to server-sided 
+	scripting. This is not an extremely detailed walkthrough. It will cover the 
+	needed steps and should be enough to get you 
+	up and running.</p>
+	<p><span class="SectionHeading-1">Get the files you will need</span></p>
+	<p class="indent-1">Create a new folder called &quot;webcontent&quot; in your 
+	documents area of Windows. Download the waconia.zip file at this
+	<a class="page" href="https://drive.google.com/drive/folders/0ByxaBWklPKdjQWJaX0tNOVdMRms">
+	Google-drive</a> link. Unzip it and then copy or move the waconia folder 
+	(and everything in it) so as to be a subfolder in the webcontent folder. So 
+	the path to the website-dev folder should look something like this (of 
+	course the username in the path should be changed):<br>
+	C:\Users\Jim\Documents\webcontent\waconia\website-dev</p>
+	<p><span class="SectionHeading-1">Install IIS</span></p>
+	<p class="indent-1">IIS is part of Windows 10; it needs to be enabled (turn on the feature). 
+	Also check the ASP option (see yellow highlight).</p>
+	<p class="indent-1">
+	<img alt="" height="593" src="pictures/IIS-ASP.png" width="413"></p>
+	<p><span class="SectionHeading-1">Configure IIS for Classic ASP and 32 bit 
+	processes</span></p>
+	<p class="indent-1">Open up the IIS manager (click on the Windows icon in 
+	the start menu and then type IIS).</p>
+	<p class="indent-1">Add a new application pool. Call it &quot;oldASP&quot;.<br><br>
+	<img alt="" height="223" src="pictures/CreateAppPool.png" width="383"></p>
+	<p class="indent-1">Host the application in a &quot;Classic&quot; 
+	pipeline-mode application pool. Choose &quot;No Managed Code&quot; and &quot;Classic&quot;.<br>
+	<br>
+	<img alt="" height="278" src="pictures/Edit%20Application%20Pool.png" width="301"></p>
+	<p class="indent-1">In the &quot;Advanced Settings&quot; of your oldASP application pool, set 
+	&quot;Enable 32-Bit Applications&quot; to True.<br><br>
+	<img alt="" height="541" src="pictures/32bitMode.png" width="434"></p>
+	<p><span class="SectionHeading-1">Add applications under the default website 
+	in IIS</span></p>
+	<p class="indent-1">&nbsp;In the IIS manager, right-click on the &quot;Default Web 
+	Site&quot; and choose to &quot;add an Application.&quot;</p>
+	<p class="indent-1">
+	<img alt="" height="598" src="pictures/application.jpg" width="534"></p>
+	<p class="indent-1">For your development site, enter &quot;waconia-dev&quot; (fill in 
+	the Alias field). Then provide the path to the development folder that 
+	contains the rosy.asp. So for example, my path string is &quot;C:\Users\Jim\Documents\webcontent\waconia\website-dev&quot;. 
+	Select the oldASP application pool.</p>
+	<p class="indent-1">To force detailed-error reporting, open 
+	the ASP feature (double-click on the ASP icon) for the website.<br><br>
+	<img alt="" height="288" src="pictures/asp-feature.png" width="427"><br><br>
+	Then expand the &quot;Debugging Properties&quot; node. Set &quot;Send Errors To Browser&quot; to 
+	True.<br><br>
+	<img alt="" height="602" src="pictures/send-errors.png" width="729"></p>
+	<p class="indent-1">You may want to repeat this section for a production 
+	site (that you publish to) and call this production site simply 
+	&quot;waconia&quot;. Enter a path string here that points to the production folder. 
+	Again, select the oldASP application pool.</p>
+	<p><span class="SectionHeading-1">Install and test the ASPChart software</span></p>
+	<p class="indent-1"><span class="SectionHeading-2">Register the ASPChart dll:</span></p>
+	<ol class="indent-2">
+		<li>Copy the aspchart.dll file from the ASPChart-install-files folder 
+		and put it in this folder:&nbsp;
+		C:\Windows\SysWOW64<br></li>
+		<li>Type &quot;cmd&quot; from the windows menu. Right click on the &quot;Command 
+		Prompt&quot; option. Then choose to open a command 
+		window as an administrator.<br>&nbsp;<br>
+		<img alt="" height="286" src="pictures/cmd-admin.png" width="347"><br>
+		<br>Then from that administrator window, run the following command:<strong><br>
+		C:\Windows\SysWOW64\regsvr32.exe C:\Windows\SysWOW64\aspchart.dll
+		</strong></li>
+	</ol>
+	<p class="indent-1"><span class="SectionHeading-2">Add the license code to your registry:</span></p>
+	<ol class="indent-2">
+		<li>Open regedit (from the Windows menu, type &quot;regedit&quot;)<br></li>
+		<li>Use import feature of regedit (File/Import) to load in the 
+		aspchart-regkey.reg file from the ASPChart-install-files folder. There's nothing scary in there, just a license 
+		code. Here's an image of what's in the file.<br>&nbsp;<br>
+		<img alt="" height="166" src="pictures/reg-key.png" width="953"></li>
+	</ol>
+	<p class="indent-1"><span class="SectionHeading-2">Set security permissions 
+	on the chart-images folder:</span></p>
+	<p class="auto-style1">You have to give your webbrowser permission to write 
+	to the chart-images folder. So give both the IIS_IUSRS and IUSR users 
+	&quot;Modify&quot; level of permissions. <br><br>
+	<img alt="" height="649" src="pictures/permissions.png" width="521"></p>
+	<p class="indent-1"><span class="SectionHeading-2">Test it:</span></p>
+	<ol class="indent-2">
+		<li>Test your general ASP setup from a web browser (use your own local 
+		IP address and site name). This page will check to see if ASP content 
+		can run on your web server.<br>
+		http://192.168.1.106/waconia-dev/whatserveristhis.asp<br><br>It should 
+		look something like this:<br><br>
+		<img alt="" height="159" src="pictures/ASP-test.png" width="312"><br>&nbsp;</li>
+		<li>Test your AspChart installation from a web browser. This page will 
+		test the AspChart dll and the permissions set on the chart-images 
+		folder.<br>http://192.168.1.106/waconia-dev/aspchart-test.asp&nbsp; <br>
+		<br>(Here's a look at the <a class="page" href="gleaners/ASPChart-test.asp.html">ASP 
+		code</a> for this test page.)<br><br>The page should render something 
+		like this:<br><br>
+		<img alt="" height="549" src="pictures/AspChart-test-chart.png" width="609"></li>
+	</ol>
+	<p><span class="SectionHeading-1">Set permissions for the data folder</span></p>
+	<p class="indent-1">In a way similar to what was done for the chart-images 
+	folder, give both the IIS_IUSRS and IUSR users &quot;Modify&quot; level of permissions 
+	on the &quot;data&quot; folder. You might be tempted to use a lower level of authority 
+	here because you will only be reading (querying) the database, but MS Access 
+	is picky about variation in authority levels between users. Problems can 
+	occur if you have a network user querying the database while you (as an 
+	administrator) are interacting with the database on the host machine. Just 
+	use the &quot;Modify&quot; level.</p>
+	<p class="SectionHeading-1">Edit the headers.asp file</p>
+	<p class="indent-1">Open the headers.asp file in an editor. Change the name 
+	values in the following lines of code (change &quot;NUC&quot; and the IP address). 
+	Also change the path to the telem.mdb database.<br></p>
+	<p class="indent-1">
+	<img alt="" height="96" src="pictures/headers.png" width="1342"></p>
+	<p class="indent-1">
+	If using MS Office 365:</p>
+	<p class="indent-1">
+	<img alt="" src="pictures/connectstring.gif"></p>
+	<p><span class="SectionHeading-1">Test and schedule the gleaners</span></p>
+	<p class="indent-1">Each of the four gleaner scripts has a single line of 
+	code that establishes the path to the database. Edit this DSN string in each 
+	file to reflect your path to the telem.mdb database.</p>
+	<p class="indent-1">
+	<img alt="" height="54" src="pictures/databasepath.png" width="1007"></p>
+	<p class="indent-1">Try running each of the four gleaners from a Windows 
+	command prompt. These will send text to the command window indicating 
+	progress. The gleaners will not run correctly unless you have the necessary 
+	Perl and Python modules installed (see the top of each file) and the paths 
+	to the database have been updated (edited) in each file.<br><br>
+	<img alt="" height="373" src="pictures/gleaner-test.png" width="469"></p>
+	<p class="indent-1">Make a scheduled task for the geturl_NUC.bat batch file.<br>
+	<br><img alt="" height="706" src="pictures/scheduled-task.png" width="950"></p>
+	<p class="indent-1">Set the trigger to fire every five minutes.<br><br>
+	<img alt="" height="699" src="pictures/scheduled-triggers.png" width="640"></p>
+	<p class="indent-1">Set the path to the target file (geturl_NUC.bat) that 
+	will run periodically.<br>&nbsp;<br>
+	<img alt="" height="482" src="pictures/scheduled-target.png" width="634"></p>
+	<p><span class="SectionHeading-1">Enjoy your website</span></p>
+	<p class="indent-1">Now try entring a URL (something like this one) into 
+	your browser: <br>
+	http://192.168.1.106/waconia-dev/rosy.asp?Region=MN<br>Of course use 
+	your actual local-network IP address and your site name in the URL. Then 
+	just interact with the chart controls at the top of the web page.</p>
+	<p class="indent-1">Wow, you have made it to the enjoyment section. 
+	Nice job! That was a lot of settings to get right.</p>
+	<p class="indent-1">There's not much to do as far as maintenance. Someday 
+	you might need to check the log files in the waconia folder...</p>
+	<p class="indent-1">Soon, you may want to add a new weather station to your 
+	gleaning process. There are two spots where you have to specify a new 
+	station: at the end of the appropriate gleaner-script file, and in the StationNames table in the database.</p>
+	<p class="indent-1">Have fun looking at your custom weather data site. My 
+	neice Chelsea once said I'm like her dad (my brother Dave) in my interest in 
+	weather data. (You could substitute &quot;obsession with&quot; for &quot;interest in&quot; here. 
+	I kind of think that's what she was thinking.)</p>
+	<p class="indent-1">If you have some luck with this (or not), I'll respond 
+	to e-mail sent to my contact email address.</p>
+	<p class="indent-1">Here's what your single-day charts will look like once 
+	you're up and running:</p>
+	<p class="indent-1">
+	<img alt="" height="651" src="pictures/sample-chart.png" width="1015"></p>
+</div>
+
+</body>
+
+</html>

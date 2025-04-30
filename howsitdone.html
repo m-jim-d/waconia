@@ -1,0 +1,146 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="details about the software needed to run rosy.asp at waconia.triquence.org">
+
+   <title>technology behind rosy.asp</title>
+   
+   <link rel="canonical" href="https://waconia.triquence.org/howsitdone.html" />
+
+   <script src="jquery-3.7.1.min.js?v=3"></script>
+   <script src="utilities.js?v=45"></script>
+   <script src="pageStuff.js?v=3"></script>
+
+   <script>
+      window.addEventListener('load', function() {
+         pS.init({"pageDesc":"Waconia: Hows it done.", "navMenu":false});
+      });
+   </script>
+
+   <style>
+      b {
+         color: #008080;
+      }
+      strong {
+         color: maroon;
+      }
+      a {
+         color: maroon;
+         text-decoration: underline;
+      }
+      a:hover {
+         color: maroon;
+         text-decoration: none;
+         background: #FFF1E3;
+      }
+      div.pageblock {
+         min-width: 650px;
+         max-width: 1000px;
+      }
+      span.s1 {
+         font-size: large;
+         color: #008080;
+      }
+   </style>
+</head>
+
+<!-- #9BBDBD  #ffcc99  link="#006666" vlink="#006666"  -->
+<body bgcolor="#ffcc99" style="FONT-FAMILY: Arial">
+
+<div class="pageblock">
+	<p><a href="index.html">(Back home)</a></p>
+	<p><b><font face="Arial" size="5">Technology behind the chart</font></b></p>
+	<p>This describes the components used in the original Rosy.asp charting page (see related discussion in the <a href="install_rosy.html">installation 
+	guide</a>).</p>
+	<ul>
+		<li><strong>Data-Collection Scripts</strong><ul>
+			<li><font color="#0000ff"><b>Perl</b></font>:&nbsp;Some of the data 
+			behind the chart is gleaned (screen scraped) from web pages. Please 
+			refer to the FAQ on <a href="faq.html?DataSources">data sources</a>. This includes 
+			the HMS web page and the two NOAA web pages.&nbsp;A Perl script runs 
+			every&nbsp;5 minutes and collects all the text from these pages and 
+			then parses out wind, temperature, and pressure data.&nbsp;Perl has 
+			useful features for manipulating text data.&nbsp;This data is inserted 
+			into a MS Access database on the server.&nbsp;The charting application 
+			then gets its data from the database.</li>
+			<li><font color="#0000ff"><b>Python</b></font>: The MN data added in 
+			2006 uses a scheduled Python script to download and parse METAR data from an XML 
+			data feed.</li>
+		</ul>
+		</li>
+		<li><strong>Database Connectivity</strong><ul>
+			<li><font color="#0000ff"><b>MDAC (Microsoft Data Access Components)</b></font>:<b><strong>&nbsp;</strong></b>This 
+			package of components, once installed, gives you the option to use ODBC 
+			and ADO.<ul>
+				<li><font color="#0000ff"><b>ODBC (Open Database Connectivity)</b></font>:&nbsp;Database 
+				connections provide the linkages for the Perl and Python scripts 
+				and the ASP code to read and write to the MS Access database.</li>
+				<li><font color="#0000ff"><b>Active X Data Objects (ADO)</b></font>:&nbsp;ADO 
+				objects were used in both the Perl script and the ASP code.&nbsp;The 
+				data objects support queries and manipulation of the data in the 
+				Access database.</li>
+			</ul>
+			</li>
+		</ul>
+		</li>
+		<ul>
+			<li><font color="#0000ff"><b>MS Access</b></font>:&nbsp;The Perl script 
+			populates a local MS Access database (mdb file) on the server. The database 
+			stores the HMS data in a resolution of 15-minutes and the NOAA data 
+			in a resolution of 1 hour.&nbsp;One of the charting options, delta-P, 
+			makes use of SQL queries that serve to join the pressure records from 
+			different sites and calculate their differential pressures. </li>
+		</ul>
+		<li><strong>Charting Scripts</strong><ul>
+			<li><strong>Server-Sided</strong>
+			<ul>
+				<li><font color="#0000ff"><b>ASP (Active Server Pages)</b>:&nbsp;</font>This 
+			is what makes the dynamic chart possible. It collects the form parameters 
+			and runs queries on the local MS Access database.&nbsp; It then creates 
+			a chart image (JPG file), using ASPChart.&nbsp;The ASP code then acts 
+			to write the HTML code (for the web page), which includes a needed reference 
+			to the image file. </li>
+				<li><font color="#0000ff"><b>VBScript (Visual Basic Scripting Edition)</b></font>:&nbsp;The 
+				<a href="gleaners/rosy.asp.html">ASP code</a> is primarily written in VBScript which is a subset of VBA (Visual 
+			Basic for Applications). </li>
+				<li><font color="#0000ff"><b>ASP Chart</b></font>:&nbsp;This is a freeware 
+			charting component for ASP. It produces the chart image.</li>
+			</ul>
+			<ul>
+				<li><font color="#0000ff"><b>JavaScript</b></font>: A portion 
+			of the server sided ASP code is written in Javascript.</li>
+			</ul>
+			<li><strong>Client-Sided</strong><ul>
+				<li><font color="#0000ff"><b>JavaScript</b></font>: Client code that 
+			runs in the browser is written in JavaScript. An example of this is 
+			the code that supports the timer function.</li>
+			</ul>
+			</li>
+		</ul>
+		<li><strong>Editors</strong><ul>
+			<li><font color="#0000ff"><b>Microsoft Expression Web</b></font>:&nbsp;Editor 
+			for laying out static HTML pages. </li>
+			<li><b>Notepad++ and VIM</b>: Editors for&nbsp;the code.</li>
+		</ul>
+		</li>
+		<li><strong>Operating System:</strong> It all runs on
+		<font color="#0000ff"><b>MS Windows 7, 8 or 10</b></font>.<ul>
+			<li><font color="#0000ff"><b>IIS</b></font>:&nbsp;Internet Information 
+			Server.&nbsp;This is Microsoft's web server and executes the server-sided 
+			code of the charting page (ASP). </li>
+			<li><font color="#0000ff"><b>MS Window's Scheduling Service</b></font>:&nbsp;The 
+			Perl and Python gleaner scripts are scheduled to run every five minutes 
+			throughout the day. </li>
+		</ul>
+		</li>
+	</ul>
+</div>
+
+<p>&nbsp;</p>
+
+</body>
+
+</html>

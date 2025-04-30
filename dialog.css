@@ -1,0 +1,80 @@
+/* For the cookie dialog */
+
+dialog {
+   border-width: 0px;
+   border-radius: 8px;
+}
+
+h2.dialog {
+   margin: 3px 0px;
+}
+
+div.center-close-button {
+   display: flex;
+   justify-content: center;
+}
+button.dialog, button.dialog-cancel {   
+   color: white;
+   background-color: black;
+   
+   border-width: 0px;
+   border-radius: 6px;
+   
+   padding: 6px 10px;
+   margin-left: 2px;
+   margin-right: 2px;
+   
+   /* prevent accidental cursor selection of button text */
+   user-select: none;
+   
+   transition: all 0.1s ease;
+}
+button.dialog:hover {
+   color: black;
+   background-color: cyan; /* lightgreen */
+   /* outline: 1px solid black; */
+}
+button.dialog-cancel:hover {
+   color: black;
+   background-color: lightgray;  /* yellow cyan magenta */
+   outline: 1px solid black;
+}
+/*
+   background: none;
+   border-radius: 4px;
+   border: none;
+   font-size: 2.0em;
+*/
+button.dialog-cancel-x {
+   user-select: none;
+   
+   background: none;
+   border-radius: 4px;
+   border: none;
+
+   font-size: 2.7em;
+   
+   position: absolute;
+   top: 8px;
+   right: 15px;
+
+   padding: 0px 5px;
+   margin: 0px 2px;
+   
+   opacity: 0.5;
+   /* cursor: pointer; */
+}
+/*
+*/
+button.dialog-cancel-x:hover {
+   opacity: 1;
+}
+
+ul.dialog {
+   font-size:14px;
+}
+
+li.dialog {
+    margin-bottom: 5px;
+}
+

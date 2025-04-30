@@ -1,0 +1,49 @@
+
+/* blocks the blue background for checkboxes in recent chrome release */
+input[type='checkbox']:checked {-webkit-filter: grayscale(100%);}
+
+input.largerCheckbox {
+   /*
+   width:  13px;
+   height: 13px;
+   */
+}
+
+#statusSpan {
+   font-family: Helvetica, Arial, sans-serif;
+   font-size: 110%;
+   /* background-color: lightyellow; pink #a7a09a  #EFEFEF */
+}
+
+select, button {
+   font-size: 105%;
+   /*height: 25px;*/
+}
+
+#updateButton {
+   width: 80px;
+   height: 26px;
+   border-radius: 3px;
+   border-width: 1px
+}
+
+div.pageblock {
+   margin-top:   0px;
+   margin-left:  5px;
+   min-width:  800px; 
+   max-width: 1050px;
+}
+
+div.controls {
+   /*        top R   Bot L */
+   margin: -29px 0px 0px 35px;  
+}
+
+/* This css file loads in after sitemap.css and overrides the following corresponding values. */ 
+.closebtn {
+   margin-left: 5px;
+}
+.menuicon {
+   position: relative; /* (fixed or relative) "fixed", will render the update button under the menuicon. */
+   margin-right: 10px; /* This pushes the neighboring buttons a little to the right. */
+} 

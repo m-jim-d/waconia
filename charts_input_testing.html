@@ -1,0 +1,170 @@
+﻿<!doctype html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="sample of charts from the original rosy.asp page">
+
+   <title>Samples</title>
+   
+   <link rel="canonical" href="https://waconia.triquence.org/charts.html" />
+
+   <!-- The navigation menu -->
+   <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">
+   <script src="jquery-3.7.1.min.js?v=5"></script>
+   <script src="utilities.js?v=45"></script>
+   <script src="pageStuff.js?v=9"></script>
+
+   <style>     
+      /* The following div and span work together to float some text to the right of the main title. */
+      div.title_line {
+         position:relative;
+         padding-bottom: 0px;
+      }
+      span.float_right_title {
+         position:absolute; 
+         top: 25%; /* vertical adjustment */
+         right: 0%;
+      }
+      
+      .float_right {
+         float: right;
+         vertical-align: bottom;
+      }
+
+      b {
+         color: #008080;
+      }
+      strong {
+         color: maroon;
+      }
+      a.page {
+         color: maroon;
+         text-decoration: underline;
+      }
+      a.page:hover {
+         color: maroon;
+         text-decoration: none;
+         background: #FFF1E3;
+      }
+      div.pageblock {
+         padding-top:  6px;
+         margin-left: 30px;
+         min-width:  600px;
+         max-width:  800px;
+      }
+      span.s1 {
+         font-size: large;
+         color: #008080;
+      }
+   </style>
+
+   <script>
+      // After the page loads...
+      $(window).on('load', function() {
+         pS.init({"pageDesc":"Waconia: Rosy Samples"});
+      });
+      
+      function showImage( id) {
+         try {
+            var imgElement = document.getElementById( id);
+            imgElement.style.visibility = 'visible';
+         }
+         catch(e){}
+      }
+   </script>
+
+</head>
+
+<body bgcolor="#ffcc99" onload="showImage('windimage1');showImage('directions1');" style="font-family: Arial;">
+
+<!-- The navigation menu -->
+<div id="navDiv"></div>
+<img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
+
+<div class="pageblock">
+   <div class="title_line">
+	<p><b><font face="Arial" size="5">Samples from Rosy.asp</font></b></p>
+   </div>
+   <p><span>
+(24-hour charts updated Wednesday, January 31, 2024 at 08:18PM Central).
+   </span></p>
+   <p>The orginal ASP page is named Rosy, a nickname windsurfers from the Tri-Cities gave Roosevelt, a sailing site on the east end of the Columbia River gorge.</p>
+	<p>This first pair of sample charts, wind and temperature, is updated every 
+	hour. The site location for these is randomly picked from a list 
+	of five stations: <a class="page" href="https://miller.web.app/RattleSnake/Intro.html">RMTN</a>, 
+	KRLD, KMKT, PHOG, and PATQ. The two vertical lines and the data plotted to 
+	the right of these are explained 
+	in the help topic on the <a class="page" href="faq.html?24hrPlot">24-hour charting option</a>.</p>
+   <!-- The wind image and the direction overlay are hidden initially and then made visible together using the showImage script above. -->
+	<div style="white-space: nowrap;">
+		<img id="windimage1" src="chart-images/WindChart.jpg" style="visibility: hidden" />
+<img id='directions1' src='pictures/directions_40.gif' style="visibility:hidden; position:relative; left:-192px; bottom:0px">
+	</div>
+	<br />
+	<img id="TemperatureChart" src="chart-images/TemperatureChart.jpg" style="position: relative; left: 2px" /><br />
+   <!--
+	<br />
+	If the site has no pressure sensor, the pressure chart from the previous 
+	update is displayed here.<br />
+	<br />
+	<img id="PressureChart" src="chart-images/PressureChart.jpg" style="position: relative; left: 2px" /><br />
+   -->
+	<p><span>
+(Multi-day charts updated Wednesday, January 31, 2024 at 08:18PM Central).
+	</span></p>
+	<p>In case you know someone who has moved to Barrow.</p>
+	<p><img id="25DayTemperatureChart" src="chart-images/25DayTemperatureChart.jpg" style="position: relative; left: 2px" /></p>
+	<p>
+   <!-- The wind image and the direction overlay are NOT hidden initially here (but could be). Farther down on the page, so not needed here. -->
+      <div style="white-space: nowrap;">
+         <img id="windimage2"        src="chart-images/25DayWindChart.jpg"        style="position: relative; left: 2px" />
+<img id='directions2' src='pictures/directions_40.gif' style="position:relative; left:-215px; bottom:0px"> <!-- -210 -->
+      </div>
+   </p>
+	The following (three) 25-day pressure charts show the contrast between 
+	sites in Alaska, Washington state, and Hawaii. This progression shows the 
+	increase in diurnal pressure variation as the pressure sensor gets closer to 
+	the equator. Here are a couple articles on this:
+	<a class="page" href="https://www.sciencedaily.com/releases/2008/12/081203092437.htm">
+	ScienceDaily</a> and the
+	<a class="page" href="http://www-das.uwyo.edu/~geerts/cwx/notes/chap01/diurnal.html">
+	University of Wyoming</a>.<br />
+	<br />
+	<img id="25DayPressureChart-1" src="chart-images/25DayPressureChart-1.jpg" style="position: relative; left: 2px" /><br />
+	<br />
+	This Washington state data (near Richland WA) shows a morning peak about 
+	10am.<br />
+	<br />
+	<img id="25DayPressureChart-2" src="chart-images/25DayPressureChart-2.jpg" style="position: relative; left: 2px" /><br />
+	<br />
+	The Hawaii data shows the double-peak (10am and 10pm).<br />
+	<br />
+	<img id="25DayPressureChart-3" src="chart-images/25DayPressureChart-3.jpg" style="position: relative; left: 2px" /><br />
+	<br />
+	The chart below is a 10-day plot of pressure differentials along the 
+	Columbia river in Washington. Delta-p data is often used by windsurfers 
+	to forecast sailing conditions in the Columbia Gorge. As the west to east 
+	pressure differentials rise, so do the summer west winds that blow against 
+	the current in the river. These counter-current winds produce the smooth 
+	swells that the windsurfers love. <br />
+	<br />
+	This chart splits the pressure difference into two parts. Notice the 
+	mid-day peaks in the west half (green) are commonly followed by a late-day 
+	peak in the east half (red). Windsurfers sometimes travel east from Hood 
+	River to follow the best winds in the Gorge that typically work their way east during 
+	the day.<br />
+	<br />
+	Many moons ago I lived in Richland WA. It was about an 80-minute drive from 
+	there to the Roosevelt WA sailing site on the east end of the Gorge. It 
+	often worked out well to take a couple hours of vacation and drive down and catch the 
+	late-day peak.<br />
+	<br />
+	<img id="Delta-P" src="chart-images/DeltaPressureChart.jpg" style="position: relative; left: 2px" /><br />
+	<br />
+</div>
+
+</body>
+
+</html>

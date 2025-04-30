@@ -1,0 +1,102 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="weather graphs using google charts and spreadsheets">
+
+   <title>Charts</title>
+   
+   <link rel="canonical" href="https://waconia.triquence.org/weather.html" />
+
+   <!-- Google icon library -->
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+   <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">
+   <link href="weather.css?v=20" rel="stylesheet" type="text/css">
+   <style>
+   </style>
+
+   <noscript>
+      <br><br><br><br><br>
+      <p style="font-family:Helvetica; font-size:150%; color:brown;">
+      triquence.org requires JavaScript.
+      <br><br> 
+      Please enable JavaScript in your browser<br>
+      and then reload this page.
+      </p>
+      <br><br><br><br><br><br><br>
+   </noscript>
+
+   <script type="text/javascript" src="jquery-3.7.1.min.js?v=3"></script>
+   <!-- loader for google charts -->
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+   <script type="text/javascript" src="wcharts.js?v=22"></script>
+
+   <!-- The navigation menu -->
+   <script src="utilities.js?v=45"></script>
+   <script src="pageStuff.js?v=45"></script>
+   <script>
+      // After the page loads...
+      $(window).on('load', function() {
+         pS.init({"pageDesc":"Waconia: Charts", "scrollAtLoad":false});
+         wC.init();
+      });
+   </script>
+</head>
+
+<body id="chartPageBody" style="font-family: Arial;">
+
+<!-- The navigation menu -->
+<div id="navDiv"></div>
+<div class='pageblock'>
+<img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
+<div class='controls'>
+<button id="updateButton" onclick="wC.queryGoogleSheet()" title="Resubmit the query to update the chart.">Update</button>
+<input type="checkbox" class="largerCheckbox" id="chkSmoother" title="
+Check to smooth the temperature, pressure and wind direction readings." onClick="wC.handleSmootherThenDraw()" checked>
+<select id="regions" title="Region">
+   <option value="mn">Minnesota</option>
+   <option value="pnw">Pacific NW</option>
+   <option value="hanford">Hanford Site</option>
+   <option value="Hawaii">Hawaii</option>
+   <option value="ak">Alaska</option>
+   <option value="misc">Misc</option>
+</select>
+<select id="stations" title="Station"></select>
+<select id="endDate" title="End Date"></select>
+<button onclick="wC.stepByDays('backward')" title="Step the end-date back in time by n days."><<</button>
+<button onclick="wC.stepByDays('forward' )" title="Step the end-date forward in time by n days.">>></button>
+<select id="nDays" title="
+Number of Days
+
+For current day, the 24hrs option will plot the latest 24 hours of data. 
+On other days, the 24hrs option is equivalent to the 1d option, 
+plotting from midnight to midnight.
+
+The 24hrs plot can be useful for comparing current conditions (right edge)
+with those at the same time yesterday (left edge).
+">
+   <option value="24h">24hrs</option>
+   <option value=1>1d</option>
+   <option value=2>2d</option>
+   <option value=5>5d</option>
+   <option value=10>10d</option>
+</select>
+<br><br>
+</div>
+
+<!--style="max-width:700px; height:400px" -->
+<div id="statusSpan"></div>
+<div id="chartDivA" style="max-width:1200px; max-height:900px"></div>
+<div id="chartDivB" style="max-width:1200px; max-height:900px"></div>
+
+<!--
+-->
+<div id="tableDiv" style="max-width:700px; height:300px"></div>
+<div id="editedTableDiv" style="max-width:700px; height:300px"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="sample of weather charts for MN and the Pacific Northwest">
+   <meta name="keywords" content="WA,Washington,OR,Orgeon,MN,Minnesota,columbia,basin,weather,realtime,database,chart,plot,roosevelt,windsurfing,gorge,richland,wind,temperature,pressure,eagle,german,green,cannon,saint peter,mankato,airport,fairmont,aitkin,alexandria,brainerd,buffalo,duluth,fergus falls,flag island,glencoe,glenwood,hutchinson,la crosse,lakeville,litchfield,little falls,marshall,mora,red wing,spencer,wadena,willmar,winona,worthington">
+   
+   <title>Waconia</title>
+
+   <link rel="canonical" href="https://waconia.triquence.org/index.html" />
+
+   <!-- The navigation menu -->
+   <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">   
+   <script src="jquery-3.7.1.min.js?v=3"></script>
+   <script src="utilities.js?v=45"></script>
+   <script src="pageStuff.js?v=3"></script>
+   
+   <style> 
+      a {
+         color: maroon;
+         text-decoration: underline;
+      }
+      a:hover {
+         color: maroon;
+         text-decoration: none;
+         background: #FFF1E3;
+      }      
+         
+      body {
+         background-color: #ffcc99;
+      }
+      div.main {
+         min-width:  300px;
+         max-width: 1100px;
+         text-align: left; 
+         margin-left: 20px; 
+         margin-top: 10px;
+      }
+      div.columnA {
+         display: inline-block; 
+         vertical-align: top;
+         margin-left: 5px; 
+      }
+      div.columnB {
+         min-width: 300px;
+         max-width: 500px;
+         margin-left: 10px; 
+         margin-top:   0px; 
+         display: inline-block; 
+         vertical-align: top;
+      }
+   </style>   
+ 
+   <!-- The navigation menu -->
+   <script>      
+      // After the page loads...
+      $(window).on('load', function() {
+         pS.init({"pageDesc":"Waconia: Home"});
+      });
+   </script>
+   
+</head>
+
+<body style="font-family: Arial;">
+
+<!-- The navigation menu -->
+<div id="navDiv"></div>
+<img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
+
+
+<div class="main">
+
+<div class="columnA" style="margin-top: 5px;">
+   <a href="weather.html">
+   <IMG width=293 height=445 src="pictures/WindmillSunset.jpg" border=0 alt="windmill at sunset"></a>
+</div>
+
+<div class="columnB">
+   <br>
+   <p style="margin-bottom: 0px">
+   <span style="font-family: Monotype Corsiva, 'Times New Roman', Times, serif; font-size: 50px; color: #800000">Waconia</span>
+   </p>
+   
+   <p>
+   Welcome. This site's charting pages,
+   <a class="home" href="weather.html">the new</a> and the <a class="home" href="charts.html">original</a>, 
+   offer a taste of weather data from Minnesota, 
+   Washington and Oregon (near the Columbia River), and other
+   miscellaneous locations. Records include temperature, wind, 
+   and barometric pressure and are updated every fifteen 
+   minutes throughout the day.</p>
+
+   <p style="">Python and 
+   Perl scripts glean this data from several sources 
+   using screen-scraper parsing, and XML and JSON feed-reader techniques. Links to 
+   these scripts are in the <a class="home" href="faq.html?DataSources">data-source</a> topic of the FAQs. 
+   Check out the &quot;<a class="home" href="faq.html?PastAndFuture">forecast</a>&quot; 
+   for Waconia or <a class="home" href="install_rosy.html">install</a> it now 
+   on your local network.</p>
+   
+   <!--
+   <p style="">Since its start, Waconia has been sponsored by 
+   Pacific Northwest National <a class="home" href="https://www.pnnl.gov/">Laboratory</a> in Richland, Washington 
+   and later by the <a class="home" href="https://physics.gac.edu/">Physics</a> department at <a class="home" href="https://www.gustavus.edu/">Gustavus</a> Adolphus College in Saint Peter, Minnesota. 
+   Its current host is <a class="home" href="https://triquence.org">triquence.org</a>.</p>
+   -->
+
+   <br>
+
+   <p align="center">
+   the <a class="home" href="howsitdone.html">technology</a> behind the original<br>
+   about the name <a class="home" href="waconia.html">Waconia</a><br>
+   weather chart <a class="home" href="faq.html">Q&amp;A</a><br>
+   the <a class="home" href="coder/miller.html">coder</a><br>
+   </p>
+</div>
+
+</div>
+
+</body>
+</html>
