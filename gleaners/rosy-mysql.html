@@ -7,8 +7,8 @@ Licensed under the BSD license, see LICENSE for details.
 -->
 <html>
 <head>
-  <link rel='canonical' href='https://waconia.triquence.org/gleaners/rosy.html' />
-  <title>rosy</title>
+  <link rel='canonical' href='https://waconia.triquence.org/gleaners/rosy-mysql.html' />
+  <title>rosy-mysql</title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <style type="text/css">
 /*
@@ -1382,7 +1382,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 
 <span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
 <span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">meta</span><span class="w"> </span><span class="nx">name</span><span class="o">=</span><span class="s1">&#39;Author&#39;</span><span class="w"> </span><span class="nx">content</span><span class="o">=</span><span class="s1">&#39;Jim Miller&#39;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">meta</span><span class="w"> </span><span class="nx">name</span><span class="o">=</span><span class="s1">&#39;Author&#39;</span><span class="w"> </span><span class="nx">content</span><span class="o">=</span><span class="s1">&#39;James D. (Jim) Miller&#39;</span><span class="o">&gt;</span>
 <span class="o">&lt;</span><span class="nx">meta</span><span class="w"> </span><span class="nx">name</span><span class="o">=</span><span class="s1">&#39;keywords&#39;</span><span class="w"> </span>
 <span class="w">      </span><span class="nx">content</span><span class="o">=</span><span class="s1">&#39;WA,Washington,OR,Orgeon,MN,Minnesota,columbia,basin,weather,chart,plot,roosevelt,</span>
 <span class="s1">               windsurfing,gorge,richland,wind,temperature,pressure,dewpoint&#39;</span><span class="o">&gt;</span><span class="w">             </span>
@@ -1419,259 +1419,258 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 
 <span class="s1">&#39; Connect to the database.</span>
 <span class="s1">Set DBConnection = CreateObject(&quot;ADODB.Connection&quot;)</span>
-<span class="s1">&#39;</span><span class="w"> </span><span class="nx">Open</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">connection</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">MySQL</span><span class="w"> </span><span class="p">(</span><span class="nx">telem</span><span class="w"> </span><span class="nx">schema</span><span class="p">)</span><span class="w"> </span><span class="nx">using</span><span class="w"> </span><span class="mf">32</span><span class="o">-</span><span class="nx">bit</span><span class="w"> </span><span class="nx">system</span><span class="w"> </span><span class="nx">DSN</span><span class="w"> </span><span class="p">(</span><span class="nx">MySQL</span><span class="w"> </span><span class="nx">ODBC</span><span class="w"> </span><span class="mf">5.3</span><span class="w"> </span><span class="nx">Unicode</span><span class="w"> </span><span class="nx">Driver</span><span class="p">)</span>
-<span class="nx">DBConnection</span><span class="p">.</span><span class="nx">Open</span><span class="w"> </span><span class="s2">&quot;DSN=MySQL_telem_for_ASP;&quot;</span>
+<span class="s1">DBConnection.Open &quot;DSN=MySQL_telem_for_ASP;&quot;</span>
 
-<span class="nb">Set</span><span class="w"> </span><span class="nx">dicTZ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Server</span><span class="p">.</span><span class="nx">CreateObject</span><span class="p">(</span><span class="s2">&quot;Scripting.Dictionary&quot;</span><span class="p">)</span>
-<span class="nx">dicTZ</span><span class="p">.</span><span class="nx">Add</span><span class="w"> </span><span class="s2">&quot;H&quot;</span><span class="p">,</span><span class="w">  </span><span class="o">-</span><span class="mf">4</span>
-<span class="nx">dicTZ</span><span class="p">.</span><span class="nx">Add</span><span class="w"> </span><span class="s2">&quot;AK&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mf">3</span>
-<span class="nx">dicTZ</span><span class="p">.</span><span class="nx">Add</span><span class="w"> </span><span class="s2">&quot;P&quot;</span><span class="p">,</span><span class="w">  </span><span class="o">-</span><span class="mf">2</span>
-<span class="nx">dicTZ</span><span class="p">.</span><span class="nx">Add</span><span class="w"> </span><span class="s2">&quot;M&quot;</span><span class="p">,</span><span class="w">  </span><span class="o">-</span><span class="mf">1</span>
-<span class="nx">dicTZ</span><span class="p">.</span><span class="nx">Add</span><span class="w"> </span><span class="s2">&quot;C&quot;</span><span class="p">,</span><span class="w">   </span><span class="mf">0</span>
-<span class="nx">dicTZ</span><span class="p">.</span><span class="nx">Add</span><span class="w"> </span><span class="s2">&quot;E&quot;</span><span class="p">,</span><span class="w">   </span><span class="mf">1</span>
-<span class="nx">dicTZ</span><span class="p">.</span><span class="nx">Add</span><span class="w"> </span><span class="s2">&quot;J&quot;</span><span class="p">,</span><span class="w">  </span><span class="mf">15</span>
-<span class="nx">dicTZ</span><span class="p">.</span><span class="nx">Add</span><span class="w"> </span><span class="s2">&quot;NZ&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">18</span>
+<span class="s1">Set dicTZ = Server.CreateObject(&quot;Scripting.Dictionary&quot;)</span>
+<span class="s1">dicTZ.Add &quot;H&quot;,  -4</span>
+<span class="s1">dicTZ.Add &quot;AK&quot;, -3</span>
+<span class="s1">dicTZ.Add &quot;P&quot;,  -2</span>
+<span class="s1">dicTZ.Add &quot;M&quot;,  -1</span>
+<span class="s1">dicTZ.Add &quot;C&quot;,   0</span>
+<span class="s1">dicTZ.Add &quot;E&quot;,   1</span>
+<span class="s1">dicTZ.Add &quot;J&quot;,  15</span>
+<span class="s1">dicTZ.Add &quot;NZ&quot;, 18</span>
 
-<span class="nx">serverTimeArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">split</span><span class="p">(</span><span class="nx">Now</span><span class="p">(),</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-<span class="nx">serverTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">serverTimeArray</span><span class="p">(</span><span class="mf">1</span><span class="p">)</span>
+<span class="s1">serverTimeArray = split(Now(),&quot; &quot;)</span>
+<span class="s1">serverTime = serverTimeArray(1)</span>
 
-<span class="s1">&#39; Establish defaults</span>
+<span class="s1">&#39;</span><span class="w"> </span><span class="nx">Establish</span><span class="w"> </span><span class="nx">defaults</span>
 
-<span class="s1">&#39;</span><span class="w"> </span><span class="nx">Region_state</span><span class="w"> </span><span class="p">(</span><span class="nx">hidden</span><span class="p">)</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">used</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">facilitate</span><span class="w"> </span><span class="nx">changing</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">location</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">value</span>
-<span class="s1">&#39; when the region is changed.</span>
-<span class="s1">If (Request.QueryString(&quot;Region_state&quot;) = &quot;&quot;) Then </span>
-<span class="s1">   strRegionState = &quot;new&quot;</span>
-<span class="s1">Else</span>
-<span class="s1">   strRegionState = Request.QueryString(&quot;Region_state&quot;)</span>
-<span class="s1">End If</span>
+<span class="s1">&#39; Region_state (hidden) is used to facilitate changing the location to a default value</span>
+<span class="s1">&#39;</span><span class="w"> </span><span class="nx">when</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">region</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">changed</span><span class="p">.</span>
+<span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;Region_state&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span><span class="w"> </span>
+<span class="w">   </span><span class="nx">strRegionState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;new&quot;</span>
+<span class="nx">Else</span>
+<span class="w">   </span><span class="nx">strRegionState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;Region_state&quot;</span><span class="p">)</span>
+<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
 
-<span class="s1">If (Request.QueryString(&quot;Region&quot;) = &quot;&quot;) Then </span>
-<span class="s1">   strRegion = &quot;CR&quot;</span>
-<span class="s1">Else</span>
-<span class="s1">   strRegion = Request.QueryString(&quot;Region&quot;)</span>
-<span class="s1">End If</span>
+<span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;Region&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span><span class="w"> </span>
+<span class="w">   </span><span class="nx">strRegion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CR&quot;</span>
+<span class="nx">Else</span>
+<span class="w">   </span><span class="nx">strRegion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;Region&quot;</span><span class="p">)</span>
+<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
 
-<span class="s1">If (Request.QueryString(&quot;chk24Hrs&quot;) = &quot;on&quot;) Then</span>
-<span class="s1">   str24Hrs_state = &quot;checked&quot;</span>
-<span class="s1">Else</span>
-<span class="s1">   str24Hrs_state = &quot;&quot; </span>
-<span class="s1">End If</span>
+<span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;chk24Hrs&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">   </span><span class="nx">str24Hrs_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;checked&quot;</span>
+<span class="nx">Else</span>
+<span class="w">   </span><span class="nx">str24Hrs_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span>
+<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
 
-<span class="s1">If (Request.QueryString(&quot;chkRA&quot;) = &quot;on&quot;) Then</span>
-<span class="s1">   strRA_state = &quot;checked&quot;</span>
-<span class="s1">Else</span>
-<span class="s1">   strRA_state = &quot;&quot; </span>
-<span class="s1">End If</span>
+<span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;chkRA&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">   </span><span class="nx">strRA_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;checked&quot;</span>
+<span class="nx">Else</span>
+<span class="w">   </span><span class="nx">strRA_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span>
+<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
 
-<span class="s1">If (Request.QueryString(&quot;chkTimer&quot;) = &quot;on&quot;) Then</span>
-<span class="s1">   strTimer_state = &quot;checked&quot;</span>
-<span class="s1">Else</span>
-<span class="s1">   strTimer_state = &quot;&quot;</span>
-<span class="s1">End If</span>
+<span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;chkTimer&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">   </span><span class="nx">strTimer_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;checked&quot;</span>
+<span class="nx">Else</span>
+<span class="w">   </span><span class="nx">strTimer_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
 
-<span class="s1">If (strTimer_state = &quot;checked&quot;) Then</span>
-<span class="s1">   &#39;</span><span class="nx">Check</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">see</span><span class="w"> </span><span class="nx">how</span><span class="w"> </span><span class="nx">far</span><span class="w"> </span><span class="nx">off</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="mf">5</span><span class="o">-</span><span class="nx">minute</span><span class="w"> </span><span class="nx">mark</span><span class="p">.</span><span class="w"> </span><span class="nx">This</span><span class="w"> </span><span class="nx">should</span><span class="w"> </span><span class="nx">serve</span>
-<span class="w">   </span><span class="s1">&#39;to compensate for the drift in the client side timer.</span>
+<span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">strTimer_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;checked&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">   </span><span class="s1">&#39;Check to see how far off the 5-minute mark. This should serve</span>
+<span class="s1">   &#39;</span><span class="nx">to</span><span class="w"> </span><span class="nx">compensate</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">drift</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">client</span><span class="w"> </span><span class="nx">side</span><span class="w"> </span><span class="nx">timer</span><span class="p">.</span>
+<span class="w">   </span>
+<span class="w">   </span><span class="s1">&#39;Get the seconds and minutes from the server time.</span>
+<span class="s1">   intSeconds_FromSeconds = CInt(right(serverTime,2))</span>
+<span class="s1">   intMinutes = CInt(Split(serverTime,&quot;:&quot;)(1))</span>
 <span class="s1">   </span>
-<span class="s1">   &#39;</span><span class="nx">Get</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">seconds</span><span class="w"> </span><span class="nx">and</span><span class="w"> </span><span class="nx">minutes</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">server</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span>
-<span class="w">   </span><span class="nx">intSeconds_FromSeconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">CInt</span><span class="p">(</span><span class="nx">right</span><span class="p">(</span><span class="nx">serverTime</span><span class="p">,</span><span class="mf">2</span><span class="p">))</span>
-<span class="w">   </span><span class="nx">intMinutes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">CInt</span><span class="p">(</span><span class="nx">Split</span><span class="p">(</span><span class="nx">serverTime</span><span class="p">,</span><span class="s2">&quot;:&quot;</span><span class="p">)(</span><span class="mf">1</span><span class="p">))</span>
+<span class="s1">   &#39;</span><span class="nx">How</span><span class="w"> </span><span class="nx">many</span><span class="w"> </span><span class="nx">five</span><span class="w"> </span><span class="nx">minute</span><span class="w"> </span><span class="nx">chunks</span><span class="p">.</span>
+<span class="w">   </span><span class="nx">dblFiveMinutes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">CDbl</span><span class="p">(</span><span class="nx">intMinutes</span><span class="p">)</span><span class="o">/</span><span class="mf">5.0</span>
 <span class="w">   </span>
-<span class="w">   </span><span class="s1">&#39;How many five minute chunks.</span>
-<span class="s1">   dblFiveMinutes = CDbl(intMinutes)/5.0</span>
+<span class="w">   </span><span class="s1">&#39;Take the fractional part of this and convert to seconds.</span>
+<span class="s1">   intSeconds_FromMinutes = CInt(round(300*(dblFiveMinutes - Fix(dblFiveMinutes)),0))</span>
 <span class="s1">   </span>
-<span class="s1">   &#39;</span><span class="nx">Take</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">fractional</span><span class="w"> </span><span class="nx">part</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="nx">and</span><span class="w"> </span><span class="nx">convert</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">seconds</span><span class="p">.</span>
-<span class="w">   </span><span class="nx">intSeconds_FromMinutes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">CInt</span><span class="p">(</span><span class="nx">round</span><span class="p">(</span><span class="mf">300</span><span class="o">*</span><span class="p">(</span><span class="nx">dblFiveMinutes</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Fix</span><span class="p">(</span><span class="nx">dblFiveMinutes</span><span class="p">)),</span><span class="mf">0</span><span class="p">))</span>
-<span class="w">   </span>
-<span class="w">   </span><span class="s1">&#39;Subtract both of these values from 300 to get the proper delay for the client.</span>
-<span class="s1">   &#39;</span><span class="nx">Then</span><span class="w"> </span><span class="nx">add</span><span class="w"> </span><span class="mf">9</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">keep</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="nx">tracking</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="mf">10</span><span class="w"> </span><span class="nx">seconds</span><span class="w"> </span><span class="nx">after</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="mf">5</span><span class="o">-</span><span class="nx">minute</span><span class="w"> </span><span class="nx">mark</span><span class="p">.</span>
-<span class="w">   </span><span class="nx">intDelay_to_5min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">300</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">intSeconds_FromMinutes</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">intSeconds_FromSeconds</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">9</span>
-<span class="w">   </span><span class="nx">strInitializeTimer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;initializeTimer(&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">CStr</span><span class="p">(</span><span class="nx">intDelay_to_5min</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="s2">&quot;);&quot;</span>
-<span class="w">   </span>
-<span class="nx">Else</span>
-<span class="w">   </span><span class="nx">strInitializeTimer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
-<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
-
-<span class="nx">blnPostedDate_default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">False</span>
-<span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;EndDate&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span><span class="w"> </span>
-<span class="w">   </span><span class="s1">&#39; Use the current date for a default. </span>
-<span class="s1">   dtePostedDate = CStr(Date())</span>
-<span class="s1">   blnPostedDate_default = True</span>
+<span class="s1">   &#39;</span><span class="nx">Subtract</span><span class="w"> </span><span class="nx">both</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">these</span><span class="w"> </span><span class="nx">values</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="mf">300</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">get</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">proper</span><span class="w"> </span><span class="nx">delay</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span>
+<span class="w">   </span><span class="s1">&#39;Then add 9 to keep it tracking at 10 seconds after the 5-minute mark.</span>
+<span class="s1">   intDelay_to_5min = 300 - intSeconds_FromMinutes - intSeconds_FromSeconds + 9</span>
+<span class="s1">   strInitializeTimer = &quot;initializeTimer(&quot; &amp; CStr(intDelay_to_5min) &amp; &quot;);&quot;</span>
+<span class="s1">   </span>
 <span class="s1">Else</span>
-<span class="s1">   &#39;</span><span class="w"> </span><span class="nx">Split</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">just</span><span class="w"> </span><span class="nx">get</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">DATE</span><span class="w"> </span><span class="nx">part</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="nx">post</span><span class="p">.</span>
-<span class="w">   </span><span class="nx">dtePostedDate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">split</span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;EndDate&quot;</span><span class="p">),</span><span class="s2">&quot; &quot;</span><span class="p">)(</span><span class="mf">0</span><span class="p">)</span>
-<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
-
-<span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;Days&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span><span class="w"> </span>
-<span class="w">   </span><span class="nx">intDays</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span>
-<span class="nx">Else</span>
-<span class="w">   </span><span class="nx">intDays</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;Days&quot;</span><span class="p">)</span>
-<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
-
-<span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;Sensor&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span><span class="w"> </span>
-<span class="w">   </span><span class="nx">strSensorType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Wind40&quot;</span>
-<span class="nx">Else</span>
-<span class="w">   </span><span class="nx">strSensorType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;Sensor&quot;</span><span class="p">)</span>
-<span class="w">   </span><span class="s1">&#39; Don&#39;</span><span class="nx">t</span><span class="w"> </span><span class="nx">allow</span><span class="w"> </span><span class="nx">request</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">Delta</span><span class="o">-</span><span class="nx">P</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="nx">any</span><span class="w"> </span><span class="nx">region</span><span class="w"> </span><span class="nx">but</span><span class="w"> </span><span class="nx">CR</span><span class="p">.</span>
-<span class="w">   </span><span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">strRegion</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s2">&quot;CR&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">And</span><span class="w"> </span><span class="p">(</span><span class="nx">strSensorType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;DeltaP&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
-<span class="w">         </span><span class="nx">strSensorType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Wind40&quot;</span>
-<span class="w">   </span><span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
-<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
-
-<span class="s1">&#39; Set the normalization factor for the wind direction data</span>
-<span class="s1">If (strSensorType = &quot;Wind40&quot;) Then </span>
-<span class="s1">   dblWindNormFactor = 40.0 / 360.0</span>
-<span class="s1">Else</span>
-<span class="s1">   dblWindNormFactor = 1.0 / 10.0</span>
+<span class="s1">   strInitializeTimer = &quot;&quot;</span>
 <span class="s1">End If</span>
 
-<span class="s1">&#39;</span><span class="w"> </span><span class="nb">Set</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">location</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">first</span><span class="w"> </span><span class="nx">time</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nx">or</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="nx">changes</span>
-<span class="s1">&#39; the region.</span>
-<span class="s1">If ((Request.QueryString(&quot;Location&quot;) = &quot;&quot;) or (strRegionState = &quot;new&quot;)) Then </span>
-<span class="s1">   If (strRegion = &quot;CR&quot;) Then</span>
-<span class="s1">      strLocation = &quot;PASC&quot;</span>
-<span class="s1">   ElseIf (strRegion = &quot;MN&quot;) Then</span>
-<span class="s1">      strLocation = &quot;KMKT&quot;   </span>
-<span class="s1">   ElseIf (strRegion = &quot;Misc&quot;) Then</span>
-<span class="s1">      strLocation = &quot;KCQX&quot;    </span>
-<span class="s1">   Else</span>
-<span class="s1">      strLocation = &quot;&quot;</span>
-<span class="s1">      RWBR &quot;No match in region branch...&quot;</span>
+<span class="s1">blnPostedDate_default = False</span>
+<span class="s1">If (Request.QueryString(&quot;EndDate&quot;) = &quot;&quot;) Then </span>
+<span class="s1">   &#39;</span><span class="w"> </span><span class="nx">Use</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">current</span><span class="w"> </span><span class="nx">date</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="k">default</span><span class="p">.</span><span class="w"> </span>
+<span class="w">   </span><span class="nx">dtePostedDate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">CStr</span><span class="p">(</span><span class="nb">Date</span><span class="p">())</span>
+<span class="w">   </span><span class="nx">blnPostedDate_default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">True</span>
+<span class="nx">Else</span>
+<span class="w">   </span><span class="s1">&#39; Split to just get the DATE part of this post.</span>
+<span class="s1">   dtePostedDate = split(Request.QueryString(&quot;EndDate&quot;),&quot; &quot;)(0)</span>
+<span class="s1">End If</span>
+
+<span class="s1">If (Request.QueryString(&quot;Days&quot;) = &quot;&quot;) Then </span>
+<span class="s1">   intDays = 1</span>
+<span class="s1">Else</span>
+<span class="s1">   intDays = Request.QueryString(&quot;Days&quot;)</span>
+<span class="s1">End If</span>
+
+<span class="s1">If (Request.QueryString(&quot;Sensor&quot;) = &quot;&quot;) Then </span>
+<span class="s1">   strSensorType = &quot;Wind40&quot;</span>
+<span class="s1">Else</span>
+<span class="s1">   strSensorType = Request.QueryString(&quot;Sensor&quot;)</span>
+<span class="s1">   &#39;</span><span class="w"> </span><span class="nx">Don</span><span class="s1">&#39;t allow request for Delta-P from any region but CR.</span>
+<span class="s1">   If (strRegion &lt;&gt; &quot;CR&quot;) And (strSensorType = &quot;DeltaP&quot;) Then</span>
+<span class="s1">         strSensorType = &quot;Wind40&quot;</span>
 <span class="s1">   End If</span>
-<span class="s1">Else</span>
-<span class="s1">   strLocation = Request.QueryString(&quot;Location&quot;)</span>
 <span class="s1">End If</span>
 
-<span class="s1">If ((strSensorType = &quot;Wind40&quot;) OR (strSensorType = &quot;Wind36&quot;)) Then</span>
-<span class="s1">   strShowImages_command = &quot;showImage();showDirections();&quot;</span>
-<span class="s1">Else</span>
-<span class="s1">   strShowImages_command = &quot;showImage();&quot;</span>
-<span class="s1">End If</span>
+<span class="s1">&#39;</span><span class="w"> </span><span class="nb">Set</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">normalization</span><span class="w"> </span><span class="nx">factor</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">wind</span><span class="w"> </span><span class="nx">direction</span><span class="w"> </span><span class="nx">data</span>
+<span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">strSensorType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Wind40&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span><span class="w"> </span>
+<span class="w">   </span><span class="nx">dblWindNormFactor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">40.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">360.0</span>
+<span class="nx">Else</span>
+<span class="w">   </span><span class="nx">dblWindNormFactor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">10.0</span>
+<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
 
-<span class="s1">strTimeZone = TimeZone( strLocation)</span>
-
-<span class="s1">RC &quot;&lt;body onLoad=testJS();&quot; &amp; strShowImages_command &amp; strInitializeTimer &amp; _</span>
-<span class="s1">      &quot; bgcolor=#FFCC99 link=#008080 vlink=#008080 topmargin=2 style=font-family:Arial;&gt;&quot;</span>
-
-<span class="s1">RC &quot;&lt;div class=&#39;</span><span class="nx">pageblock</span><span class="s1">&#39;&gt;&quot;</span>
-
-<span class="s1">&#39;</span><span class="w"> </span><span class="nx">If</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">region</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">specified</span><span class="p">,</span><span class="w"> </span><span class="nx">then</span><span class="w"> </span><span class="nx">make</span><span class="w"> </span><span class="nx">preparations</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">populating</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">table</span>
-<span class="s1">&#39; including getting the most recent values for all the sensor data.</span>
-
-<span class="s1">If (Request.QueryString(&quot;Region&quot;) &lt;&gt; &quot;&quot;) Then</span>
-
-<span class="s1">   &#39;</span><span class="w"> </span><span class="nx">If</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">end</span><span class="w"> </span><span class="nx">date</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">chart</span><span class="w"> </span><span class="nx">request</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">within</span><span class="w"> </span><span class="nx">daylight</span><span class="w"> </span><span class="nx">savings</span><span class="w"> </span><span class="nx">time</span><span class="p">,</span><span class="w"> </span><span class="nx">then</span>
-<span class="w">   </span><span class="s1">&#39; set the DLS flag. Add 3 hours to make sure you evaluate the day after the</span>
-<span class="s1">   &#39;</span><span class="w"> </span><span class="mf">2</span><span class="nx">am</span><span class="w"> </span><span class="nx">change</span><span class="w"> </span><span class="nx">over</span><span class="w"> </span><span class="nx">point</span><span class="p">.</span>
-
-<span class="w">   </span><span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">DaylightSavingsTime</span><span class="p">(</span><span class="nx">dateadd</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">,</span><span class="mf">3</span><span class="p">,</span><span class="nx">dtePostedDate</span><span class="p">)))</span><span class="w"> </span><span class="nx">Then</span><span class="w"> </span>
-<span class="w">      </span><span class="nx">blnDayLightSavingsTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">True</span>
+<span class="s1">&#39; Set a default value for the location if the first time in or if the user changes</span>
+<span class="s1">&#39;</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">region</span><span class="p">.</span>
+<span class="nx">If</span><span class="w"> </span><span class="p">((</span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;Location&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">or</span><span class="w"> </span><span class="p">(</span><span class="nx">strRegionState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;new&quot;</span><span class="p">))</span><span class="w"> </span><span class="nx">Then</span><span class="w"> </span>
+<span class="w">   </span><span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">strRegion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CR&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">      </span><span class="nx">strLocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;PASC&quot;</span>
+<span class="w">   </span><span class="nx">ElseIf</span><span class="w"> </span><span class="p">(</span><span class="nx">strRegion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;MN&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">      </span><span class="nx">strLocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;KMKT&quot;</span><span class="w">   </span>
+<span class="w">   </span><span class="nx">ElseIf</span><span class="w"> </span><span class="p">(</span><span class="nx">strRegion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Misc&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">      </span><span class="nx">strLocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;KCQX&quot;</span><span class="w">    </span>
+<span class="w">   </span><span class="nx">Else</span>
+<span class="w">      </span><span class="nx">strLocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="nx">RWBR</span><span class="w"> </span><span class="s2">&quot;No match in region branch...&quot;</span>
 <span class="w">   </span><span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
+<span class="nx">Else</span>
+<span class="w">   </span><span class="nx">strLocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;Location&quot;</span><span class="p">)</span>
+<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
 
-<span class="w">   </span><span class="s1">&#39; Find the time of the most recent station record.</span>
-<span class="s1">   strSQL = &quot;SELECT * FROM FifteenMinData &quot; &amp; _</span>
-<span class="s1">            &quot;WHERE (StationName = &#39;</span><span class="s2">&quot; &amp; strLocation &amp; &quot;</span><span class="s1">&#39;) &quot; &amp; _</span>
-<span class="s1">            &quot;ORDER BY DateTimeStamp DESC &quot; &amp; _</span>
-<span class="s1">            &quot;LIMIT 1&quot;  </span>
+<span class="nx">If</span><span class="w"> </span><span class="p">((</span><span class="nx">strSensorType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Wind40&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">OR</span><span class="w"> </span><span class="p">(</span><span class="nx">strSensorType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Wind36&quot;</span><span class="p">))</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">   </span><span class="nx">strShowImages_command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;showImage();showDirections();&quot;</span>
+<span class="nx">Else</span>
+<span class="w">   </span><span class="nx">strShowImages_command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;showImage();&quot;</span>
+<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
 
-<span class="s1">   Set rstMostRecent = Server.CreateObject(&quot;ADODB.Recordset&quot;)</span>
-<span class="s1">	On Error Resume Next</span>
-<span class="s1">	rstMostRecent.Open strSQL, DBConnection, adOpenStatic, adLockReadOnly, adCmdText</span>
-<span class="s1">	LogError(&quot;Recordset = rstTelem, SQL = &quot; &amp; strSQL_trace)</span>
-<span class="s1">	On Error Goto 0</span>
+<span class="nx">strTimeZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">TimeZone</span><span class="p">(</span><span class="w"> </span><span class="nx">strLocation</span><span class="p">)</span>
 
-<span class="s1">   &#39;</span><span class="w"> </span><span class="nx">Check</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">see</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">there</span><span class="w"> </span><span class="nx">are</span><span class="w"> </span><span class="nx">any</span><span class="w"> </span><span class="nx">records</span><span class="w"> </span><span class="nx">before</span><span class="w"> </span><span class="nx">applying</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">MoveFirst</span><span class="w"> </span><span class="nx">method</span>
-<span class="w">   </span><span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">Not</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">.</span><span class="nx">EOF</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
+<span class="nx">RC</span><span class="w"> </span><span class="s2">&quot;&lt;body onLoad=testJS();&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">strShowImages_command</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">strInitializeTimer</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">_</span>
+<span class="w">      </span><span class="s2">&quot; bgcolor=#FFCC99 link=#008080 vlink=#008080 topmargin=2 style=font-family:Arial;&gt;&quot;</span>
 
-<span class="w">      </span><span class="s1">&#39; If a default value was used for the posted date, correct it if the posted date</span>
-<span class="s1">      &#39;</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">more</span><span class="w"> </span><span class="nx">recent</span><span class="w"> </span><span class="nx">than</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">most</span><span class="w"> </span><span class="nx">recent</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="w">   </span>
-<span class="w">      </span><span class="nx">If</span><span class="w"> </span><span class="nx">blnPostedDate_default</span><span class="w"> </span><span class="nx">and</span><span class="w"> </span><span class="p">(</span><span class="nx">DateDiff</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">dtePostedDate</span><span class="p">,</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;TimeMDY&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
-<span class="w">         </span><span class="nx">dtePostedDate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;TimeMDY&quot;</span><span class="p">)</span>
+<span class="nx">RC</span><span class="w"> </span><span class="s2">&quot;&lt;div class=&#39;pageblock&#39;&gt;&quot;</span>
+
+<span class="s1">&#39; If the region is specified, then make preparations for populating the table</span>
+<span class="s1">&#39;</span><span class="w"> </span><span class="nx">including</span><span class="w"> </span><span class="nx">getting</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">most</span><span class="w"> </span><span class="nx">recent</span><span class="w"> </span><span class="nx">values</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">all</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">sensor</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span>
+
+<span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">(</span><span class="s2">&quot;Region&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
+
+<span class="w">   </span><span class="s1">&#39; If the end date in the chart request is within daylight savings time, then</span>
+<span class="s1">   &#39;</span><span class="w"> </span><span class="nx">set</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">DLS</span><span class="w"> </span><span class="nx">flag</span><span class="p">.</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="mf">3</span><span class="w"> </span><span class="nx">hours</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">make</span><span class="w"> </span><span class="nx">sure</span><span class="w"> </span><span class="nx">you</span><span class="w"> </span><span class="nx">evaluate</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">day</span><span class="w"> </span><span class="nx">after</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">   </span><span class="s1">&#39; 2am change over point.</span>
+
+<span class="s1">   If (DaylightSavingsTime(dateadd(&quot;h&quot;,3,dtePostedDate))) Then </span>
+<span class="s1">      blnDayLightSavingsTime = True</span>
+<span class="s1">   End If</span>
+
+<span class="s1">   &#39;</span><span class="w"> </span><span class="nx">Find</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">time</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">most</span><span class="w"> </span><span class="nx">recent</span><span class="w"> </span><span class="nx">station</span><span class="w"> </span><span class="nx">record</span><span class="p">.</span>
+<span class="w">   </span><span class="nx">strSQL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;SELECT * FROM FifteenMinData &quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">_</span>
+<span class="w">            </span><span class="s2">&quot;WHERE (StationName = &#39;&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">strLocation</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="s2">&quot;&#39;) &quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">_</span>
+<span class="w">            </span><span class="s2">&quot;ORDER BY DateTimeStamp DESC &quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">_</span>
+<span class="w">            </span><span class="s2">&quot;LIMIT 1&quot;</span><span class="w">  </span>
+
+<span class="w">   </span><span class="nb">Set</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Server</span><span class="p">.</span><span class="nx">CreateObject</span><span class="p">(</span><span class="s2">&quot;ADODB.Recordset&quot;</span><span class="p">)</span>
+<span class="w">	</span><span class="nx">On</span><span class="w"> </span><span class="ne">Error</span><span class="w"> </span><span class="nx">Resume</span><span class="w"> </span><span class="nx">Next</span>
+<span class="w">	</span><span class="nx">rstMostRecent</span><span class="p">.</span><span class="nx">Open</span><span class="w"> </span><span class="nx">strSQL</span><span class="p">,</span><span class="w"> </span><span class="nx">DBConnection</span><span class="p">,</span><span class="w"> </span><span class="nx">adOpenStatic</span><span class="p">,</span><span class="w"> </span><span class="nx">adLockReadOnly</span><span class="p">,</span><span class="w"> </span><span class="nx">adCmdText</span>
+<span class="w">	</span><span class="nx">LogError</span><span class="p">(</span><span class="s2">&quot;Recordset = rstTelem, SQL = &quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">strSQL_trace</span><span class="p">)</span>
+<span class="w">	</span><span class="nx">On</span><span class="w"> </span><span class="ne">Error</span><span class="w"> </span><span class="nx">Goto</span><span class="w"> </span><span class="mf">0</span>
+
+<span class="w">   </span><span class="s1">&#39; Check to see if there are any records before applying the MoveFirst method</span>
+<span class="s1">   If (Not rstMostRecent.EOF) Then</span>
+
+<span class="s1">      &#39;</span><span class="w"> </span><span class="nx">If</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="nx">was</span><span class="w"> </span><span class="nx">used</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">posted</span><span class="w"> </span><span class="nx">date</span><span class="p">,</span><span class="w"> </span><span class="nx">correct</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">posted</span><span class="w"> </span><span class="nx">date</span>
+<span class="w">      </span><span class="s1">&#39; is more recent than the most recent data.   </span>
+<span class="s1">      If blnPostedDate_default and (DateDiff(&quot;d&quot;, dtePostedDate, rstMostRecent(&quot;TimeMDY&quot;)) &lt; 0) Then</span>
+<span class="s1">         dtePostedDate = rstMostRecent(&quot;TimeMDY&quot;)</span>
+<span class="s1">      End If</span>
+<span class="s1">      </span>
+<span class="s1">      &#39;</span><span class="nx">Warning</span><span class="o">:</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="nx">variable</span><span class="w"> </span><span class="nx">changes</span><span class="w"> </span><span class="nx">type</span><span class="w"> </span><span class="nx">here</span><span class="p">.</span>
+<span class="w">      </span><span class="nx">strMRTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;TimeMDY&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;TimeHr&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="s2">&quot;:&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;TimeMin&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="nx">strMRTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">FormatDateTime</span><span class="p">(</span><span class="nx">strMRTime</span><span class="p">,</span><span class="w"> </span><span class="nx">vbGeneralDate</span><span class="p">)</span>
+<span class="w">      </span>
+<span class="w">      </span><span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;WindDirection&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">10</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">         </span><span class="nx">strMRWindDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Variable&quot;</span>
+<span class="w">      </span><span class="nx">Else</span>
+<span class="w">         </span><span class="nx">If</span><span class="w"> </span><span class="nx">IsNull</span><span class="p">(</span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;WindDirection&quot;</span><span class="p">))</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">            </span><span class="nx">strMRWindDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
+<span class="w">         </span><span class="nx">Else</span>
+<span class="w">            </span><span class="nx">strMRWindDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;WindDirection&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">_</span>
+<span class="w">                           </span><span class="s2">&quot; deg. [&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">DirectionLabel</span><span class="p">(</span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;WindDirection&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="s2">&quot;]&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">_</span>
+<span class="w">                           </span><span class="s2">&quot; [&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">FormatNumber</span><span class="p">(</span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;WindDirection&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">dblWindNormFactor</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="s2">&quot;]&quot;</span>
+<span class="w">         </span><span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
+<span class="w">      </span><span class="nx">End</span><span class="w"> </span><span class="nx">If</span><span class="w">    </span>
+<span class="w">      </span><span class="nx">If</span><span class="w"> </span><span class="nx">IsNull</span><span class="p">(</span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;WindSpeed&quot;</span><span class="p">))</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">         </span><span class="nx">strMRWindAvg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span><span class="w"> </span>
+<span class="w">         </span><span class="nx">strMRWindMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
+<span class="w">      </span><span class="nx">Else</span>
+<span class="w">         </span><span class="nx">strMRWindAvg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;WindSpeed&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="nx">strMRWindMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;WindGust&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
+
+<span class="w">      </span><span class="nx">If</span><span class="w"> </span><span class="nx">IsNull</span><span class="p">(</span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;Pressure&quot;</span><span class="p">))</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">         </span><span class="nx">strMRPressure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
+<span class="w">      </span><span class="nx">Else</span>
+<span class="w">         </span><span class="nx">strMRPressure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">round</span><span class="p">(</span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;Pressure&quot;</span><span class="p">),</span><span class="mf">2</span><span class="p">)</span>
+<span class="w">      </span><span class="nx">End</span><span class="w"> </span><span class="nx">If</span><span class="w"> </span>
+
+<span class="w">      </span><span class="nx">strMRTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;TempAvg&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">IsNull</span><span class="p">(</span><span class="nx">strMRTemp</span><span class="p">))</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">         </span><span class="nx">strMRTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
 <span class="w">      </span><span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
 <span class="w">      </span>
-<span class="w">      </span><span class="s1">&#39;Warning: this variable changes type here.</span>
-<span class="s1">      strMRTime = rstMostRecent(&quot;TimeMDY&quot;) &amp; &quot; &quot; &amp; rstMostRecent(&quot;TimeHr&quot;) &amp; &quot;:&quot; &amp; rstMostRecent(&quot;TimeMin&quot;)</span>
-<span class="s1">      strMRTime = FormatDateTime(strMRTime, vbGeneralDate)</span>
-<span class="s1">      </span>
-<span class="s1">      If (rstMostRecent(&quot;WindDirection&quot;) = -10) Then</span>
-<span class="s1">         strMRWindDir = &quot;Variable&quot;</span>
-<span class="s1">      Else</span>
-<span class="s1">         If IsNull(rstMostRecent(&quot;WindDirection&quot;)) Then</span>
-<span class="s1">            strMRWindDir = &quot;-&quot;</span>
-<span class="s1">         Else</span>
-<span class="s1">            strMRWindDir = rstMostRecent(&quot;WindDirection&quot;) &amp; _</span>
-<span class="s1">                           &quot; deg. [&quot; &amp; DirectionLabel(rstMostRecent(&quot;WindDirection&quot;)) &amp; &quot;]&quot; &amp; _</span>
-<span class="s1">                           &quot; [&quot; &amp; FormatNumber(rstMostRecent(&quot;WindDirection&quot;) * dblWindNormFactor, 1) &amp; &quot;]&quot;</span>
-<span class="s1">         End If</span>
-<span class="s1">      End If    </span>
-<span class="s1">      If IsNull(rstMostRecent(&quot;WindSpeed&quot;)) Then</span>
-<span class="s1">         strMRWindAvg = &quot;-&quot; </span>
-<span class="s1">         strMRWindMax = &quot;-&quot;</span>
-<span class="s1">      Else</span>
-<span class="s1">         strMRWindAvg = rstMostRecent(&quot;WindSpeed&quot;)</span>
-<span class="s1">         strMRWindMax = rstMostRecent(&quot;WindGust&quot;)</span>
-<span class="s1">      End If</span>
-
-<span class="s1">      If IsNull(rstMostRecent(&quot;Pressure&quot;)) Then</span>
-<span class="s1">         strMRPressure = &quot;-&quot;</span>
-<span class="s1">      Else</span>
-<span class="s1">         strMRPressure = round(rstMostRecent(&quot;Pressure&quot;),2)</span>
-<span class="s1">      End If </span>
-
-<span class="s1">      strMRTemp = rstMostRecent(&quot;TempAvg&quot;)</span>
-<span class="s1">      If (IsNull(strMRTemp)) Then</span>
-<span class="s1">         strMRTemp = &quot;-&quot;</span>
-<span class="s1">      End If</span>
-<span class="s1">      </span>
-<span class="s1">      strMRDewPoint = rstMostRecent(&quot;DewPoint&quot;) </span>
-<span class="s1">      If (IsNull(strMRDewPoint)) Then</span>
-<span class="s1">         strMRDewPoint = &quot;-&quot;</span>
-<span class="s1">      End If</span>
-<span class="s1">   </span>
-<span class="s1">   Else</span>
-<span class="s1">      strMRTime = &quot;-&quot;</span>
-<span class="s1">      strMRWindDir = &quot;-&quot;</span>
-<span class="s1">      strMRWindAvg = &quot;-&quot;</span>
-<span class="s1">      strMRWindMax = &quot;-&quot;</span>
-<span class="s1">      strMRTemp = &quot;-&quot;</span>
-<span class="s1">      strMRPressure = &quot;-&quot;   </span>
-<span class="s1">      strMRDewPoint = &quot;-&quot; </span>
-<span class="s1">   End If</span>
-<span class="s1">   </span>
-<span class="s1">   If rstMostRecent.State = adStateOpen Then rstMostRecent.Close</span>
-<span class="s1">   Set rstMostRecent = Nothing</span>
-<span class="s1">   </span>
-<span class="s1">   strButtonLabel = &quot;Update&quot;</span>
-<span class="s1">   </span>
-<span class="s1">Else</span>
-<span class="s1">   dtePostedDate = &quot;&quot;</span>
-
-<span class="s1">   &#39;</span><span class="w"> </span><span class="nx">Before</span><span class="w"> </span><span class="nx">first</span><span class="w"> </span><span class="nx">post</span><span class="w"> </span><span class="p">(</span><span class="nx">first</span><span class="w"> </span><span class="nx">time</span><span class="w"> </span><span class="ow">in</span><span class="p">)</span><span class="w"> </span><span class="nx">just</span><span class="w"> </span><span class="nx">show</span><span class="w"> </span><span class="nx">these</span><span class="w"> </span><span class="nx">dashes</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">table</span><span class="p">...</span>
-<span class="w">   </span><span class="nx">strMRTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
-<span class="w">   </span><span class="nx">strMRWindDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
-<span class="w">   </span><span class="nx">strMRWindAvg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
-<span class="w">   </span><span class="nx">strMRWindMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
-<span class="w">   </span><span class="nx">strMRTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
-<span class="w">   </span><span class="nx">strMRPressure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
-<span class="w">   </span><span class="nx">strMRDewPoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span><span class="w"> </span>
-
-<span class="w">   </span><span class="nx">strButtonLabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Chart&quot;</span>
+<span class="w">      </span><span class="nx">strMRDewPoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">(</span><span class="s2">&quot;DewPoint&quot;</span><span class="p">)</span><span class="w"> </span>
+<span class="w">      </span><span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">IsNull</span><span class="p">(</span><span class="nx">strMRDewPoint</span><span class="p">))</span><span class="w"> </span><span class="nx">Then</span>
+<span class="w">         </span><span class="nx">strMRDewPoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
+<span class="w">      </span><span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
 <span class="w">   </span>
-<span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
+<span class="w">   </span><span class="nx">Else</span>
+<span class="w">      </span><span class="nx">strMRTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
+<span class="w">      </span><span class="nx">strMRWindDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
+<span class="w">      </span><span class="nx">strMRWindAvg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
+<span class="w">      </span><span class="nx">strMRWindMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
+<span class="w">      </span><span class="nx">strMRTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span>
+<span class="w">      </span><span class="nx">strMRPressure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span><span class="w">   </span>
+<span class="w">      </span><span class="nx">strMRDewPoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span><span class="w"> </span>
+<span class="w">   </span><span class="nx">End</span><span class="w"> </span><span class="nx">If</span>
+<span class="w">   </span>
+<span class="w">   </span><span class="nx">If</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">.</span><span class="nx">State</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">adStateOpen</span><span class="w"> </span><span class="nx">Then</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="p">.</span><span class="nx">Close</span>
+<span class="w">   </span><span class="nb">Set</span><span class="w"> </span><span class="nx">rstMostRecent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Nothing</span>
+<span class="w">   </span>
+<span class="w">   </span><span class="nx">strButtonLabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Update&quot;</span>
+<span class="w">   </span>
+<span class="nx">Else</span>
+<span class="w">   </span><span class="nx">dtePostedDate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
 
-<span class="s1">&#39;===========================================================================</span>
-<span class="s1">&#39;</span><span class="w"> </span><span class="nx">The</span><span class="w"> </span><span class="nx">current</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="nx">table</span><span class="w"> </span><span class="nx">and</span><span class="w"> </span><span class="nx">CONTROLS</span><span class="w"> </span><span class="nx">form</span><span class="p">...</span>
-<span class="s1">&#39;===========================================================================</span>
-<span class="s1">RC &quot;&lt;table border=&#39;</span><span class="mf">1</span><span class="s1">&#39;&gt;&quot;</span>
+<span class="w">   </span><span class="s1">&#39; Before first post (first time in) just show these dashes in the table...</span>
+<span class="s1">   strMRTime = &quot;-&quot;</span>
+<span class="s1">   strMRWindDir = &quot;-&quot;</span>
+<span class="s1">   strMRWindAvg = &quot;-&quot;</span>
+<span class="s1">   strMRWindMax = &quot;-&quot;</span>
+<span class="s1">   strMRTemp = &quot;-&quot;</span>
+<span class="s1">   strMRPressure = &quot;-&quot;</span>
+<span class="s1">   strMRDewPoint = &quot;-&quot; </span>
 
-<span class="s1">&#39;</span><span class="w"> </span><span class="nx">First</span><span class="w"> </span><span class="nx">row</span>
+<span class="s1">   strButtonLabel = &quot;Chart&quot;</span>
+<span class="s1">   </span>
+<span class="s1">End If</span>
 
-<span class="nx">RC</span><span class="w"> </span><span class="s2">&quot;&lt;tr&gt;&quot;</span>
+<span class="s1">&#39;</span><span class="o">===========================================================================</span>
+<span class="s1">&#39; The current data table and CONTROLS form...</span>
+<span class="s1">&#39;</span><span class="o">===========================================================================</span>
+<span class="nx">RC</span><span class="w"> </span><span class="s2">&quot;&lt;table border=&#39;1&#39;&gt;&quot;</span>
 
-<span class="nx">RC</span><span class="w"> </span><span class="s2">&quot;&lt;td class=&#39;data&#39; width=&#39;37%&#39; rowspan=&#39;3&#39;&gt;&quot;</span>
-<span class="s1">&#39;RC &quot;&lt;p align=&#39;</span><span class="nx">center</span><span class="s1">&#39;&gt;&lt;a onmouseover=&quot;&quot;changeRegionAnchorValue(&#39;</span><span class="s2">&quot; &amp; strRegion &amp; &quot;</span><span class="s1">&#39;)&quot;&quot; onmouseout=&quot;&quot;changeRegionAnchorValue(&#39;</span><span class="s2">&quot; &amp; strTitle &amp; &quot;</span><span class="s1">&#39;)&quot;&quot; name=&#39;</span><span class="nx">regionanchor</span><span class="s1">&#39; id=&#39;</span><span class="nx">regionanchor</span><span class="s1">&#39; class=&#39;</span><span class="nx">noline</span><span class="s1">&#39; href=&#39;</span><span class="s2">&quot; &amp; strRegionURL &amp; &quot;</span><span class="s1">&#39;&gt;&quot; &amp; strTitle  &amp; &quot;&lt;/a&gt;&amp;nbsp;&lt;br&gt;&quot;</span>
-<span class="s1">RC &quot;&lt;p align=&#39;</span><span class="nx">center</span><span class="s1">&#39;&gt;&lt;span class=&#39;</span><span class="nx">regionstring</span><span class="s1">&#39;&gt;&quot; &amp; RegionString( strRegion) &amp; &quot;&lt;/span&gt;&lt;br&gt;&quot;</span>
-<span class="s1">RC &quot;&lt;a target=&#39;</span><span class="nx">_blank</span><span class="s1">&#39; href=&#39;</span><span class="nx">http</span><span class="o">:</span><span class="c1">//waconia.timetocode.org/FAQ.htm&#39;&gt;&lt;font size=&#39;2&#39; color=&#39;#FF0000&#39;&gt;Help&lt;/font&gt;&quot; &amp; _</span>
+<span class="s1">&#39; First row</span>
+
+<span class="s1">RC &quot;&lt;tr&gt;&quot;</span>
+
+<span class="s1">RC &quot;&lt;td class=&#39;</span><span class="nx">data</span><span class="s1">&#39; width=&#39;</span><span class="mf">37</span><span class="o">%</span><span class="s1">&#39; rowspan=&#39;</span><span class="mf">3</span><span class="s1">&#39;&gt;&quot;</span>
+<span class="s1">&#39;</span><span class="nx">RC</span><span class="w"> </span><span class="s2">&quot;&lt;p align=&#39;center&#39;&gt;&lt;a onmouseover=&quot;&quot;changeRegionAnchorValue(&#39;&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">strRegion</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="s2">&quot;&#39;)&quot;&quot; onmouseout=&quot;&quot;changeRegionAnchorValue(&#39;&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">strTitle</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="s2">&quot;&#39;)&quot;&quot; name=&#39;regionanchor&#39; id=&#39;regionanchor&#39; class=&#39;noline&#39; href=&#39;&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">strRegionURL</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="s2">&quot;&#39;&gt;&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">strTitle</span><span class="w">  </span><span class="o">&amp;</span><span class="w"> </span><span class="s2">&quot;&lt;/a&gt;&amp;nbsp;&lt;br&gt;&quot;</span>
+<span class="nx">RC</span><span class="w"> </span><span class="s2">&quot;&lt;p align=&#39;center&#39;&gt;&lt;span class=&#39;regionstring&#39;&gt;&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">RegionString</span><span class="p">(</span><span class="w"> </span><span class="nx">strRegion</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="s2">&quot;&lt;/span&gt;&lt;br&gt;&quot;</span>
+<span class="nx">RC</span><span class="w"> </span><span class="s2">&quot;&lt;a target=&#39;_blank&#39; href=&#39;http://waconia.timetocode.org/FAQ.htm&#39;&gt;&lt;font size=&#39;2&#39; color=&#39;#FF0000&#39;&gt;Help&lt;/font&gt;&quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">_</span>
 <span class="w">                     </span><span class="s2">&quot;&lt;font size=&#39;2&#39; color=&#39;#008080&#39;&gt;: FAQs&lt;/font&gt;&lt;/a&gt;&amp;nbsp;&quot;</span>
 
 <span class="nx">If</span><span class="w"> </span><span class="p">(</span><span class="nx">strRegion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;MN&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">Then</span>
@@ -1765,7 +1764,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 
 <span class="s1">RC &quot;&lt;br&gt;&quot;</span>
 <span class="s1">&#39;</span><span class="w"> </span><span class="nx">Note</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">GET</span><span class="w"> </span><span class="nx">method</span><span class="w"> </span><span class="nx">invokes</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">QueryString</span><span class="w"> </span><span class="nx">approach</span><span class="w"> </span><span class="nx">and</span><span class="w"> </span><span class="nx">submits</span><span class="w"> </span><span class="nx">form</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">URL</span><span class="p">.</span>
-<span class="nx">RC</span><span class="w"> </span><span class="s2">&quot;&lt;form method=&#39;GET&#39; accept-charset=&#39;utf-8&#39; action=&#39;rosy.asp&#39; name=&#39;ChartingParameters&#39; id=&#39;ChartingParameters&#39;&gt;&quot;</span>
+<span class="nx">RC</span><span class="w"> </span><span class="s2">&quot;&lt;form method=&#39;GET&#39; accept-charset=&#39;utf-8&#39; action=&#39;rosy-mysql.asp&#39; name=&#39;ChartingParameters&#39; id=&#39;ChartingParameters&#39;&gt;&quot;</span>
 
 <span class="s1">&#39; Removing the &quot;name&quot; parameter here avoids submitting this with the form.</span>
 <span class="s1">&#39;</span><span class="w"> </span><span class="nx">Another</span><span class="w"> </span><span class="nx">option</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">use</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="w"> </span><span class="nx">instead</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="s2">&quot;input&quot;</span><span class="p">.</span>

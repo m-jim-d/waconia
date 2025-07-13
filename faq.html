@@ -161,45 +161,63 @@
 	<p><a name="DataSources"></a>What are the data sources?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
 	<blockquote>
 		<p>Data is collected from four sources:</p>
-      <ul>
-         <li type="disc">Waconia's first data source was the HMS web page (<a class="page" href="http://www.hanford.gov/c.cfm/hms/realtime.cfm">http://www.hanford.gov/c.cfm/hms/realtime.cfm</a>).&nbsp;A gleaner script runs every&nbsp;5 minutes and collects all the 
-         text from that page and then parses out wind, temperature, and pressure 
-         data.&nbsp;This data is written to a MS Access database. Here is a <a class="page" href="http://www.hanford.gov/page.cfm/HMS/RealTimeMetData">map</a> 
-         of the 30 HMS sites.<br>
-         (Perl 
-         and Python scripts: <a class="page" href="gleaners/geturl.html">geturl.pl</a>, <a class="page" href="gleaners/pythonPostToSheet.html">pythonPostToSheet.py</a>, <a class="page" href="gleaners/pythonURLfetch.html">pythonURLfetch.py</a>)<br>
-         <br></li>
-         <li type="disc">Later, NOAA data was added from
-         <a class="page" href="http://forecast.weather.gov/product.php?site=CRH&amp;product=RWR&amp;issuedby=WA">
-         Washington</a> 
-         and 
-         <a class="page" href="http://forecast.weather.gov/product.php?site=CRH&amp;product=RWR&amp;issuedby=OR">
-         Oregon</a> pages.&nbsp;These NOAA sites provide data for Portland, The Dalles, and other cities 
-         in the Columbia river basin not covered by HMS.&nbsp; This additional gleaning is used to make the
-         <a class="page scroll-link" data-scroll-target="11" href="#">delta-P</a> charting option available.<br>
-         (Perl 
-         and Python scripts: <a class="page" href="gleaners/getnoaa.html">getnoaa.pl</a>, <a class="page" href="gleaners/pythonPostToSheet.html">pythonPostToSheet.py</a>)<br><br></li>
-         <li type="disc">Started data collection for Minnesota in 2006. The 
-         XML feeder is
-         <a class="page" href="https://aviationweather.gov">https://aviationweather.gov</a>. 
-         Here is an example single-station
-         <a class="page" href="https://aviationweather.gov/cgi-bin/data/dataserver.php?dataSource=metars&requestType=retrieve&format=xml&mostrecentforeachstation=constraint&hoursBeforeNow=2&stationString=KMKT">
-         call</a> to the feeder.
-         <!--
-         and a list of the available
-         <a class="page" href="https://aviationweather.gov/docs/metar/stations.txt" target="_blank">stations</a>. 
-         -->
-         A Google Earth image, <a class="page" href="pictures/mn_sites.jpg">MN sites</a>, shows the 
-         airports observed by this gleaner. Faribault should be handy for those that sail at Cannon Lake.<br>
-         (Python script: <a class="page" href="gleaners/ws_new.html">ws_new.py</a>)<br>&nbsp;</li>
-         <li type="disc">In 2020, added collection from the Mesonet 
-         JSON feeder. Here are links to 
-         <a class="page" href="https://synopticdata.com/" target="_blank">Synoptic Data</a>, 
-         the <a class="page" href="https://developers.synopticdata.com/mesonet/" target="_blank">API</a> 
-         and the <a class="page" href="https://mesowest.utah.edu/cgi-bin/droman/mesomap.cgi?state=WA&amp;rawsflag=3" target="_blank">MesoWest</a> station viewer.<br>
-         (Python script: <a class="page" href="gleaners/ws_richland_json.html">ws_richland_json.py</a>)<br>
-         </li>
-      </ul>
+	<ul>
+		<li type="disc">Waconia's first data source was the HMS web page (<a class="page"
+				href="http://www.hanford.gov/c.cfm/hms/realtime.cfm">http://www.hanford.gov/c.cfm/hms/realtime.cfm</a>).&nbsp;A
+			gleaner script runs every&nbsp;5 minutes and collects all the text from
+			that page and then parses out wind, temperature, and pressure
+			data.&nbsp;This data is written to a MS Access database. Here is a <a class="page"
+				href="http://www.hanford.gov/page.cfm/HMS/RealTimeMetData">map</a>
+			of the 30 HMS sites.<br>
+			(Perl and Python scripts:
+			<a class="page" href="gleaners/wgl_perl_hanford.html">hanford.pl</a>,
+			<a class="page" href="gleaners/wgl_perl_module.html">module.pm</a>,
+			<a class="page" href="gleaners/wgl_perl_postToSheet.html">postToSheet.py</a>,
+			<a class="page" href="gleaners/wgl_perl_hanford_URLfetch.html">URLfetch.py</a>)<br>
+			<br>
+		</li>
+		<li type="disc">Later, NOAA data was added from
+			<a class="page" href="http://forecast.weather.gov/product.php?site=CRH&amp;product=RWR&amp;issuedby=WA">
+				Washington</a>
+			and
+			<a class="page" href="http://forecast.weather.gov/product.php?site=CRH&amp;product=RWR&amp;issuedby=OR">
+				Oregon</a> pages.&nbsp;These NOAA sites provide data for Portland, The Dalles, and other cities
+			in the Columbia river basin not covered by HMS.&nbsp; This additional gleaning is used to make the
+			<a class="page scroll-link" data-scroll-target="11" href="#">delta-P</a> charting option available.<br>
+			(Perl and Python scripts: 
+			<a class="page" href="gleaners/wgl_perl_noaa.html">noaa.pl</a>, 
+			<a class="page" href="gleaners/wgl_perl_module.html">module.pm</a>,
+			<a class="page" href="gleaners/wgl_perl_postToSheet.html">postToSheet.py</a>)<br>
+			<br>
+		</li>
+		<li type="disc">Started data collection for Minnesota in 2006. The
+			XML feeder is
+			<a class="page" href="https://aviationweather.gov">https://aviationweather.gov</a>.
+			Here is an example single-station
+			<a class="page"
+				href="https://aviationweather.gov/cgi-bin/data/dataserver.php?dataSource=metars&requestType=retrieve&format=xml&mostrecentforeachstation=constraint&hoursBeforeNow=2&stationString=KMKT">
+				call</a> to the feeder.
+			<!--
+	         and a list of the available
+	         <a class="page" href="https://aviationweather.gov/docs/metar/stations.txt" target="_blank">stations</a>. 
+	         -->
+			A Google Earth image, <a class="page" href="pictures/mn_sites.jpg">MN sites</a>, shows the
+			airports observed by this gleaner. Faribault should be handy for those that sail at Cannon Lake.<br>
+			(Python scripts: <a class="page" href="gleaners/wgl_python_aw.html">aw.py</a>, 
+			                 <a class="page" href="gleaners/wgl_python_module.html">module.py</a>)<br>
+							 <br>
+		</li>
+		<li type="disc">In 2020, added collection from the Mesonet
+			JSON feeder. Here are links to
+			<a class="page" href="https://synopticdata.com/" target="_blank">Synoptic Data</a>,
+			the <a class="page" href="https://developers.synopticdata.com/mesonet/" target="_blank">API</a>
+			and the <a class="page" href="https://mesowest.utah.edu/cgi-bin/droman/mesomap.cgi?state=WA&amp;rawsflag=3"
+				target="_blank">MesoWest</a> station viewer.<br>
+			(Python scripts: <a class="page" href="gleaners/wgl_python_meso.html">meso.py</a>,
+			                 <a class="page" href="gleaners/wgl_python_module.html">module.py</a>)<br>
+
+		</li>
+	</ul>
 	</blockquote>
 	
 	<p><a name="Install"></a>How do I install the original charting software?&nbsp; <a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
