@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
+<html>
+<head>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<title>Exported from Notepad++</title>
+<style type="text/css">
+span {
+	font-family: 'Courier New';
+	font-size: 10pt;
+	color: #E0E2E4;
+}
+.sc0 {
+}
+.sc1 {
+	font-weight: bold;
+	color: #8CBBAD;
+}
+.sc15 {
+	font-weight: bold;
+	color: #D955C1;
+}
+.sc80 {
+}
+.sc81 {
+}
+.sc82 {
+	color: #66747B;
+}
+.sc83 {
+	color: #FFCD22;
+}
+.sc84 {
+	font-weight: bold;
+	color: #93C763;
+}
+.sc85 {
+	color: #EC7600;
+}
+.sc86 {
+}
+</style>
+</head>
+<body>
+<div style="float: left; white-space: pre; line-height: 1; background: #293134; "><span class="sc1">&lt;html&gt;</span><span class="sc0">
+</span><span class="sc1">&lt;head&gt;</span><span class="sc0">
+   </span><span class="sc1">&lt;title&gt;</span><span class="sc0">ASPChart Test Page</span><span class="sc1">&lt;/title&gt;</span><span class="sc0">
+</span><span class="sc1">&lt;/head&gt;</span><span class="sc0">
+</span><span class="sc1">&lt;body&gt;</span><span class="sc0">
+
+</span><span class="sc1">&lt;p&gt;</span><span class="sc0">
+Test page for passing data to the chart via an array.
+</span><span class="sc1">&lt;/p&gt;</span><span class="sc0">
+
+</span><span class="sc15">&lt;%</span><span class="sc80">
+
+</span><span class="sc86">Response.write</span><span class="sc81"> </span><span class="sc86">now</span><span class="sc81">() &amp; </span><span class="sc85">"&lt;/br&gt;&lt;/br&gt;"</span><span class="sc81">
+
+</span><span class="sc84">Dim</span><span class="sc81"> </span><span class="sc86">x_value</span><span class="sc81">, </span><span class="sc86">y_value</span><span class="sc81">, </span><span class="sc86">xy_points</span><span class="sc81">, </span><span class="sc86">n_points</span><span class="sc81">, </span><span class="sc86">Chart</span><span class="sc81">
+
+</span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">Chart</span><span class="sc81"> = </span><span class="sc86">Server.CreateObject</span><span class="sc81">(</span><span class="sc85">"AspChart.Chart"</span><span class="sc81">)
+
+</span><span class="sc86">Chart.AddSeries</span><span class="sc81"> </span><span class="sc83">6</span><span class="sc81">
+
+</span><span class="sc86">n_points</span><span class="sc81"> = </span><span class="sc83">300</span><span class="sc81">
+</span><span class="sc84">ReDim</span><span class="sc81"> </span><span class="sc86">xy_points</span><span class="sc81">( </span><span class="sc86">n_points</span><span class="sc81">)
+
+</span><span class="sc82">' Generate some random plotting points.</span><span class="sc81">
+</span><span class="sc84">For</span><span class="sc81"> </span><span class="sc86">i</span><span class="sc81"> = </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc84">To</span><span class="sc81"> </span><span class="sc86">n_points</span><span class="sc81">
+   </span><span class="sc86">Randomize</span><span class="sc81">
+   </span><span class="sc86">x_value</span><span class="sc81"> = </span><span class="sc86">Rnd</span><span class="sc81"> * </span><span class="sc83">100</span><span class="sc81">
+   </span><span class="sc86">Randomize</span><span class="sc81">
+   </span><span class="sc86">y_value</span><span class="sc81"> = </span><span class="sc86">Rnd</span><span class="sc81"> * </span><span class="sc83">100</span><span class="sc81">
+   </span><span class="sc86">xy_points</span><span class="sc81">(</span><span class="sc86">i</span><span class="sc81">) = </span><span class="sc86">array</span><span class="sc81">(</span><span class="sc86">x_value</span><span class="sc81">, </span><span class="sc86">y_value</span><span class="sc81">, </span><span class="sc85">""</span><span class="sc81">, </span><span class="sc86">vbWhite</span><span class="sc81">)
+</span><span class="sc84">Next</span><span class="sc81">
+
+</span><span class="sc86">Chart.View3D</span><span class="sc81"> = </span><span class="sc84">false</span><span class="sc81">
+</span><span class="sc86">Chart.LegendVisible</span><span class="sc81"> = </span><span class="sc84">false</span><span class="sc81">
+
+</span><span class="sc86">Chart.AddXYArray</span><span class="sc81"> </span><span class="sc86">xy_points</span><span class="sc81">
+
+</span><span class="sc82">' Set the filename, save the image, and write the image tag.</span><span class="sc81">
+</span><span class="sc86">Chart.FileName</span><span class="sc81"> = </span><span class="sc86">request.servervariables</span><span class="sc81">(</span><span class="sc85">"APPL_PHYSICAL_PATH"</span><span class="sc81">) &amp; </span><span class="sc85">"\chart-images\test-chart.jpg"</span><span class="sc81">
+</span><span class="sc86">Chart.SaveChart</span><span class="sc81">
+</span><span class="sc86">Response.Write</span><span class="sc81"> </span><span class="sc85">"&lt;img src='chart-images/test-chart.jpg'&gt;"</span><span class="sc81">
+
+</span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">Chart</span><span class="sc81"> = </span><span class="sc84">nothing</span><span class="sc81">
+</span><span class="sc15">%&gt;</span><span class="sc0">
+
+</span><span class="sc1">&lt;/body&gt;</span><span class="sc0">
+</span><span class="sc1">&lt;/html&gt;</span></div></body>
+</html>

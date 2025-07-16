@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
+<html>
+<head>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<title>Exported from Notepad++</title>
+<style type="text/css">
+span {
+	font-family: 'Courier New';
+	font-size: 10pt;
+	color: #E0E2E4;
+}
+.sc15 {
+	font-weight: bold;
+	color: #D955C1;
+}
+.sc80 {
+}
+.sc81 {
+}
+.sc82 {
+	color: #66747B;
+}
+.sc83 {
+	color: #FFCD22;
+}
+.sc84 {
+	font-weight: bold;
+	color: #93C763;
+}
+.sc85 {
+	color: #EC7600;
+}
+.sc86 {
+}
+</style>
+</head>
+<body>
+<div style="float: left; white-space: pre; line-height: 1; background: #293134; "><span class="sc15">&lt;%</span><span class="sc80">
+
+</span><span class="sc82">' rosy_utilities.asp</span><span class="sc81">
+</span><span class="sc82">' Author: Jim Miller</span><span class="sc81">
+
+</span><span class="sc82">' Running Average Class</span><span class="sc81">
+</span><span class="sc84">Class</span><span class="sc81"> </span><span class="sc86">RunningAverage</span><span class="sc81">
+    </span><span class="sc84">Private</span><span class="sc81"> </span><span class="sc86">queue</span><span class="sc81">
+    </span><span class="sc84">Private</span><span class="sc81"> </span><span class="sc86">n_StackSize</span><span class="sc81">
+    </span><span class="sc84">Private</span><span class="sc81"> </span><span class="sc86">recordCount</span><span class="sc81">
+    </span><span class="sc84">Private</span><span class="sc81"> </span><span class="sc86">recordIndex</span><span class="sc81">
+    
+    </span><span class="sc84">Private</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">Class_Initialize</span><span class="sc81">()
+        </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">queue</span><span class="sc81"> = </span><span class="sc86">CreateObject</span><span class="sc81">(</span><span class="sc85">"System.Collections.ArrayList"</span><span class="sc81">)
+        </span><span class="sc86">n_StackSize</span><span class="sc81"> = </span><span class="sc83">3</span><span class="sc81"> </span><span class="sc82">' Default</span><span class="sc81">
+        </span><span class="sc86">recordCount</span><span class="sc81"> = </span><span class="sc83">0</span><span class="sc81">
+        </span><span class="sc86">recordIndex</span><span class="sc81"> = </span><span class="sc83">0</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+    
+    </span><span class="sc84">Public</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">Initialize</span><span class="sc81">(</span><span class="sc86">stackSize</span><span class="sc81">)
+        </span><span class="sc86">n_StackSize</span><span class="sc81"> = </span><span class="sc86">stackSize</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+    
+    </span><span class="sc84">Public</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">Reset</span><span class="sc81">(</span><span class="sc86">count</span><span class="sc81">)
+        </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">queue</span><span class="sc81"> = </span><span class="sc86">CreateObject</span><span class="sc81">(</span><span class="sc85">"System.Collections.ArrayList"</span><span class="sc81">)
+        </span><span class="sc86">recordIndex</span><span class="sc81"> = </span><span class="sc83">0</span><span class="sc81">
+        </span><span class="sc86">recordCount</span><span class="sc81"> = </span><span class="sc86">count</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+    
+    </span><span class="sc84">Public</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81"> </span><span class="sc86">Update</span><span class="sc81">(</span><span class="sc86">newValue</span><span class="sc81">)
+        </span><span class="sc84">Dim</span><span class="sc81"> </span><span class="sc86">total</span><span class="sc81">, </span><span class="sc86">n_FromEnd</span><span class="sc81">, </span><span class="sc86">average</span><span class="sc81">, </span><span class="sc86">i</span><span class="sc81">, </span><span class="sc86">maxQueueSize</span><span class="sc81">
+        </span><span class="sc86">total</span><span class="sc81"> = </span><span class="sc83">0</span><span class="sc81">
+        </span><span class="sc86">recordIndex</span><span class="sc81"> = </span><span class="sc86">recordIndex</span><span class="sc81"> + </span><span class="sc83">1</span><span class="sc81">
+        
+        </span><span class="sc82">' Calculate how many points from the end we are</span><span class="sc81">
+        </span><span class="sc86">n_FromEnd</span><span class="sc81"> = </span><span class="sc86">recordCount</span><span class="sc81"> - </span><span class="sc86">recordIndex</span><span class="sc81">
+
+        </span><span class="sc82">' Special case for the last point - return raw value</span><span class="sc81">
+        </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">n_FromEnd</span><span class="sc81"> = </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+            </span><span class="sc82">' For the last point, just return the raw value</span><span class="sc81">
+            </span><span class="sc86">Update</span><span class="sc81"> = </span><span class="sc86">newValue</span><span class="sc81">
+            </span><span class="sc82">' Still add to queue for completeness</span><span class="sc81">
+            </span><span class="sc86">queue.Add</span><span class="sc81"> </span><span class="sc86">newValue</span><span class="sc81">
+            </span><span class="sc84">Exit</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81">
+        </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+        
+        </span><span class="sc82">' Add the new value to the queue</span><span class="sc81">
+        </span><span class="sc86">queue.Add</span><span class="sc81"> </span><span class="sc86">newValue</span><span class="sc81">
+        
+        </span><span class="sc82">' For normal processing (not near the end), maintain the standard stack size</span><span class="sc81">
+        </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">n_FromEnd</span><span class="sc81"> &gt; </span><span class="sc83">1</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+            </span><span class="sc82">' Standard case - maintain stack size</span><span class="sc81">
+            </span><span class="sc86">maxQueueSize</span><span class="sc81"> = </span><span class="sc86">n_StackSize</span><span class="sc81">
+        </span><span class="sc84">ElseIf</span><span class="sc81"> </span><span class="sc86">n_FromEnd</span><span class="sc81"> = </span><span class="sc83">1</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+            </span><span class="sc82">' Second-to-last point - use 2-point average</span><span class="sc81">
+            </span><span class="sc86">maxQueueSize</span><span class="sc81"> = </span><span class="sc83">2</span><span class="sc81">
+        </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+        
+        </span><span class="sc82">' Trim the queue to the appropriate size</span><span class="sc81">
+        </span><span class="sc84">While</span><span class="sc81"> </span><span class="sc86">queue.Count</span><span class="sc81"> &gt; </span><span class="sc86">maxQueueSize</span><span class="sc81">
+            </span><span class="sc86">queue.RemoveAt</span><span class="sc81"> </span><span class="sc83">0</span><span class="sc81">
+        </span><span class="sc84">Wend</span><span class="sc81">
+        
+        </span><span class="sc82">' Sum the values</span><span class="sc81">
+        </span><span class="sc84">For</span><span class="sc81"> </span><span class="sc86">i</span><span class="sc81"> = </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc84">To</span><span class="sc81"> </span><span class="sc86">queue.Count</span><span class="sc81"> - </span><span class="sc83">1</span><span class="sc81">
+            </span><span class="sc86">total</span><span class="sc81"> = </span><span class="sc86">total</span><span class="sc81"> + </span><span class="sc86">queue</span><span class="sc81">(</span><span class="sc86">i</span><span class="sc81">)
+        </span><span class="sc84">Next</span><span class="sc81">
+        
+        </span><span class="sc82">' Calculate the average</span><span class="sc81">
+        </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">queue.Count</span><span class="sc81"> &gt; </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+            </span><span class="sc86">average</span><span class="sc81"> = </span><span class="sc86">total</span><span class="sc81"> / </span><span class="sc86">queue.Count</span><span class="sc81">
+        </span><span class="sc84">Else</span><span class="sc81">
+            </span><span class="sc86">average</span><span class="sc81"> = </span><span class="sc83">0</span><span class="sc81">
+        </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+        
+        </span><span class="sc86">Update</span><span class="sc81"> = </span><span class="sc86">average</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81">
+    
+    </span><span class="sc84">Public</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81"> </span><span class="sc86">GetRecordIndex</span><span class="sc81">()
+        </span><span class="sc86">GetRecordIndex</span><span class="sc81"> = </span><span class="sc86">recordIndex</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81">
+    
+    </span><span class="sc84">Public</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81"> </span><span class="sc86">GetQueueCount</span><span class="sc81">()
+        </span><span class="sc86">GetQueueCount</span><span class="sc81"> = </span><span class="sc86">queue.Count</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81">
+    
+    </span><span class="sc84">Private</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">Class_Terminate</span><span class="sc81">()
+        </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">queue</span><span class="sc81"> = </span><span class="sc84">Nothing</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+</span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Class</span><span class="sc81">
+
+</span><span class="sc82">' Running Average for Direction Data</span><span class="sc81">
+</span><span class="sc84">Class</span><span class="sc81"> </span><span class="sc86">RunningAverage_Dir</span><span class="sc81">
+    </span><span class="sc84">Private</span><span class="sc81"> </span><span class="sc86">RA_x</span><span class="sc81">
+    </span><span class="sc84">Private</span><span class="sc81"> </span><span class="sc86">RA_y</span><span class="sc81">
+    </span><span class="sc84">Private</span><span class="sc81"> </span><span class="sc86">n_StackSize</span><span class="sc81">
+    
+    </span><span class="sc84">Private</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">Class_Initialize</span><span class="sc81">()
+        </span><span class="sc86">n_StackSize</span><span class="sc81"> = </span><span class="sc83">3</span><span class="sc81"> </span><span class="sc82">' Default</span><span class="sc81">
+        </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">RA_x</span><span class="sc81"> = </span><span class="sc84">New</span><span class="sc81"> </span><span class="sc86">RunningAverage</span><span class="sc81">
+        </span><span class="sc86">RA_x.Initialize</span><span class="sc81"> </span><span class="sc86">n_StackSize</span><span class="sc81">
+        </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">RA_y</span><span class="sc81"> = </span><span class="sc84">New</span><span class="sc81"> </span><span class="sc86">RunningAverage</span><span class="sc81">
+        </span><span class="sc86">RA_y.Initialize</span><span class="sc81"> </span><span class="sc86">n_StackSize</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+    
+    </span><span class="sc84">Public</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">Initialize</span><span class="sc81">(</span><span class="sc86">stackSize</span><span class="sc81">)
+        </span><span class="sc86">n_StackSize</span><span class="sc81"> = </span><span class="sc86">stackSize</span><span class="sc81">
+        </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">RA_x</span><span class="sc81"> = </span><span class="sc84">New</span><span class="sc81"> </span><span class="sc86">RunningAverage</span><span class="sc81">
+        </span><span class="sc86">RA_x.Initialize</span><span class="sc81"> </span><span class="sc86">n_StackSize</span><span class="sc81">
+        </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">RA_y</span><span class="sc81"> = </span><span class="sc84">New</span><span class="sc81"> </span><span class="sc86">RunningAverage</span><span class="sc81">
+        </span><span class="sc86">RA_y.Initialize</span><span class="sc81"> </span><span class="sc86">n_StackSize</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+    
+    </span><span class="sc84">Public</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">Reset</span><span class="sc81">(</span><span class="sc86">count</span><span class="sc81">)
+        </span><span class="sc86">RA_x.Reset</span><span class="sc81"> </span><span class="sc86">count</span><span class="sc81">
+        </span><span class="sc86">RA_y.Reset</span><span class="sc81"> </span><span class="sc86">count</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+    
+    </span><span class="sc84">Public</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81"> </span><span class="sc86">Update</span><span class="sc81">(</span><span class="sc86">newDir_deg</span><span class="sc81">)
+        </span><span class="sc84">Dim</span><span class="sc81"> </span><span class="sc86">x</span><span class="sc81">, </span><span class="sc86">y</span><span class="sc81">, </span><span class="sc86">x_avg</span><span class="sc81">, </span><span class="sc86">y_avg</span><span class="sc81">, </span><span class="sc86">averageDir_deg</span><span class="sc81">
+        
+        </span><span class="sc82">' Convert degrees to radians and get components</span><span class="sc81">
+        </span><span class="sc86">x</span><span class="sc81"> = </span><span class="sc86">Cos</span><span class="sc81">(</span><span class="sc86">newDir_deg</span><span class="sc81"> * (</span><span class="sc83">3.14159265358979</span><span class="sc81"> / </span><span class="sc83">180.0</span><span class="sc81">))
+        </span><span class="sc86">y</span><span class="sc81"> = </span><span class="sc86">Sin</span><span class="sc81">(</span><span class="sc86">newDir_deg</span><span class="sc81"> * (</span><span class="sc83">3.14159265358979</span><span class="sc81"> / </span><span class="sc83">180.0</span><span class="sc81">))
+        
+        </span><span class="sc82">' Update components</span><span class="sc81">
+        </span><span class="sc86">x_avg</span><span class="sc81"> = </span><span class="sc86">RA_x.Update</span><span class="sc81">(</span><span class="sc86">x</span><span class="sc81">)
+        </span><span class="sc86">y_avg</span><span class="sc81"> = </span><span class="sc86">RA_y.Update</span><span class="sc81">(</span><span class="sc86">y</span><span class="sc81">)
+        
+        </span><span class="sc82">' Calculate average angle</span><span class="sc81">
+        </span><span class="sc86">averageDir_deg</span><span class="sc81"> = </span><span class="sc86">Atn2</span><span class="sc81">(</span><span class="sc86">y_avg</span><span class="sc81">, </span><span class="sc86">x_avg</span><span class="sc81">) * (</span><span class="sc83">180.0</span><span class="sc81"> / </span><span class="sc83">3.14159265358979</span><span class="sc81">)
+        
+        </span><span class="sc82">' Ensure positive angles</span><span class="sc81">
+        </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">averageDir_deg</span><span class="sc81"> &lt; </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+            </span><span class="sc86">Update</span><span class="sc81"> = </span><span class="sc86">averageDir_deg</span><span class="sc81"> + </span><span class="sc83">360.0</span><span class="sc81">
+        </span><span class="sc84">Else</span><span class="sc81">
+            </span><span class="sc86">Update</span><span class="sc81"> = </span><span class="sc86">averageDir_deg</span><span class="sc81">
+        </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81">
+    
+    </span><span class="sc84">Private</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81"> </span><span class="sc86">Class_Terminate</span><span class="sc81">()
+        </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">RA_x</span><span class="sc81"> = </span><span class="sc84">Nothing</span><span class="sc81">
+        </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">RA_y</span><span class="sc81"> = </span><span class="sc84">Nothing</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Sub</span><span class="sc81">
+</span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Class</span><span class="sc81">
+
+</span><span class="sc82">' Helper function for arctangent with correct quadrant</span><span class="sc81">
+</span><span class="sc84">Function</span><span class="sc81"> </span><span class="sc86">Atn2</span><span class="sc81">(</span><span class="sc86">y</span><span class="sc81">, </span><span class="sc86">x</span><span class="sc81">)
+    </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">x</span><span class="sc81"> = </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+        </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">y</span><span class="sc81"> &gt; </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+            </span><span class="sc86">Atn2</span><span class="sc81"> = </span><span class="sc83">1.5707963267949</span><span class="sc81"> </span><span class="sc82">' PI/2</span><span class="sc81">
+        </span><span class="sc84">ElseIf</span><span class="sc81"> </span><span class="sc86">y</span><span class="sc81"> &lt; </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+            </span><span class="sc86">Atn2</span><span class="sc81"> = -</span><span class="sc83">1.5707963267949</span><span class="sc81"> </span><span class="sc82">' -PI/2</span><span class="sc81">
+        </span><span class="sc84">Else</span><span class="sc81">
+            </span><span class="sc86">Atn2</span><span class="sc81"> = </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc82">' Undefined, but return 0</span><span class="sc81">
+        </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+    </span><span class="sc84">Else</span><span class="sc81">
+        </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">x</span><span class="sc81"> &gt; </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+            </span><span class="sc86">Atn2</span><span class="sc81"> = </span><span class="sc86">Atn</span><span class="sc81">(</span><span class="sc86">y</span><span class="sc81"> / </span><span class="sc86">x</span><span class="sc81">)
+        </span><span class="sc84">ElseIf</span><span class="sc81"> </span><span class="sc86">x</span><span class="sc81"> &lt; </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+            </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">y</span><span class="sc81"> &gt;= </span><span class="sc83">0</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+                </span><span class="sc86">Atn2</span><span class="sc81"> = </span><span class="sc86">Atn</span><span class="sc81">(</span><span class="sc86">y</span><span class="sc81"> / </span><span class="sc86">x</span><span class="sc81">) + </span><span class="sc83">3.14159265358979</span><span class="sc81"> </span><span class="sc82">' PI</span><span class="sc81">
+            </span><span class="sc84">Else</span><span class="sc81">
+                </span><span class="sc86">Atn2</span><span class="sc81"> = </span><span class="sc86">Atn</span><span class="sc81">(</span><span class="sc86">y</span><span class="sc81"> / </span><span class="sc86">x</span><span class="sc81">) - </span><span class="sc83">3.14159265358979</span><span class="sc81"> </span><span class="sc82">' -PI</span><span class="sc81">
+            </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+        </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+</span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81">
+
+</span><span class="sc84">Function</span><span class="sc81"> </span><span class="sc86">DaylightSavingsTime</span><span class="sc81">(</span><span class="sc86">dateToCheck</span><span class="sc81">)
+    </span><span class="sc82">'rwbr "in DaylightSavingsTime, dateToCheck: " &amp; dateToCheck</span><span class="sc81">
+    
+    </span><span class="sc82">' Implementation for US Daylight Saving Time rules (2007 and later)</span><span class="sc81">
+    </span><span class="sc84">Dim</span><span class="sc81"> </span><span class="sc86">yearVal</span><span class="sc81">, </span><span class="sc86">dstStart</span><span class="sc81">, </span><span class="sc86">dstEnd</span><span class="sc81">, </span><span class="sc86">dateObj</span><span class="sc81">
+    
+    </span><span class="sc82">' Convert string to date if needed</span><span class="sc81">
+    </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">IsDate</span><span class="sc81">(</span><span class="sc86">dateToCheck</span><span class="sc81">) </span><span class="sc84">Then</span><span class="sc81">
+        </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">VarType</span><span class="sc81">(</span><span class="sc86">dateToCheck</span><span class="sc81">) = </span><span class="sc83">8</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81"> </span><span class="sc82">' VT_BSTR (String)</span><span class="sc81">
+            </span><span class="sc86">dateObj</span><span class="sc81"> = </span><span class="sc84">CDate</span><span class="sc81">(</span><span class="sc86">dateToCheck</span><span class="sc81">)
+        </span><span class="sc84">Else</span><span class="sc81">
+            </span><span class="sc86">dateObj</span><span class="sc81"> = </span><span class="sc86">dateToCheck</span><span class="sc81">
+        </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+    </span><span class="sc84">Else</span><span class="sc81">
+        </span><span class="sc82">' Invalid date format</span><span class="sc81">
+        </span><span class="sc86">DaylightSavingsTime</span><span class="sc81"> = </span><span class="sc84">False</span><span class="sc81">
+        </span><span class="sc84">Exit</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+    
+    </span><span class="sc86">yearVal</span><span class="sc81"> = </span><span class="sc86">Year</span><span class="sc81">(</span><span class="sc86">dateObj</span><span class="sc81">)
+
+    </span><span class="sc82">' Second Sunday in March to First Sunday in November (US rules since 2007)</span><span class="sc81">
+    </span><span class="sc86">dstStart</span><span class="sc81"> = </span><span class="sc86">GetNthSunday</span><span class="sc81">(</span><span class="sc86">yearVal</span><span class="sc81">, </span><span class="sc83">3</span><span class="sc81">, </span><span class="sc83">2</span><span class="sc81">) </span><span class="sc82">' 2nd Sunday in March</span><span class="sc81">
+    </span><span class="sc86">dstEnd</span><span class="sc81"> = </span><span class="sc86">GetNthSunday</span><span class="sc81">(</span><span class="sc86">yearVal</span><span class="sc81">, </span><span class="sc83">11</span><span class="sc81">, </span><span class="sc83">1</span><span class="sc81">) </span><span class="sc82">' 1st Sunday in November</span><span class="sc81">
+    
+    </span><span class="sc82">' Add time component (2am)</span><span class="sc81">
+    </span><span class="sc86">dstStart</span><span class="sc81"> = </span><span class="sc86">dstStart</span><span class="sc81"> + </span><span class="sc86">TimeSerial</span><span class="sc81">(</span><span class="sc83">2</span><span class="sc81">, </span><span class="sc83">0</span><span class="sc81">, </span><span class="sc83">0</span><span class="sc81">)
+    </span><span class="sc86">dstEnd</span><span class="sc81"> = </span><span class="sc86">dstEnd</span><span class="sc81"> + </span><span class="sc86">TimeSerial</span><span class="sc81">(</span><span class="sc83">2</span><span class="sc81">, </span><span class="sc83">0</span><span class="sc81">, </span><span class="sc83">0</span><span class="sc81">)
+    
+    </span><span class="sc82">'rwbr "dstStart: " &amp; dstStart &amp; ", dateObj: " &amp; dateObj &amp; ", dstEnd: " &amp; dstEnd</span><span class="sc81">
+
+    </span><span class="sc82">' Check if date is within DST period</span><span class="sc81">
+    </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">dateObj</span><span class="sc81"> &gt;= </span><span class="sc86">dstStart</span><span class="sc81"> </span><span class="sc84">And</span><span class="sc81"> </span><span class="sc86">dateObj</span><span class="sc81"> &lt; </span><span class="sc86">dstEnd</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+        </span><span class="sc86">DaylightSavingsTime</span><span class="sc81"> = </span><span class="sc84">True</span><span class="sc81">
+    </span><span class="sc84">Else</span><span class="sc81">
+        </span><span class="sc86">DaylightSavingsTime</span><span class="sc81"> = </span><span class="sc84">False</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+
+    </span><span class="sc82">'rwbr "out DaylightSavingsTime, DaylightSavingsTime: " &amp; DaylightSavingsTime</span><span class="sc81">
+</span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81">
+
+</span><span class="sc82">' Helper function to get nth Sunday of a month</span><span class="sc81">
+</span><span class="sc84">Function</span><span class="sc81"> </span><span class="sc86">GetNthSunday</span><span class="sc81">(</span><span class="sc86">year</span><span class="sc81">, </span><span class="sc86">month</span><span class="sc81">, </span><span class="sc86">n</span><span class="sc81">)
+    </span><span class="sc84">Dim</span><span class="sc81"> </span><span class="sc86">firstDay</span><span class="sc81">, </span><span class="sc86">firstSunday</span><span class="sc81">, </span><span class="sc86">nthSunday</span><span class="sc81">
+    
+    </span><span class="sc82">' Get first day of the month</span><span class="sc81">
+    </span><span class="sc86">firstDay</span><span class="sc81"> = </span><span class="sc86">DateSerial</span><span class="sc81">(</span><span class="sc86">year</span><span class="sc81">, </span><span class="sc86">month</span><span class="sc81">, </span><span class="sc83">1</span><span class="sc81">)
+    
+    </span><span class="sc82">' Find the first Sunday</span><span class="sc81">
+    </span><span class="sc86">firstSunday</span><span class="sc81"> = </span><span class="sc86">firstDay</span><span class="sc81"> + (</span><span class="sc83">8</span><span class="sc81"> - </span><span class="sc86">Weekday</span><span class="sc81">(</span><span class="sc86">firstDay</span><span class="sc81">)) </span><span class="sc84">Mod</span><span class="sc81"> </span><span class="sc83">7</span><span class="sc81">
+    
+    </span><span class="sc82">' Calculate the nth Sunday</span><span class="sc81">
+    </span><span class="sc86">nthSunday</span><span class="sc81"> = </span><span class="sc86">firstSunday</span><span class="sc81"> + (</span><span class="sc86">n</span><span class="sc81"> - </span><span class="sc83">1</span><span class="sc81">) * </span><span class="sc83">7</span><span class="sc81">
+    
+    </span><span class="sc86">GetNthSunday</span><span class="sc81"> = </span><span class="sc86">nthSunday</span><span class="sc81">
+</span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81">
+
+</span><span class="sc82">' Function to instantiate running averages</span><span class="sc81">
+</span><span class="sc84">Function</span><span class="sc81"> </span><span class="sc86">InstantiateRunningAverages</span><span class="sc81">(</span><span class="sc86">traceName</span><span class="sc81">)
+    </span><span class="sc84">Dim</span><span class="sc81"> </span><span class="sc86">nPoints</span><span class="sc81">
+    </span><span class="sc86">nPoints</span><span class="sc81"> = </span><span class="sc83">3</span><span class="sc81">
+    
+    </span><span class="sc82">' Create global objects</span><span class="sc81">
+    </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">RA_x</span><span class="sc81"> = </span><span class="sc84">New</span><span class="sc81"> </span><span class="sc86">RunningAverage</span><span class="sc81">
+    </span><span class="sc86">RA_x.Initialize</span><span class="sc81"> </span><span class="sc86">nPoints</span><span class="sc81">
+    
+    </span><span class="sc84">If</span><span class="sc81"> </span><span class="sc86">traceName</span><span class="sc81"> = </span><span class="sc85">"WindDirection"</span><span class="sc81"> </span><span class="sc84">Then</span><span class="sc81">
+        </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">RA_y</span><span class="sc81"> = </span><span class="sc84">New</span><span class="sc81"> </span><span class="sc86">RunningAverage_Dir</span><span class="sc81">
+        </span><span class="sc86">RA_y.Initialize</span><span class="sc81"> </span><span class="sc86">nPoints</span><span class="sc81">
+    </span><span class="sc84">Else</span><span class="sc81">
+        </span><span class="sc84">Set</span><span class="sc81"> </span><span class="sc86">RA_y</span><span class="sc81"> = </span><span class="sc84">New</span><span class="sc81"> </span><span class="sc86">RunningAverage</span><span class="sc81">
+        </span><span class="sc86">RA_y.Initialize</span><span class="sc81"> </span><span class="sc86">nPoints</span><span class="sc81">
+    </span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">If</span><span class="sc81">
+</span><span class="sc84">End</span><span class="sc81"> </span><span class="sc84">Function</span><span class="sc81">
+</span><span class="sc15">%&gt;</span></div></body>
+</html>
