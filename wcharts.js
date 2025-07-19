@@ -128,7 +128,7 @@ var wC = (function() {
       'K0S9':{'longName':'Port Townsend, WA', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'}, 
       
       // Alaska
-      //'PABR.2':{'longName':'Utqiagvik/Barrow (Meso)', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},      
+      'PABR.2':{'longName':'Utqiagvik/Barrow (Meso)', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},      
       //'PAWI':{'longName':'Wainwright AP',             'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       'PAQT':{'longName':'Nuiqsut AP',                'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       'PASI':{'longName':'Sitka',                     'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
@@ -227,7 +227,7 @@ var wC = (function() {
       'KCQX':{'longName':'Chatham, MA (AW)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'aw'},
       
       // Alaska...
-      'PABR':{'longName':'Utqiagvik', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'aw'},      
+      'PABR':{'longName':'Utqiagvik/Barrow (AW)', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'aw'},      
       
       // Hatteras
       'KHSE':{'longName':'Cape Hatteras, NC (AW)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'aw'},
