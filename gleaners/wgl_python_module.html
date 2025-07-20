@@ -198,6 +198,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
                 <span class="sa">f</span><span class="s1">&#39;DBQ=</span><span class="si">{</span><span class="n">db_path</span><span class="si">}</span><span class="s1">;&#39;</span>
             <span class="p">)</span>
             <span class="n">database_conn</span> <span class="o">=</span> <span class="n">pyodbc</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">conn_str</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Successfully connected to Access database</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">exc_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
@@ -219,7 +220,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
         
         <span class="k">try</span><span class="p">:</span>
             <span class="n">database_conn</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="n">MYSQL_CONFIG</span><span class="p">)</span>
-            <span class="n">enterInLog</span><span class="p">(</span><span class="s2">&quot;Successfully connected to MySQL database&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Successfully connected to MySQL database</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">exc_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
@@ -247,30 +248,29 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
         <span class="n">database_conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="n">successful_execution</span> <span class="o">=</span> <span class="kc">True</span> 
-        
-        <span class="c1"># For testing</span>
-        <span class="c1">#print(&quot;SQL = &quot;, sql_string)</span>
-        <span class="c1">#print(&quot;row_ascii = &quot;, row_ascii)</span>
 
-    <span class="k">except</span> <span class="n">pyodbc</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">pyodbc</span><span class="o">.</span><span class="n">Error</span><span class="p">,</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">Error</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="c1"># Check for duplicate entry errors based on database type</span>
         <span class="n">error_message</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="n">is_duplicate_error</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="s2">&quot;duplicate data&quot;</span> <span class="ow">in</span> <span class="n">error_message</span><span class="p">)</span> <span class="ow">or</span>  <span class="c1"># MS Access error message</span>
-            <span class="p">(</span><span class="s2">&quot;duplicate entry&quot;</span> <span class="ow">in</span> <span class="n">error_message</span><span class="p">)</span>    <span class="c1"># MySQL error message</span>
+            <span class="p">(</span><span class="s2">&quot;duplicate entry&quot;</span> <span class="ow">in</span> <span class="n">error_message</span><span class="p">)</span> <span class="ow">or</span> <span class="c1"># MySQL error message</span>
+            <span class="p">(</span><span class="s2">&quot;integrity error&quot;</span> <span class="ow">in</span> <span class="n">error_message</span><span class="p">)</span> <span class="ow">or</span> <span class="c1"># Another MySQL error variant</span>
+            <span class="p">(</span><span class="s2">&quot;1062&quot;</span> <span class="ow">in</span> <span class="n">error_message</span><span class="p">)</span>              <span class="c1"># MySQL error code for duplicates</span>
         <span class="p">)</span>
         
         <span class="c1"># If only a duplicate data error, don&#39;t write to the log file</span>
         <span class="k">if</span> <span class="n">is_duplicate_error</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data already in database (sql warning).&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">message_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SQL error ::: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> ==&gt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="se">\n</span><span class="s2">Data value = </span><span class="si">{</span><span class="n">row_ascii</span><span class="si">}</span><span class="s2">&quot;</span> 
+            <span class="n">message_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SQL error in runSQL::: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> ==&gt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="se">\n</span><span class="s2">Data value = </span><span class="si">{</span><span class="n">row_ascii</span><span class="si">}</span><span class="s2">&quot;</span> 
             <span class="n">enterInLog</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
+        
         <span class="k">return</span> <span class="n">successful_execution</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">message_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;general error ::: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> ==&gt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="se">\n</span><span class="s2">Data value = </span><span class="si">{</span><span class="n">row_ascii</span><span class="si">}</span><span class="s2">&quot;</span> 
+        <span class="n">message_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;General error in runSQL ::: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> ==&gt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="se">\n</span><span class="s2">Data value = </span><span class="si">{</span><span class="n">row_ascii</span><span class="si">}</span><span class="s2">&quot;</span> 
         <span class="n">enterInLog</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">successful_execution</span>

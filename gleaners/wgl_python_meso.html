@@ -180,12 +180,28 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
     <span class="c1"># Old XML query:</span>
     <span class="c1"># http://www.wrh.noaa.gov/mesowest/getobextXml.php?num=1&amp;sid=KRLD</span>
     <span class="c1"># Using their JSON feed and a token:</span>
-    <span class="c1"># https://api.synopticdata.com/v2/stations/latest?vars=air_temp,dew_point_temperature,wind_speed,wind_direction,wind_gust,sea_level_pressure&amp;obtimezone=local&amp;output=json&amp;units=english&amp;token=45d3bd33f12c4d87aed5925e0f4da854&amp;stid=KMKT</span>
+    <span class="c1"># https://api.synopticdata.com/v2/stations/latest?vars=air_temp,dew_point_temperature,wind_speed,wind_direction,wind_gust,sea_level_pressure&amp;obtimezone=local&amp;output=json&amp;units=english&amp;token=HIDDEN&amp;stid=KMKT</span>
     
+    
+    <span class="c1"># Get API token from config file</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">wgl_python_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SYNOPTIC_API_TOKEN</span>
+        <span class="n">api_token</span> <span class="o">=</span> <span class="n">SYNOPTIC_API_TOKEN</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">message_str</span> <span class="o">=</span> <span class="s2">&quot;Error: wgl_python_config.py not found. Create this file from wgl_python_config_template.py&quot;</span>
+        <span class="n">enterInLog</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">message_str</span> <span class="o">=</span> <span class="s2">&quot;Error: SYNOPTIC_API_TOKEN not defined in wgl_python_config.py&quot;</span>
+        <span class="n">enterInLog</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
+        <span class="k">return</span>
+
     <span class="n">url_base</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;https://api.synopticdata.com/v2/stations/latest?&quot;</span> <span class="o">+</span> 
                <span class="s2">&quot;vars=air_temp,dew_point_temperature,wind_speed,wind_direction,wind_gust,sea_level_pressure&quot;</span> <span class="o">+</span> 
                <span class="s2">&quot;&amp;obtimezone=local&amp;output=json&amp;units=english&quot;</span> <span class="o">+</span> 
-               <span class="s2">&quot;&amp;token=45d3bd33f12c4d87aed5925e0f4da854&amp;stid=&quot;</span><span class="p">)</span>
+               <span class="sa">f</span><span class="s2">&quot;&amp;token=</span><span class="si">{</span><span class="n">api_token</span><span class="si">}</span><span class="s2">&amp;stid=&quot;</span><span class="p">)</span>
 
     <span class="c1"># Get count of stations</span>
     <span class="n">station_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">station_dictionary</span><span class="p">)</span>
@@ -338,7 +354,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
         <span class="n">enterInLog</span><span class="p">(</span> <span class="n">message_str</span><span class="p">)</span> 
         <span class="n">attemptWriteToDaysGleaned</span><span class="p">(</span><span class="n">database_type</span><span class="p">)</span>
         
-        <span class="n">write_to_spreadsheet</span><span class="p">(</span><span class="s2">&quot;meso-test&quot;</span><span class="p">,</span> <span class="n">rowsForSpreadsheet</span><span class="p">)</span>
+        <span class="n">write_to_spreadsheet</span><span class="p">(</span><span class="s2">&quot;meso&quot;</span><span class="p">,</span> <span class="n">rowsForSpreadsheet</span><span class="p">)</span>
         
 
 <span class="k">def</span><span class="w"> </span><span class="nf">build_SQL_string</span><span class="p">(</span> <span class="n">wd</span><span class="p">):</span>
@@ -392,7 +408,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 
     <span class="c1"># Alaska</span>
     <span class="c1">#&#39;PAWI&#39;:{&#39;ID&#39;:&#39;389&#39;,&#39;longName&#39;:&#39;PAWI&#39;,&#39;dst&#39;:True},    # Wainwright AP, AK</span>
-    <span class="c1">#&#39;PABR&#39;:{&#39;ID&#39;:&#39;390&#39;,&#39;longName&#39;:&#39;PABR.2&#39;,&#39;dst&#39;:True},  # Barrow, AK</span>
+    <span class="s1">&#39;PABR&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;390&#39;</span><span class="p">,</span><span class="s1">&#39;longName&#39;</span><span class="p">:</span><span class="s1">&#39;PABR.2&#39;</span><span class="p">,</span><span class="s1">&#39;dst&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>  <span class="c1"># Utqiaġvik (formerly Barrow), AK</span>
     <span class="s1">&#39;PAQT&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;391&#39;</span><span class="p">,</span><span class="s1">&#39;longName&#39;</span><span class="p">:</span><span class="s1">&#39;PAQT&#39;</span><span class="p">,</span><span class="s1">&#39;dst&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>    <span class="c1"># Nuiqsut, AK</span>
     <span class="s1">&#39;PASI&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;392&#39;</span><span class="p">,</span><span class="s1">&#39;longName&#39;</span><span class="p">:</span><span class="s1">&#39;PASI&#39;</span><span class="p">,</span><span class="s1">&#39;dst&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>    <span class="c1"># Sitka, AK</span>
     <span class="s1">&#39;PAFA&#39;</span><span class="p">:{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;393&#39;</span><span class="p">,</span><span class="s1">&#39;longName&#39;</span><span class="p">:</span><span class="s1">&#39;PAFA&#39;</span><span class="p">,</span><span class="s1">&#39;dst&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>    <span class="c1"># Fairbanks Int AP, AK</span>

@@ -107,7 +107,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <body>
 <h2></h2>
 
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python2</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="c1"># Any command line argument will cause this script to run in testing mode. If the</span>
 <span class="c1"># argument is &quot;push&quot; all the 25day and 10day images will be pushed to the 50Webs </span>
@@ -123,26 +123,10 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="c1"># is run, this is copied over the non-testing version which is referred to in the </span>
 <span class="c1"># getChartsFor50webs.bat file (The batch file is used by the scheduled task.)</span>
 
-<span class="c1"># System and OS</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">shutil</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
-
-<span class="c1"># Strings</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
-
-<span class="c1"># HTML fetching</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">urllib2</span>
-
-<span class="c1"># Windows extensions (pywin32-220.win32-py2.7.exe)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">win32com.client</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pywintypes</span>  <span class="c1"># supports exceptions names</span>
-
-<span class="c1"># time and date functionality</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">shutil</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib.request</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
-
-<span class="c1"># FTP</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ftplib</span><span class="w"> </span><span class="kn">import</span> <span class="n">FTP</span>
-
 
 <span class="c1">#==Functions====================================================================</span>
 
@@ -150,16 +134,17 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
     <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s1">&#39;STOR &#39;</span> <span class="o">+</span> <span class="n">serverPath</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">localPath</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">uploadTextFile</span><span class="p">(</span><span class="n">serverPath</span><span class="p">,</span> <span class="n">localPath</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-    <span class="n">ftp</span><span class="o">.</span><span class="n">storlines</span><span class="p">(</span><span class="s1">&#39;STOR &#39;</span> <span class="o">+</span> <span class="n">serverPath</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">localPath</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span>
+    <span class="n">ftp</span><span class="o">.</span><span class="n">storlines</span><span class="p">(</span><span class="s1">&#39;STOR &#39;</span> <span class="o">+</span> <span class="n">serverPath</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">localPath</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
    
 <span class="k">def</span><span class="w"> </span><span class="nf">getChart</span><span class="p">(</span> <span class="n">stationRegion</span><span class="p">,</span> <span class="n">stationName</span><span class="p">,</span> <span class="n">sensorName</span><span class="p">,</span> <span class="n">nDays</span><span class="p">,</span> <span class="n">imageFileName</span><span class="p">):</span>
     <span class="c1"># One-day charts will use the 24Hour option.</span>
-    <span class="n">webpage_url</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;http://&quot;</span> <span class="o">+</span> <span class="s2">&quot;192.168.1.106/&quot;</span> <span class="o">+</span> <span class="n">webSite</span> <span class="o">+</span> <span class="s2">&quot;/rosy.asp?Region=&quot;</span> <span class="o">+</span> <span class="n">stationRegion</span> <span class="o">+</span> 
+    <span class="c1"># Use localhost (or 192.168.1.104 for BEE or 192.168.1.106 for NUC)</span>
+    <span class="n">webpage_url</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;http://&quot;</span> <span class="o">+</span> <span class="s2">&quot;localhost/&quot;</span> <span class="o">+</span> <span class="n">webSite</span> <span class="o">+</span> <span class="s2">&quot;/rosy.asp?Region=&quot;</span> <span class="o">+</span> <span class="n">stationRegion</span> <span class="o">+</span> 
                    <span class="s2">&quot;&amp;Region_state=old&amp;Location=&quot;</span> <span class="o">+</span> <span class="n">stationName</span> <span class="o">+</span> <span class="s2">&quot;&amp;Sensor=&quot;</span> <span class="o">+</span> <span class="n">sensorName</span> <span class="o">+</span> 
                    <span class="s2">&quot;&amp;Days=&quot;</span> <span class="o">+</span> <span class="n">nDays</span> <span class="o">+</span> <span class="s2">&quot;&amp;chk24Hrs=on&amp;chkRA=on&amp;jS=T&amp;specName=&quot;</span> <span class="o">+</span> <span class="n">imageFileName</span><span class="p">)</span>
-    <span class="c1">#print sensorName, webpage_url</span>
-    <span class="n">request</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">webpage_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="s1">&#39;Mozilla/5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#39;</span><span class="p">})</span>
-    <span class="n">page</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="c1">#print(sensorName, webpage_url)</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">webpage_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="s1">&#39;Mozilla/5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#39;</span><span class="p">})</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">page</span>
    
 <span class="k">def</span><span class="w"> </span><span class="nf">updateCharts</span><span class="p">(</span><span class="n">station</span><span class="p">):</span>
@@ -174,18 +159,18 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 
     <span class="c1"># Find the div that references the image files.</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">windPage24hr</span><span class="p">:</span>
-        <span class="c1">#print &quot;once per line...&quot;</span>
-        <span class="k">if</span> <span class="s2">&quot;id=&#39;directions&#39;&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-            <span class="nb">print</span> <span class="s2">&quot;Found the new &#39;directions&#39; line in source file.&quot;</span>
-            <span class="n">newImageLine</span> <span class="o">=</span> <span class="n">line</span>
-
+        <span class="c1">#print(&quot;once per line...&quot;)</span>
+        <span class="n">line_str</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>  <span class="c1"># Decode bytes to string</span>
+        <span class="k">if</span> <span class="s2">&quot;id=&#39;directions&#39;&quot;</span> <span class="ow">in</span> <span class="n">line_str</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found the new &#39;directions&#39; line in source file.&quot;</span><span class="p">)</span>
+            <span class="n">newImageLine</span> <span class="o">=</span> <span class="n">line_str</span>
    
     <span class="c1"># Get the temperature and pressure charts from the local Waconia site.</span>
     <span class="n">getChart</span><span class="p">(</span> <span class="n">stationRegion</span><span class="p">,</span> <span class="n">stationName</span><span class="p">,</span> <span class="s2">&quot;Temperature&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;TemperatureChart&quot;</span><span class="p">)</span>
     <span class="c1">#getChart( stationRegion, stationName, &quot;Pressure&quot;,    &quot;1&quot;, &quot;PressureChart&quot;)</span>
     
     
-    <span class="c1"># Copy the image files to the 50webs-dev site on NUC.</span>
+    <span class="c1"># Copy the image files to the 50webs-dev site on this server (NUC or BEE).</span>
     <span class="n">pathToSourceFolderForImages</span> <span class="o">=</span> <span class="s1">&#39;C:</span><span class="se">\\</span><span class="s1">Users</span><span class="se">\\</span><span class="s1">Jim</span><span class="se">\\</span><span class="s1">Documents</span><span class="se">\\</span><span class="s1">webcontent</span><span class="se">\\</span><span class="s1">waconia</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">sitePath</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">chart-images</span><span class="se">\\</span><span class="s1">&#39;</span>
     <span class="n">pathToTargetFolder</span> <span class="o">=</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">Jim</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">webcontent</span><span class="se">\\</span><span class="s2">waconia</span><span class="se">\\</span><span class="s2">50webs-dev</span><span class="se">\\</span><span class="s2">&quot;</span>
     
@@ -201,8 +186,8 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
     
     <span class="c1"># Get a 25-day pressure chart for Alaska and Barking Sands. Trigger this based on the first location in</span>
     <span class="c1"># the randomized site list. This special trigger will keep this from frequent uploads.</span>
-    <span class="c1">#print &quot;station trigger (PAQT, PHBK) = &quot;, stationList[0][1], stationList[1][1]</span>
-    <span class="nb">print</span> <span class="s2">&quot;station trigger (PATQ or RMTN) = &quot;</span><span class="p">,</span> <span class="n">stationName</span>
+    <span class="c1">#print(&quot;station trigger (PAQT, PHBK) = &quot;, stationList[0][1], stationList[1][1])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;station trigger (PATQ or RMTN) = &quot;</span><span class="p">,</span> <span class="n">stationName</span><span class="p">)</span>
     
     <span class="c1">#if (stationList[0][1]==&quot;PAQT&quot; and stationList[1][1]==&quot;PHBK&quot;):</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">stationName</span> <span class="o">==</span> <span class="s2">&quot;PATQ&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">stationName</span> <span class="o">==</span> <span class="s2">&quot;RMTN&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pushImagesToServer</span><span class="p">:</span>
@@ -229,33 +214,33 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
             <span class="n">uploadBinaryFile</span><span class="p">(</span><span class="s1">&#39;chart-images/&#39;</span><span class="p">,</span> <span class="n">pathToSourceFolderForImages</span><span class="p">,</span> <span class="s1">&#39;25DayPressureChart-3.jpg&#39;</span><span class="p">)</span>
             <span class="n">uploadBinaryFile</span><span class="p">(</span><span class="s1">&#39;chart-images/&#39;</span><span class="p">,</span> <span class="n">pathToSourceFolderForImages</span><span class="p">,</span> <span class="s1">&#39;DeltaPressureChart.jpg&#39;</span><span class="p">)</span>
         
-        <span class="nb">print</span> <span class="s2">&quot;25-day pressure charts have updated.&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;25-day pressure charts have updated.&quot;</span><span class="p">)</span>
         <span class="n">multiDayChartsUpdated</span> <span class="o">=</span> <span class="kc">True</span>
     
     <span class="c1"># Edit the local html file to include the specifics of the div that holds the </span>
     <span class="c1"># two images: chart and second # y-axis scale. Also update the two timestamps.</span>
     
-    <span class="n">inputFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pathToTargetFolder</span> <span class="o">+</span> <span class="n">inputHTMLFileName</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
-    <span class="n">outputFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pathToTargetFolder</span> <span class="o">+</span> <span class="n">outputHTMLFileName</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">inputFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pathToTargetFolder</span> <span class="o">+</span> <span class="n">inputHTMLFileName</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="n">outputFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pathToTargetFolder</span> <span class="o">+</span> <span class="n">outputHTMLFileName</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">oldLine</span> <span class="ow">in</span> <span class="n">inputFile</span><span class="p">:</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;id=&#39;directions&#39;&quot;</span> <span class="ow">in</span> <span class="n">oldLine</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">newImageLine</span> <span class="o">&lt;&gt;</span> <span class="s2">&quot;not found&quot;</span><span class="p">):</span>
-            <span class="nb">print</span> <span class="s2">&quot;Found the &#39;directions&#39; line in input file.&quot;</span>
-            <span class="c1">#print &quot;Old line= &quot;, oldLine</span>
-            <span class="c1">#print &quot;New line= &quot;, newImageLine</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;id=&#39;directions&#39;&quot;</span> <span class="ow">in</span> <span class="n">oldLine</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">newImageLine</span> <span class="o">!=</span> <span class="s2">&quot;not found&quot;</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found the &#39;directions&#39; line in input file.&quot;</span><span class="p">)</span>
+            <span class="c1">#print(&quot;Old line= &quot;, oldLine)</span>
+            <span class="c1">#print(&quot;New line= &quot;, newImageLine)</span>
             <span class="n">outputFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">newImageLine</span><span class="p">)</span>
             
         <span class="k">elif</span> <span class="s2">&quot;24-hour charts&quot;</span> <span class="ow">in</span> <span class="n">oldLine</span><span class="p">:</span>
-            <span class="nb">print</span> <span class="s1">&#39;Updated the 24hr-charts timestamp.&#39;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Updated the 24hr-charts timestamp.&#39;</span><span class="p">)</span>
             <span class="n">outputFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;(24-hour charts updated &quot;</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%A, %B </span><span class="si">%d</span><span class="s2">, %Y at %I:%M%p&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; Central).</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         
         <span class="k">elif</span> <span class="p">(</span><span class="s2">&quot;Multi-day charts&quot;</span> <span class="ow">in</span> <span class="n">oldLine</span><span class="p">)</span> <span class="ow">and</span> <span class="n">multiDayChartsUpdated</span><span class="p">:</span>
-            <span class="nb">print</span> <span class="s1">&#39;Updated the multi-day-charts timestamp.&#39;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Updated the multi-day-charts timestamp.&#39;</span><span class="p">)</span>
             <span class="n">outputFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;(Multi-day charts updated &quot;</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%A, %B </span><span class="si">%d</span><span class="s2">, %Y at %I:%M%p&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; Central).</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             
         <span class="k">else</span><span class="p">:</span>
             <span class="n">outputFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">oldLine</span><span class="p">)</span>
-            <span class="c1">#print oldLine,</span>
+            <span class="c1">#print(oldLine)</span>
 
     <span class="n">inputFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="n">outputFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -274,14 +259,16 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="c1"># Generate the image and send the image and page (for all hours after 6am).</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">hour</span> <span class="o">&gt;</span> <span class="mi">6</span><span class="p">):</span>
 
-    <span class="c1"># My Firebase site uses a scheduled batch file to publish the image and html files. </span>
+    <span class="c1"># My Firebase and Cloudflare sites sometimes use a scheduled batch file to</span>
+    <span class="c1"># publish the image and html files. Other times, I run this script manually</span>
+    <span class="c1"># and then publish manually.</span>
     <span class="n">webHost</span> <span class="o">=</span> <span class="s2">&quot;Firebase&quot;</span>  <span class="c1"># &quot;50Webs&quot;</span>
 
     <span class="n">pushImagesToServer</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="c1"># If there is a command line argument, run this in testing mode.</span>
-        <span class="nb">print</span> <span class="s2">&quot;In testing mode...&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;In testing mode...&quot;</span><span class="p">)</span>
         <span class="n">testingMode</span> <span class="o">=</span> <span class="kc">True</span>
         
         <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;push&quot;</span><span class="p">:</span>
@@ -317,7 +304,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 
     <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">stationList</span><span class="p">)</span>
     <span class="n">randomStation</span> <span class="o">=</span> <span class="n">stationList</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="nb">print</span> <span class="n">randomStation</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">randomStation</span><span class="p">)</span>
 
     <span class="n">updateCharts</span><span class="p">(</span> <span class="n">randomStation</span><span class="p">)</span>
 
