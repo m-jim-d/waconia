@@ -245,7 +245,7 @@ window.pS = (function() {
          
          if (href && (href != "")) {
             
-            // IP address on local network
+            // nuc IP address on local network
             if (window.location.href.includes("192.168.1.106")) {
                if (href.includes("https://triquence.org")) {
                   finalHref = href.replace( "https://triquence.org", "http://192.168.1.106/ttc-root");
@@ -274,6 +274,38 @@ window.pS = (function() {
                } else {
                   // nothing yet...
                }
+
+
+            // bee IP address on local network
+            } else if (window.location.href.includes("192.168.1.104/")) {
+               if (href.includes("https://triquence.org")) {
+                  finalHref = href.replace( "https://triquence.org", "http://192.168.1.104/ttc-root");
+                  
+               } else if (href.includes("pet.triquence")) {
+                  finalHref = href.replace( "https://pet.triquence.org", "http://192.168.1.104/pet-dev");
+                  
+               } else if (href.includes("waconia.triquence")) {
+                  finalHref = href.replace( "https://waconia.triquence.org", "http://192.168.1.104/waconia-50webs-dev");
+                  
+               } else {
+                  // nothing yet...
+               }
+
+            // bee on local network
+            } else if (window.location.href.includes("bee/")) {
+               if (href.includes("https://triquence.org")) {
+                  finalHref = href.replace( "https://triquence.org", "http://bee/ttc-root");
+                  
+               } else if (href.includes("pet.triquence")) {
+                  finalHref = href.replace( "https://pet.triquence.org", "http://bee/pet-dev");
+                  
+               } else if (href.includes("waconia.triquence")) {
+                  finalHref = href.replace( "https://waconia.triquence.org", "http://bee/waconia-50webs-dev");
+                  
+               } else {
+                  // nothing yet...
+               }
+            
                    
             // secure localhost only on local server
             } else if (window.location.href.includes("localhost")) {
