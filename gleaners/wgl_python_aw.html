@@ -119,48 +119,52 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">An example of an XML report from a single station.</span>
-
-<span class="sd">Here is an example of a single-site query:</span>
-<span class="sd">https://aviationweather.gov/cgi-bin/data/dataserver.php?dataSource=metars&amp;requestType=retrieve&amp;format=xml&amp;mostrecentforeachstation=constraint&amp;hoursBeforeNow=2&amp;stationString=KMKT</span>
+<span class="sd">An example of an XML report from a single station, most recent observation:</span>
+<span class="sd">https://aviationweather.gov/api/data/metar?format=xml&amp;ids=KMKT</span>
 
 <span class="sd">And the XML report:</span>
-<span class="sd">&lt;response version=&quot;1.2&quot; xsi:noNamespaceSchemaLocation=&quot;http://aviationweather.gov/adds/schema/metar1_2.xsd&quot;&gt;</span>
-<span class="sd">    &lt;request_index&gt;2337556&lt;/request_index&gt;</span>
-<span class="sd">    &lt;data_source name=&quot;metars&quot;/&gt;</span>
-<span class="sd">    &lt;request type=&quot;retrieve&quot;/&gt;</span>
-<span class="sd">    &lt;errors/&gt;</span>
-<span class="sd">    &lt;warnings/&gt;</span>
-<span class="sd">    &lt;time_taken_ms&gt;3&lt;/time_taken_ms&gt;</span>
-<span class="sd">    &lt;data num_results=&quot;1&quot;&gt;</span>
-<span class="sd">        &lt;METAR&gt;</span>
-<span class="sd">            &lt;raw_text&gt;</span>
-<span class="sd">                KMKT 292235Z AUTO 03013G19KT 10SM CLR 19/M02 A2998 RMK AO1</span>
-<span class="sd">            &lt;/raw_text&gt;</span>
-<span class="sd">            &lt;station_id&gt;KMKT&lt;/station_id&gt;</span>
-<span class="sd">            &lt;observation_time&gt;2015-04-29T22:35:00Z&lt;/observation_time&gt;</span>
-<span class="sd">            &lt;latitude&gt;44.22&lt;/latitude&gt;</span>
-<span class="sd">            &lt;longitude&gt;-93.92&lt;/longitude&gt;</span>
-<span class="sd">            &lt;temp_c&gt;19.0&lt;/temp_c&gt;</span>
-<span class="sd">            &lt;dewpoint_c&gt;-2.0&lt;/dewpoint_c&gt;</span>
-<span class="sd">            &lt;wind_dir_degrees&gt;30&lt;/wind_dir_degrees&gt;</span>
-<span class="sd">            &lt;wind_speed_kt&gt;13&lt;/wind_speed_kt&gt;</span>
-<span class="sd">            &lt;wind_gust_kt&gt;19&lt;/wind_gust_kt&gt;</span>
-<span class="sd">            &lt;visibility_statute_mi&gt;10.0&lt;/visibility_statute_mi&gt;</span>
-<span class="sd">            &lt;altim_in_hg&gt;29.97933&lt;/altim_in_hg&gt;</span>
-<span class="sd">            &lt;quality_control_flags&gt;</span>
-<span class="sd">                &lt;auto&gt;TRUE&lt;/auto&gt;</span>
-<span class="sd">                &lt;auto_station&gt;TRUE&lt;/auto_station&gt;</span>
-<span class="sd">            &lt;/quality_control_flags&gt;</span>
-<span class="sd">            &lt;sky_condition sky_cover=&quot;CLR&quot;/&gt;</span>
-<span class="sd">            &lt;flight_category&gt;VFR&lt;/flight_category&gt;</span>
-<span class="sd">            &lt;metar_type&gt;METAR&lt;/metar_type&gt;</span>
-<span class="sd">            &lt;elevation_m&gt;311.0&lt;/elevation_m&gt;</span>
-<span class="sd">        &lt;/METAR&gt;</span>
-<span class="sd">    &lt;/data&gt;</span>
+
+<span class="sd">&lt;response xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;</span>
+<span class="sd">          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+<span class="sd">          xsi:noNamespaceSchemaLocation=&quot;https://aviationweather.gov/api/schema/metars2_0.xsd&quot;</span>
+<span class="sd">          version=&quot;2.0&quot;&gt;</span>
+<span class="sd">  &lt;request_index&gt;1758318657&lt;/request_index&gt;</span>
+<span class="sd">  &lt;data_source name=&quot;metars&quot;/&gt;</span>
+<span class="sd">  &lt;request type=&quot;retrieve&quot;/&gt;</span>
+<span class="sd">  &lt;errors/&gt;</span>
+<span class="sd">  &lt;warnings/&gt;</span>
+<span class="sd">  &lt;time_taken_ms&gt;0&lt;/time_taken_ms&gt;</span>
+<span class="sd">  &lt;data num_results=&quot;1&quot;&gt;</span>
+<span class="sd">    &lt;METAR&gt;</span>
+<span class="sd">      &lt;raw_text&gt;METAR KMKT 192056Z AUTO 13010KT 10SM -RA BKN095 BKN120 19/18 A2994 RMK AO2 LTG DSNT N AND W TSE02B12E27RAE32B55 SLP138 P0000 60003 T01890178 56008&lt;/raw_text&gt;</span>
+<span class="sd">      &lt;station_id&gt;KMKT&lt;/station_id&gt;</span>
+<span class="sd">      &lt;observation_time&gt;2025-09-19T20:56:00.000Z&lt;/observation_time&gt;</span>
+<span class="sd">      &lt;latitude&gt;44.2184&lt;/latitude&gt;</span>
+<span class="sd">      &lt;longitude&gt;-93.9179&lt;/longitude&gt;</span>
+<span class="sd">      &lt;temp_c&gt;18.9&lt;/temp_c&gt;</span>
+<span class="sd">      &lt;dewpoint_c&gt;17.8&lt;/dewpoint_c&gt;</span>
+<span class="sd">      &lt;wind_dir_degrees&gt;130&lt;/wind_dir_degrees&gt;</span>
+<span class="sd">      &lt;wind_speed_kt&gt;10&lt;/wind_speed_kt&gt;</span>
+<span class="sd">      &lt;visibility_statute_mi&gt;10+&lt;/visibility_statute_mi&gt;</span>
+<span class="sd">      &lt;altim_in_hg&gt;29.94&lt;/altim_in_hg&gt;</span>
+<span class="sd">      &lt;sea_level_pressure_mb&gt;1013.8&lt;/sea_level_pressure_mb&gt;</span>
+<span class="sd">      &lt;quality_control_flags&gt;</span>
+<span class="sd">        &lt;auto&gt;TRUE&lt;/auto&gt;</span>
+<span class="sd">        &lt;auto_station&gt;TRUE&lt;/auto_station&gt;</span>
+<span class="sd">      &lt;/quality_control_flags&gt;</span>
+<span class="sd">      &lt;wx_string&gt;-RA&lt;/wx_string&gt;</span>
+<span class="sd">      &lt;sky_condition sky_cover=&quot;BKN&quot; cloud_base_ft_agl=&quot;9500&quot;/&gt;</span>
+<span class="sd">      &lt;sky_condition sky_cover=&quot;BKN&quot; cloud_base_ft_agl=&quot;12000&quot;/&gt;</span>
+<span class="sd">      &lt;flight_category&gt;VFR&lt;/flight_category&gt;</span>
+<span class="sd">      &lt;three_hr_pressure_tendency_mb&gt;-0.8&lt;/three_hr_pressure_tendency_mb&gt;</span>
+<span class="sd">      &lt;precip_in&gt;0.005&lt;/precip_in&gt;</span>
+<span class="sd">      &lt;pcp3hr_in&gt;0.03&lt;/pcp3hr_in&gt;</span>
+<span class="sd">      &lt;metar_type&gt;METAR&lt;/metar_type&gt;</span>
+<span class="sd">      &lt;elevation_m&gt;309&lt;/elevation_m&gt;</span>
+<span class="sd">    &lt;/METAR&gt;</span>
+<span class="sd">  &lt;/data&gt;</span>
 <span class="sd">&lt;/response&gt;</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Import supporting modules</span>
@@ -200,19 +204,13 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
     <span class="c1"># Build the URL string to get data from Multiple stations by making one query to the server.</span>
     <span class="c1"># (returned on one page).</span>
 
-    <span class="c1"># Single station query for KMKT</span>
-    <span class="c1"># https://aviationweather.gov/cgi-bin/data/dataserver.php?dataSource=metars&amp;requestType=retrieve&amp;format=xml&amp;mostrecentforeachstation=constraint&amp;hoursBeforeNow=2&amp;stationString=KMKT</span>
-    <span class="c1"># </span>
-    <span class="c1"># https://aviationweather.gov/cgi-bin/data/dataserver.php (current server)</span>
-    <span class="c1"># https://aviationweather.gov/adds/dataserver_current/httpparam (old)</span>
+    <span class="c1"># Single station query for KMKT, most recent 2 hours.</span>
+    <span class="c1"># https://aviationweather.gov/api/data/metar?format=xml&amp;hours=2&amp;ids=KMKT</span>
     
-    <span class="n">url_base</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;https://aviationweather.gov/cgi-bin/data/dataserver.php?&quot;</span> <span class="o">+</span> 
-                    <span class="s2">&quot;dataSource=metars&amp;&quot;</span> <span class="o">+</span> 
-                    <span class="s2">&quot;requestType=retrieve&amp;&quot;</span> <span class="o">+</span>
-                    <span class="s2">&quot;format=xml&amp;&quot;</span> <span class="o">+</span>
-                    <span class="s2">&quot;mostrecentforeachstation=constraint&amp;&quot;</span> <span class="o">+</span> 
-                    <span class="s2">&quot;hoursBeforeNow=2&amp;&quot;</span> <span class="o">+</span>
-                    <span class="s2">&quot;stationString=&quot;</span><span class="p">)</span>
+    <span class="n">url_base</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;https://aviationweather.gov/api/data/metar?&quot;</span> <span class="o">+</span> 
+                    <span class="s2">&quot;format=xml&amp;&quot;</span> <span class="o">+</span> 
+                    <span class="s2">&quot;hours=2&amp;&quot;</span> <span class="o">+</span> 
+                    <span class="s2">&quot;ids=&quot;</span><span class="p">)</span>
 
     <span class="c1"># Get count of stations</span>
     <span class="n">station_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">station_dictionary</span><span class="p">)</span>
@@ -382,7 +380,24 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
     <span class="c1"># Parse the time string, which is in an ISO format, into a tuple. First, slice off the </span>
     <span class="c1"># trailing &quot;Z&quot; in the time string. Note that the Z is for Zulu time, or also known as UTC time.</span>
     <span class="c1"># (year, month, day, hour, minute, second, weekday, yearday, daylightSavingAdjustment) </span>
-    <span class="n">time_tuple_UTC</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">time_ISO_UTC</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Handle both old format (2015-04-29T22:35:00Z) and new format (2015-04-29T22:35:00.000Z)</span>
+    <span class="n">time_string_without_z</span> <span class="o">=</span> <span class="n">time_ISO_UTC</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Remove the &#39;Z&#39;</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Try parsing with microseconds first (new format)</span>
+        <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">time_string_without_z</span><span class="p">:</span>
+            <span class="n">time_tuple_UTC</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">time_string_without_z</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Fall back to old format without microseconds</span>
+            <span class="n">time_tuple_UTC</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">time_string_without_z</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># If parsing fails, log the error and re-raise with more context</span>
+        <span class="n">message_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Failed to parse timestamp &#39;</span><span class="si">{</span><span class="n">time_ISO_UTC</span><span class="si">}</span><span class="s2">&#39; for station </span><span class="si">{</span><span class="n">station_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">enterInLog</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
+        <span class="k">raise</span>
+
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;time_tuple_UTC =&quot;</span><span class="p">,</span> <span class="n">time_tuple_UTC</span><span class="p">)</span>
     
     <span class="c1"># The Unix epoch (or Unix time or POSIX time or Unix timestamp) is the number of seconds </span>
