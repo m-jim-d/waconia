@@ -238,7 +238,7 @@ window.pS = (function() {
    }  
 
    function checkForAbsoluteLinks() {
-      // check for absolute links...  https://triquence.org, pet.triquence, waconia.triquence
+      // check for absolute links...  https://triquence.org, pet.triquence, waconia.triquence, bincalcs.triquence
       $('a').each( function( index, value) {
          let href = $(this).attr("href");
          let finalHref = null;
@@ -287,6 +287,9 @@ window.pS = (function() {
                } else if (href.includes("waconia.triquence")) {
                   finalHref = href.replace( "https://waconia.triquence.org", "http://192.168.1.104/waconia-50webs-dev");
                   
+               } else if (href.includes("bincalcs.triquence")) {
+                  finalHref = href.replace( "https://bincalcs.triquence.org", "http://192.168.1.104/coolrtu-js-prod");
+                  
                } else {
                   // nothing yet...
                }
@@ -301,6 +304,9 @@ window.pS = (function() {
                   
                } else if (href.includes("waconia.triquence")) {
                   finalHref = href.replace( "https://waconia.triquence.org", "http://bee/waconia-50webs-dev");
+                  
+               } else if (href.includes("bincalcs.triquence")) {
+                  finalHref = href.replace( "https://bincalcs.triquence.org", "http://bee/coolrtu-js-prod");
                   
                } else {
                   // nothing yet...
@@ -318,6 +324,9 @@ window.pS = (function() {
                } else if (href.includes("waconia.triquence")) {
                   finalHref = href.replace( "https://waconia.triquence.org", "https://localhost/waconia-50webs-dev");
                   
+               } else if (href.includes("bincalcs.triquence")) {
+                  finalHref = href.replace( "https://bincalcs.triquence.org", "https://localhost/coolrtu-js-prod");
+                  
                } else {
                   // nothing yet...
                }
@@ -332,6 +341,9 @@ window.pS = (function() {
                   
                } else if (href.includes("waconia.triquence")) {
                   finalHref = href.replace( "https://waconia.triquence.org", "https://m-jim-d.github.io/waconia");
+                  
+               } else if (href.includes("bincalcs.triquence")) {
+                  finalHref = href.replace( "https://bincalcs.triquence.org", "https://m-jim-d.github.io/bin-method-calcs");
                   
                } else {
                   // nothing yet...
