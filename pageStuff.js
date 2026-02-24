@@ -119,19 +119,16 @@ window.pS = (function() {
       // Prevent default behavior that scrolls to the top.
       return false;
    }
-   
-   function logEntry( eventDescription, mode='normal') {
-      // If this page is coming from the production server...
-      var pageURL = window.location.href;
-      if (pageURL.includes("triquence")) {
-         var sheetURL = 'https://script.google.com/macros/s/AKfycbzfivtrNUyClOX6_6UA2HTWhtk6dmqsbE1sLTUXoC8gSC5zQdZq0uF75hQfIHlSpaQm/exec';
-         // AJAX
-         var xhttp = new XMLHttpRequest();
-         xhttp.open('GET', sheetURL + '?mode=' + mode + '&eventDesc=' + eventDescription, true);
-         xhttp.send();
-      } else {
-         console.log("Event = " + eventDescription);
-      }
+
+   function logEntry(eventDescription, mode = 'normal') {
+      const workerURL = 'https://triquence.org/pvent';
+      const payload = { mode: mode, eventDesc: eventDescription };
+
+      fetch(workerURL, {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify(payload)
+      }).catch(() => { });
    }
    
    function openNav() {
