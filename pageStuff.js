@@ -357,6 +357,9 @@ window.pS = (function() {
                } else if (href.includes("waconia.triquence")) {
                   finalHref = href.replace( "https://waconia.triquence.org", "https://waconia-ttc.web.app");
                          
+               } else if (href.includes("bincalcs.triquence")) {
+                  finalHref = href.replace( "https://bincalcs.triquence.org", "https://bincalcs-ttc.web.app");
+                  
                } else {
                   // nothing yet...
                }
@@ -371,6 +374,9 @@ window.pS = (function() {
                   
                } else if (href.includes("waconia.triquence")) {
                   finalHref = href.replace( "https://waconia.triquence.org", "https://waconia-ttc.firebaseapp.com");
+                  
+               } else if (href.includes("bincalcs.triquence")) {
+                  finalHref = href.replace( "https://bincalcs.triquence.org", "https://bincalcs-ttc.firebaseapp.com");
                   
                } else {
                   // nothing yet...
