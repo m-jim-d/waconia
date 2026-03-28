@@ -7,11 +7,8 @@ Licensed under the BSD license, see LICENSE for details.
 -->
 <html>
 <head>
-  <link rel='canonical' href='https://waconia.triquence.org/gleaners/wgl_perl_postToSheet.html' />
-  <link rel='canonical' href='https://waconia.triquence.org/gleaners/wgl_perl_postToSheet.html' />
-  <link rel='canonical' href='https://waconia.triquence.org/gleaners/wgl_perl_postToSheet.html' />
-  <link rel='canonical' href='https://waconia.triquence.org/gleaners/wgl_perl_postToSheet.html' />
-  <title>wgl_perl_postToSheet</title>
+  <link rel='canonical' href='https://waconia.triquence.org/gleaners/wgl_perl_postToSheetAndD1.html' />
+  <title>wgl_perl_postToSheetAndD1</title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <style type="text/css">
 /*
@@ -112,8 +109,9 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 
 <div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
 
-<span class="c1"># wgl_perl_postToSheet.py</span>
+<span class="c1"># wgl_perl_postToSheetAndD1.py</span>
 <span class="c1"># Jim Miller, 9:31 PM Tue March 21, 2023</span>
+<span class="c1"># Updated to always post to both Google Sheet and Cloudflare D1</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span> <span class="c1"># HTML posting</span>
@@ -123,14 +121,53 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: pywintypes module not found. Windows-specific functionality may be limited.&quot;</span><span class="p">)</span>
 
-<span class="c1"># This pulls in JSON data from a file, as specified in a command line argument, and posts it to the spreadsheet.</span>
-<span class="c1"># The JSON has a key for the sheet name.</span>
-<span class="c1"># This is used by the Perl weather gleaners to post to the Google sheet. </span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">wgl_python_module</span><span class="w"> </span><span class="kn">import</span> <span class="n">write_to_cloudflare</span>
+
+<span class="c1"># This pulls in JSON data from a file, as specified in a command line argument, and posts it to the spreadsheet</span>
+<span class="c1"># and Cloudflare D1. The JSON has a key for the sheet name.</span>
+<span class="c1"># This is used by the Perl weather gleaners to post to the Google sheet and D1. </span>
 
 <span class="n">sheet_url</span> <span class="o">=</span> <span class="s2">&quot;https://script.google.com/macros/s/AKfycbze77MbV3O3Trx2UuhX3Ru7xYIWcYocDDOCU4VW9VrRsgVy1PrMT4R3Ag1DRVnlBW6V/exec&quot;</span> <span class="c1"># weather-perl</span>
 
+
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_perl_datetime</span><span class="p">(</span><span class="n">dt_str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert Perl datetime format &quot;MM/DD/YYYY HH:MM:SS&quot; to ISO format &quot;YYYY-MM-DD HH:MM:SS&quot;</span>
+<span class="sd">    Note: Use space separator (not T) for consistent SQLite string comparison in D1 queries</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dt_str</span><span class="p">,</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y %H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dt_str</span>  <span class="c1"># Return as-is if parsing fails</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_perl_to_d1</span><span class="p">(</span><span class="n">postDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert Perl gleaner JSON format to Cloudflare D1 format.</span>
+<span class="sd">    Perl format: {&quot;sheetName&quot;: &quot;hanford&quot;, &quot;weatherData&quot;: [[station, datetime_utc, temp, dew, wind_dir, wind_speed, wind_gust, pressure], ...]}</span>
+<span class="sd">    D1 format: [{&quot;station_name&quot;: ..., &quot;datetime_utc&quot;: ..., ...}, ...]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">postDict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;weatherData&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">d1_records</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="n">d1_records</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;station_name&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="s1">&#39;datetime_utc&#39;</span><span class="p">:</span> <span class="n">convert_perl_datetime</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="s1">&#39;dry_bulb&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;dew_point&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;wind_dir&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;wind_speed&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;wind_gust&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;barometer&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">})</span>
+    
+    <span class="k">return</span> <span class="n">d1_records</span>
+
 <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span> 
-    <span class="c1"># The single argument is the full path to the JSON file</span>
+    <span class="c1"># The first argument is the full path to the JSON file</span>
     <span class="n">filePath</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;file path =&quot;</span><span class="p">,</span> <span class="n">filePath</span><span class="p">)</span>
 
@@ -148,6 +185,12 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
             <span class="c1"># Format and print the response</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">jsonRequest</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
             
+            <span class="c1"># Write to Cloudflare D1</span>
+            <span class="n">sheetName</span> <span class="o">=</span> <span class="n">postDict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sheetName&quot;</span><span class="p">,</span> <span class="s2">&quot;perl&quot;</span><span class="p">)</span>
+            <span class="n">d1_records</span> <span class="o">=</span> <span class="n">convert_perl_to_d1</span><span class="p">(</span><span class="n">postDict</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">d1_records</span><span class="p">:</span>
+                <span class="n">write_to_cloudflare</span><span class="p">(</span><span class="n">d1_records</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">sheetName</span><span class="p">)</span>
+            
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span> 
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error opening spreadsheet.&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error details: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -158,7 +201,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: No filename provided. Usage: python3 pythonPostToSheet.py &lt;filename&gt;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: No filename provided. Usage: python3 wgl_perl_postToSheetAndD1.py &lt;filename&gt;&quot;</span><span class="p">)</span>
 </pre></div>
 </body>
 </html>

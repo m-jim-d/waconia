@@ -1,0 +1,129 @@
+// weather-api worker
+// Handles GET (query), POST (insert), and scheduled cleanup for weather data
+
+export default {
+  // Scheduled cleanup - runs on cron trigger
+  async scheduled(event, env, ctx) {
+    // Delete records older than n_days
+    const n_days = 60;
+    const cutoffDate = new Date(Date.now() - n_days * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .replace('T', ' ')
+      .slice(0, 19);  // Format: "YYYY-MM-DD HH:MM:SS"
+    
+    const result = await env.DB.prepare(
+      "DELETE FROM weather_data WHERE datetime_utc < ?"
+    ).bind(cutoffDate).run();
+    
+    console.log(`Cleanup: deleted ${result.meta.changes} old records`);
+  },
+
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    
+    // CORS headers for browser requests
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, X-API-Key",
+    };
+    
+    // Handle preflight
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
+    
+    try {
+      if (request.method === "GET" && url.pathname === "/weather") {
+        return await handleQuery(url, env, corsHeaders);
+      }
+      
+      if (request.method === "POST" && url.pathname === "/weather") {
+        return await handleInsert(request, env, corsHeaders);
+      }
+      
+      return new Response("Not Found", { status: 404, headers: corsHeaders });
+      
+    } catch (error) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      });
+    }
+  }
+};
+
+async function handleQuery(url, env, corsHeaders) {
+  const station = url.searchParams.get("station");
+  const start = url.searchParams.get("start");
+  const end = url.searchParams.get("end");
+  
+  if (!station || !start || !end) {
+    return new Response(JSON.stringify({ error: "Missing required params: station, start, end" }), {
+      status: 400,
+      headers: { ...corsHeaders, "Content-Type": "application/json" }
+    });
+  }
+  
+  const sql = `
+    SELECT datetime_utc, dry_bulb, dew_point, wind_speed, wind_gust, wind_dir, barometer, station_name
+    FROM weather_data
+    WHERE station_name = ? AND datetime_utc >= ? AND datetime_utc <= ?
+    ORDER BY datetime_utc DESC
+  `;
+  
+  const results = await env.DB.prepare(sql).bind(station, start, end).all();
+  
+  return new Response(JSON.stringify(results.results), {
+    headers: { ...corsHeaders, "Content-Type": "application/json" }
+  });
+}
+
+async function handleInsert(request, env, corsHeaders) {
+  // Verify API key
+  const apiKey = request.headers.get("X-API-Key");
+  if (apiKey !== env.API_KEY) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" }
+    });
+  }
+  
+  const data = await request.json();
+  
+  // Support single record or array of records
+  const records = Array.isArray(data) ? data : [data];
+  
+  let inserted = 0;
+  let duplicates = 0;
+  
+  for (const record of records) {
+    try {
+      await env.DB.prepare(`
+        INSERT INTO weather_data (station_name, datetime_utc, dry_bulb, dew_point, wind_speed, wind_gust, wind_dir, barometer, source)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        record.station_name,
+        record.datetime_utc,
+        record.dry_bulb ?? null,
+        record.dew_point ?? null,
+        record.wind_speed ?? null,
+        record.wind_gust ?? null,
+        record.wind_dir ?? null,
+        record.barometer ?? null,
+        record.source ?? null
+      ).run();
+      inserted++;
+    } catch (e) {
+      if (e.message.includes("UNIQUE constraint")) {
+        duplicates++;
+      } else {
+        throw e;
+      }
+    }
+  }
+  
+  return new Response(JSON.stringify({ inserted, duplicates }), {
+    headers: { ...corsHeaders, "Content-Type": "application/json" }
+  });
+}

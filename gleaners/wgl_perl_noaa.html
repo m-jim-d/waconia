@@ -121,7 +121,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="k">use</span><span class="w"> </span><span class="nn">lib</span><span class="w"> </span><span class="s">&#39;.&#39;</span><span class="p">;</span>
 <span class="k">use</span><span class="w"> </span><span class="nn">wgl_perl_module</span><span class="w"> </span><span class="sx">qw(connect_database get_null execute_sql close_database</span>
 <span class="sx">               add_google_sheet_row clear_google_sheet_data </span>
-<span class="sx">               get_google_sheet_row_count send_to_google_sheet open_log_file)</span><span class="p">;</span>
+<span class="sx">               get_google_sheet_row_count send_to_sheetAndD1 open_log_file)</span><span class="p">;</span>
 
 <span class="k">use</span><span class="w"> </span><span class="nn">strict</span><span class="p">;</span>
 
@@ -244,10 +244,11 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$TelemOK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="k">my</span><span class="w"> </span><span class="p">(</span><span class="nv">$success</span><span class="p">,</span><span class="w"> </span><span class="nv">$error</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">execute_sql</span><span class="p">(</span><span class="nv">$sql</span><span class="p">,</span><span class="w"> </span><span class="nv">$log_fh</span><span class="p">);</span>
 <span class="w">         </span>
-<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$success</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">            </span>
-<span class="w">            </span><span class="c1"># Prepare to add a new row to the googleSheet_data array.</span>
-<span class="w">            </span><span class="k">my</span><span class="w"> </span><span class="p">(</span><span class="nv">$TheYear</span><span class="p">,</span><span class="w"> </span><span class="nv">$TheMonth</span><span class="p">,</span><span class="w"> </span><span class="nv">$TheDay</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Decode_Date_US</span><span class="p">(</span><span class="nv">$TheDate</span><span class="p">);</span>
-<span class="w">            </span>
+<span class="w">         </span><span class="c1"># Prepare date parts for both Sheet and D1</span>
+<span class="w">         </span><span class="k">my</span><span class="w"> </span><span class="p">(</span><span class="nv">$TheYear</span><span class="p">,</span><span class="w"> </span><span class="nv">$TheMonth</span><span class="p">,</span><span class="w"> </span><span class="nv">$TheDay</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Decode_Date_US</span><span class="p">(</span><span class="nv">$TheDate</span><span class="p">);</span>
+<span class="w">         </span>
+<span class="w">         </span><span class="c1"># Only add to Google Sheet if MySQL insert succeeded (to minimize rows-written traffic)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$success</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="c1"># Add row to Google Sheet data using the module function</span>
 <span class="w">            </span><span class="c1"># The module will handle DateTime creation and UTC conversion</span>
 <span class="w">            </span><span class="n">add_google_sheet_row</span><span class="p">(</span>
@@ -560,14 +561,16 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="w">   </span><span class="n">close_database</span><span class="p">();</span>
 <span class="p">}</span>
 
-<span class="c1"># Send the array of successful writes to the Google sheet using the module</span>
+<span class="c1"># Send the array of successful writes to the Google sheet and D1 using the module</span>
 <span class="k">my</span><span class="w"> </span><span class="nv">$row_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_google_sheet_row_count</span><span class="p">();</span>
-<span class="k">print</span><span class="w"> </span><span class="s">&quot;row_count = $row_count\n&quot;</span><span class="p">;</span>
 <span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$row_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="n">send_to_google_sheet</span><span class="p">(</span><span class="s">&#39;noaa&#39;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">   </span><span class="n">send_to_sheetAndD1</span><span class="p">(</span><span class="s">&#39;noaa&#39;</span><span class="p">,</span><span class="w"> </span>
 <span class="w">                      </span><span class="s">&quot;C:\\Users\\Jim\\Documents\\webcontent\\waconia\\wgl_perl_noaa_data.json&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                      </span><span class="s">&quot;C:\\Users\\Jim\\Documents\\webcontent\\waconia\\wgl_perl_postToSheet.py&quot;</span><span class="p">,</span>
+<span class="w">                      </span><span class="s">&quot;C:\\Users\\Jim\\Documents\\webcontent\\waconia\\wgl_perl_postToSheetAndD1.py&quot;</span><span class="p">,</span>
 <span class="w">                      </span><span class="nv">$log_fh</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">print</span><span class="w"> </span><span class="s">&quot;No new data to send to Sheet and D1 (noaa).\n&quot;</span><span class="p">;</span>
+<span class="w">   </span><span class="k">print</span><span class="w"> </span><span class="nv">$log_fh</span><span class="w"> </span><span class="nb">localtime</span><span class="p">(</span><span class="nb">time</span><span class="p">)</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">&quot; No new data to send to Sheet and D1 (noaa).\n&quot;</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="c1"># Close the log file</span>

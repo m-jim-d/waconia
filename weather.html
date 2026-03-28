@@ -13,8 +13,8 @@
    <!-- Google icon library -->
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-   <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">
-   <link href="weather.css?v=20" rel="stylesheet" type="text/css">
+   <link href="sitemap.css?v=50" rel="stylesheet" type="text/css">
+   <link href="weather.css?v=50" rel="stylesheet" type="text/css">
    <style>
    </style>
 
@@ -29,15 +29,15 @@
       <br><br><br><br><br><br><br>
    </noscript>
 
-   <script type="text/javascript" src="jquery-3.7.1.min.js?v=3"></script>
+   <script type="text/javascript" src="jquery-3.7.1.min.js?v=50"></script>
    <!-- loader for google charts -->
    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-   <script type="text/javascript" src="wcharts.js?v=22"></script>
+   <script type="text/javascript" src="wcharts.js?v=50"></script>
 
    <!-- The navigation menu -->
-   <script src="utilities.js?v=45"></script>
-   <script src="pageStuff.js?v=45"></script>
+   <script src="utilities.js?v=50"></script>
+   <script src="pageStuff.js?v=50"></script>
    <script>
       // After the page loads...
       $(window).on('load', function() {
@@ -51,10 +51,11 @@
 
 <!-- The navigation menu -->
 <div id="navDiv"></div>
+
 <div class='pageblock'>
 <img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
 <div class='controls'>
-<button id="updateButton" onclick="wC.queryGoogleSheet()" title="Resubmit the query to update the chart.">Update</button>
+<button id="updateButton" onclick="wC.queryDataSource()" title="Resubmit the query to update the chart.">Update</button>
 <input type="checkbox" class="largerCheckbox" id="chkSmoother" title="
 Check to smooth the temperature, pressure and wind direction readings." onClick="wC.handleSmootherThenDraw()" checked>
 <select id="regions" title="Region">
@@ -72,18 +73,27 @@ Check to smooth the temperature, pressure and wind direction readings." onClick=
 <select id="nDays" title="
 Number of Days
 
-For current day, the 24hrs option will plot the latest 24 hours of data. 
-On other days, the 24hrs option is equivalent to the 1d option, 
+For current day, the 24h option will plot the latest 24 hours of data. 
+On other days, the 24h option is equivalent to the 1d option, 
 plotting from midnight to midnight.
 
-The 24hrs plot can be useful for comparing current conditions (right edge)
+The 24h plot can be useful for comparing current conditions (right edge)
 with those at the same time yesterday (left edge).
 ">
-   <option value="24h">24hrs</option>
+   <option value="24h">24h</option>
    <option value=1>1d</option>
    <option value=2>2d</option>
    <option value=5>5d</option>
    <option value=10>10d</option>
+</select>
+<select id="dataSource" title="
+Data Source: Cloudflare D1 database (CF) or Google Sheets (GS)
+
+CF is much faster, and keeps a longer weather history.
+GS is here mainly as a backup option, if the CF database is unavailable.
+">
+   <option value="d1" title="Cloudflare D1 database">CF</option>
+   <option value="sheets" title="Google Sheet">GS</option>
 </select>
 <br><br>
 </div>

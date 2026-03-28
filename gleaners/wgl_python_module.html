@@ -337,6 +337,50 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
     <span class="k">except</span><span class="p">:</span>
         <span class="n">message_str</span> <span class="o">=</span> <span class="s2">&quot;Error opening URL.&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">message_str</span> <span class="o">+</span> <span class="s2">&quot;, URL = &quot;</span> <span class="o">+</span> <span class="n">sheet_url</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">write_to_cloudflare</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write weather data to Cloudflare D1 database via Worker API.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        data: A single record dict or list of dicts with keys:</span>
+<span class="sd">              station_name, datetime_utc, dry_bulb, dew_point, </span>
+<span class="sd">              wind_speed, wind_gust, wind_dir, barometer</span>
+<span class="sd">        source: Optional source identifier (&#39;meso&#39;, &#39;aw&#39;, &#39;hanford&#39;, &#39;noaa&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">wgl_python_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CLOUDFLARE_API_KEY</span><span class="p">,</span> <span class="n">CLOUDFLARE_WORKER_URL</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Could not import Cloudflare config from wgl_python_config.py&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    
+    <span class="c1"># Add source to each record if provided</span>
+    <span class="k">if</span> <span class="n">source</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">record</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;X-API-Key&quot;</span><span class="p">:</span> <span class="n">CLOUDFLARE_API_KEY</span>
+        <span class="p">}</span>
+        
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">CLOUDFLARE_WORKER_URL</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="n">source_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">if</span> <span class="n">source</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cloudflare D1</span><span class="si">{</span><span class="n">source_str</span><span class="si">}</span><span class="s2">: inserted=</span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inserted&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">, duplicates=</span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;duplicates&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cloudflare D1 error: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">message_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Error writing to Cloudflare D1: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> ==&gt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
 </pre></div>
 </body>
 </html>

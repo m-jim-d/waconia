@@ -120,7 +120,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 
 <span class="n">our</span> <span class="nd">@EXPORT_OK</span> <span class="o">=</span> <span class="n">qw</span><span class="p">(</span><span class="n">connect_database</span> <span class="n">get_null</span> <span class="n">execute_sql</span> <span class="n">close_database</span> 
                     <span class="n">add_google_sheet_row</span> <span class="n">clear_google_sheet_data</span> 
-                    <span class="n">get_google_sheet_row_count</span> <span class="n">send_to_google_sheet</span> <span class="n">open_log_file</span><span class="p">);</span>
+                    <span class="n">get_google_sheet_row_count</span> <span class="n">send_to_sheetAndD1</span> <span class="n">open_log_file</span><span class="p">);</span>
 
 <span class="c1"># Module-level globals (not visible outside the module)</span>
 <span class="n">my</span> <span class="err">$</span><span class="n">database_handle</span><span class="p">;</span>
@@ -258,7 +258,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="p">}</span>
 
 
-<span class="c1"># Add a row to the Google Sheet data array</span>
+<span class="c1"># Stage a row of weather data for later batch-write to Google Sheet and Cloudflare D1</span>
 <span class="n">sub</span> <span class="n">add_google_sheet_row</span> <span class="p">{</span>
     <span class="n">my</span> <span class="p">(</span><span class="err">$</span><span class="n">station</span><span class="p">,</span> <span class="err">$</span><span class="n">year</span><span class="p">,</span> <span class="err">$</span><span class="n">month</span><span class="p">,</span> <span class="err">$</span><span class="n">day</span><span class="p">,</span> <span class="err">$</span><span class="n">hour</span><span class="p">,</span> <span class="err">$</span><span class="nb">min</span><span class="p">,</span> 
         <span class="err">$</span><span class="n">temp_avg</span><span class="p">,</span> <span class="err">$</span><span class="n">dew_point</span><span class="p">,</span> <span class="err">$</span><span class="n">wind_dir</span><span class="p">,</span> <span class="err">$</span><span class="n">wind_avg</span><span class="p">,</span> <span class="err">$</span><span class="n">wind_max</span><span class="p">,</span> <span class="err">$</span><span class="n">bp_avg_sl</span><span class="p">,</span> <span class="err">$</span><span class="n">log_file_handle</span><span class="p">)</span> <span class="o">=</span> <span class="nd">@_</span><span class="p">;</span>
@@ -301,8 +301,8 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
     <span class="k">return</span> <span class="n">scalar</span> <span class="nd">@google_sheet_data</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="c1"># Send the data to Google Sheets</span>
-<span class="n">sub</span> <span class="n">send_to_google_sheet</span> <span class="p">{</span>
+<span class="c1"># Send the data to Google Sheets and Cloudflare D1</span>
+<span class="n">sub</span> <span class="n">send_to_sheetAndD1</span> <span class="p">{</span>
     <span class="n">my</span> <span class="p">(</span><span class="err">$</span><span class="n">sheet_name</span><span class="p">,</span> <span class="err">$</span><span class="n">json_file_path</span><span class="p">,</span> <span class="err">$</span><span class="n">python_script_path</span><span class="p">,</span> <span class="err">$</span><span class="n">log_file_handle</span><span class="p">)</span> <span class="o">=</span> <span class="nd">@_</span><span class="p">;</span>
     
     <span class="n">my</span> <span class="err">$</span><span class="n">log_fh</span> <span class="o">=</span> <span class="err">$</span><span class="n">log_file_handle</span> <span class="o">||</span> <span class="err">$</span><span class="n">log_file</span><span class="p">;</span>
@@ -310,7 +310,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
     
     <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="n">row_count</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="n">log_fh</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nb">print</span> <span class="err">$</span><span class="n">log_fh</span> <span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot; No data to send to Google Sheet</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+            <span class="nb">print</span> <span class="err">$</span><span class="n">log_fh</span> <span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot; No data to send to Google Sheet / D1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;No data to send&quot;</span><span class="p">);</span>
     <span class="p">}</span>
@@ -334,19 +334,19 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
         <span class="n">close</span> <span class="err">$</span><span class="n">fh</span><span class="p">;</span>
         
         <span class="c1"># Execute Python script</span>
-        <span class="n">my</span> <span class="err">$</span><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;$python_script_path $json_file_path&quot;</span><span class="p">;</span>
+        <span class="n">my</span> <span class="err">$</span><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;py </span><span class="se">\&quot;</span><span class="s2">$python_script_path</span><span class="se">\&quot;</span><span class="s2"> </span><span class="se">\&quot;</span><span class="s2">$json_file_path</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">;</span>
         <span class="n">system</span><span class="p">(</span><span class="err">$</span><span class="n">cmd</span><span class="p">);</span>
     <span class="p">};</span>
     
     <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="o">@</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="n">log_fh</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nb">print</span> <span class="err">$</span><span class="n">log_fh</span> <span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot; Error sending data to Google Sheet: $@</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+            <span class="nb">print</span> <span class="err">$</span><span class="n">log_fh</span> <span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot; Error sending data to Google Sheet / D1: $@</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="err">$</span><span class="o">@</span><span class="p">);</span>
     <span class="p">}</span>
     
     <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="n">log_fh</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nb">print</span> <span class="err">$</span><span class="n">log_fh</span> <span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot; Successfully sent $row_count rows to Google Sheet</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+        <span class="nb">print</span> <span class="err">$</span><span class="n">log_fh</span> <span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot; Successfully sent $row_count rows to Google Sheet / D1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
     <span class="p">}</span>
     
     <span class="c1"># Clear the data after sending</span>

@@ -36,8 +36,6 @@ var wC = (function() {
    google.charts.load('current', {'packages':['corechart']});
    google.charts.load('current', {'packages':['table']});
    
-   google.charts.setOnLoadCallback( queryGoogleSheet);
-   
    // Names starting with m_ indicate module-scope globals.
    var m_version = 1.9;
    console.log('wC version ' + m_version);
@@ -63,7 +61,8 @@ var wC = (function() {
    var m_selectDaysValueAtQuery = null;
    var m_nDays = null;
    var m_nDaysAtQuery = null;
-   
+   var m_selectDataSource = null;
+  
    var m_alreadySmoothed = false;
    var m_annotated = false;
    
@@ -80,6 +79,10 @@ var wC = (function() {
    
    var m_readyForNewQuery = null;
    var m_retry_count = null;
+   
+   // Cloudflare D1 configuration
+   var m_dataSource = 'd1'; // 'sheets' or 'd1'
+   var m_d1WorkerURL = 'https://triquence.org/weather';
    
    var m_populateEndDate; // function
    var m_endDateFromResponse;
@@ -404,7 +407,7 @@ var wC = (function() {
             m_selectStations.value = "RJTT";
          }
          m_stationName = m_selectStations.value;
-         queryGoogleSheet();
+         queryDataSource();
       }
       
       m_selectStations = document.getElementById("stations");
@@ -430,7 +433,7 @@ var wC = (function() {
       function stationChange() {
          console.log( m_selectStations.value);
          m_stationName = m_selectStations.value;
-         queryGoogleSheet();
+         queryDataSource();
       }
       
       m_selectEndDate = document.getElementById("endDate");
@@ -438,7 +441,7 @@ var wC = (function() {
          $("#endDate").empty();
          let oneDayShift = 24 * 3600*1000;
          let epochDate = Date.now(); // + oneDayShift
-         for (var i = 0; i < 200; i++) {
+         for (var i = 0; i < 220; i++) {
             let shiftedDate = new Date( epochDate).toDateString();
             let element = document.createElement("option");
             element.text = shiftedDate;
@@ -452,7 +455,7 @@ var wC = (function() {
       m_selectEndDate.addEventListener('change', dateChange);
       function dateChange() {
          console.log( m_selectEndDate.value);
-         queryGoogleSheet();
+         queryDataSource();
       }
             
       m_selectDays = document.getElementById("nDays");
@@ -462,9 +465,18 @@ var wC = (function() {
       function changeDays( submitQuery=true) {
          m_nDays = (m_selectDays.value == "24h") ? 1 : Number( m_selectDays.value);
          //console.log( "days=" + m_nDays);
-         if (submitQuery) queryGoogleSheet();
+         if (submitQuery) queryDataSource();
       }
       changeDays( false); // "false" initializes the chart settings without submitting the query.
+      
+      m_selectDataSource = document.getElementById("dataSource");
+      m_selectDataSource.addEventListener('change', dataSourceChange);
+      function dataSourceChange() {
+         setDataSource( m_selectDataSource.value);
+         queryDataSource();
+      }
+      
+      google.charts.setOnLoadCallback( queryDataSource);
    }
    
    function changeUpdateButton( state) {
@@ -483,7 +495,7 @@ var wC = (function() {
       }
    }
    
-   function queryGoogleSheet() {
+   function queryDataSource() {
       
       let endTimeLocal;
       
@@ -497,8 +509,6 @@ var wC = (function() {
       changeUpdateButton("wait");
       m_readyForNewQuery = false;
       if ( ! m_problemWithURLSearch) document.getElementById("statusSpan").textContent="";
-      
-      let query = new google.visualization.Query( getSheetURL( m_stationName));
       
       let nowLocal = new Date();
       
@@ -548,13 +558,93 @@ var wC = (function() {
       let startTime_queryString = startTime_UTCstring.replace("T", " ").slice(0, 19);
       //console.log("UTC = " + startTime_queryString);
       
-      query.setQuery("select B, C, D, F, G, E, H, A where (A = '" + m_stationName + "') and " + 
-                     "(B >= datetime '" + startTime_queryString + "') and (B <= datetime '" + endTime_queryString + "')" + 
-                     "order by B desc");  //2023-02-3 10:00:00
-      
-      query.send( handleQueryResponse);
+      // Route to appropriate data source
+      if (m_dataSource === 'd1') {
+         queryD1( m_stationName, startTime_queryString, endTime_queryString);
+      } else {
+         let query = new google.visualization.Query( getSheetURL( m_stationName));
+         query.setQuery("select B, C, D, F, G, E, H, A where (A = '" + m_stationName + "') and " + 
+                        "(B >= datetime '" + startTime_queryString + "') and (B <= datetime '" + endTime_queryString + "')" + 
+                        "order by B desc");  //2023-02-3 10:00:00
+         
+         query.send( handleQueryResponse);
+      }
       
       pS.logEntry( m_station_map[ m_stationName].longName + ", " + m_selectDaysValueAtQuery + ", " + m_endDateAtQuery + " v" + m_version);
+   }
+   
+   function queryD1( stationName, startTime, endTime) {
+      // Query Cloudflare D1 via Worker API
+      let url = m_d1WorkerURL + "?station=" + encodeURIComponent(stationName) + 
+                "&start=" + encodeURIComponent(startTime) + 
+                "&end=" + encodeURIComponent(endTime);
+      
+      fetch(url)
+         .then(response => {
+            if (!response.ok) {
+               throw new Error('D1 query failed: ' + response.status);
+            }
+            return response.json();
+         })
+         .then(data => {
+            // Convert D1 response to Google Visualization DataTable format
+            let dataTable = convertD1ToDataTable(data);
+            handleQueryResponse({ getDataTable: () => dataTable, isError: () => false });
+         })
+         .catch(error => {
+            console.error('D1 query error:', error);
+            document.getElementById("statusSpan").textContent = "D1 query failed: " + error.message;
+            changeUpdateButton("update");
+            m_readyForNewQuery = true;
+         });
+   }
+   
+   function convertD1ToDataTable(d1Data) {
+      // D1 returns: [{datetime_utc, dry_bulb, dew_point, wind_speed, wind_gust, wind_dir, barometer, station_name}, ...]
+      // Google Sheets query returns columns: B(datetime), C(dry_bulb), D(dew_point), F(wind_speed), G(wind_gust), E(wind_dir), H(barometer), A(station)
+      
+      // Helper to convert string/null to number or null
+      function toNum(val) {
+         if (val === null || val === undefined || val === '' || val === 'NULL') return null;
+         let n = parseFloat(val);
+         return isNaN(n) ? null : n;
+      }
+      
+      let dataTable = new google.visualization.DataTable();
+      dataTable.addColumn('datetime', 'datetime_utc');
+      dataTable.addColumn('number', 'dry_bulb');
+      dataTable.addColumn('number', 'dew_point');
+      dataTable.addColumn('number', 'wind_speed');
+      dataTable.addColumn('number', 'wind_gust');
+      dataTable.addColumn('number', 'wind_dir');
+      dataTable.addColumn('number', 'barometer');
+      dataTable.addColumn('string', 'station_name');
+      
+      for (let row of d1Data) {
+         // Parse datetime string to Date object
+         // Handle both ISO format (2026-03-24 02:35:00) and old format (3/23/2026 16:35:0)
+         // Don't add 'Z' - let JavaScript interpret as local time like Sheets data
+         let dtStr = row.datetime_utc;
+         if (dtStr.includes('-') && dtStr.length >= 19) {
+            // ISO format: replace space with T
+            dtStr = dtStr.replace(' ', 'T');
+         }
+         // For old M/D/YYYY format, Date() constructor handles it directly
+         let dt = new Date(dtStr);
+         
+         dataTable.addRow([
+            dt,
+            toNum(row.dry_bulb),
+            toNum(row.dew_point),
+            toNum(row.wind_speed),
+            toNum(row.wind_gust),
+            toNum(row.wind_dir),
+            toNum(row.barometer),
+            row.station_name
+         ]);
+      }
+      
+      return dataTable;
    }
    
    function dayLightSavingsTime( dateString) {
@@ -728,12 +818,17 @@ var wC = (function() {
          // Shift the date to local (station timezone) in the raw data table.
          m_dataTable.setValue(i, 0, shifted_date);
          
-         let dryBulb    = m_dataTable.getValue(i, 1);
-         let dewPoint   = m_dataTable.getValue(i, 2);
-         let pressure   = m_dataTable.getValue(i, 6);
-         let wind_speed = m_dataTable.getValue(i, 3);
-         let wind_gust  = m_dataTable.getValue(i, 4);
-         let wind_dir   = m_dataTable.getValue(i, 5);
+         function ensureNum(v) { 
+            if (v === null || v === undefined || v === '' || v === 'NULL') return null;
+            let n = Number(v);
+            return isNaN(n) ? null : n;
+         }
+         let dryBulb    = ensureNum(m_dataTable.getValue(i, 1));
+         let dewPoint   = ensureNum(m_dataTable.getValue(i, 2));
+         let pressure   = ensureNum(m_dataTable.getValue(i, 6));
+         let wind_speed = ensureNum(m_dataTable.getValue(i, 3));
+         let wind_gust  = ensureNum(m_dataTable.getValue(i, 4));
+         let wind_dir   = ensureNum(m_dataTable.getValue(i, 5));
          
          if (dryBulb) { 
             tempRange.min = Math.min( dryBulb,  tempRange.min);
@@ -790,7 +885,20 @@ var wC = (function() {
       
       //console.log("all null = " + m_dp_allNull + ", " + m_bp_allNull);
       
-      m_editedDataTable = new google.visualization.arrayToDataTable( editedArray);
+      // Create DataTable with explicit column types (arrayToDataTable can infer wrong types from null values)
+      m_editedDataTable = new google.visualization.DataTable();
+      m_editedDataTable.addColumn('datetime', 'shiftdate');
+      m_editedDataTable.addColumn('number', 'shifted epoch');
+      m_editedDataTable.addColumn('number', 'dry bulb');
+      m_editedDataTable.addColumn('number', 'dew point');
+      m_editedDataTable.addColumn('number', 'barometer');
+      m_editedDataTable.addColumn('number', 'speed');
+      m_editedDataTable.addColumn('number', 'gust');
+      m_editedDataTable.addColumn('number', 'direction');
+      // Add data rows (skip header row at index 0)
+      for (let i = 1; i < editedArray.length; i++) {
+         m_editedDataTable.addRow(editedArray[i]);
+      }
       
       // Format for the date-time values.
       var dateFormat = new google.visualization.DateFormat({pattern: "MMM/dd/yyyy h:mm aa"});  // h:mm aa  MMM/dd/yyyy   ZZZZ  , timeZone: -6   pattern: "MM:dd:yyyy HH:mm ZZZZ"   formatType: 'long'
@@ -957,7 +1065,7 @@ var wC = (function() {
             selectEndDate.selectedIndex = targetIndex;
          }      
       }
-      if (selectEndDate.selectedIndex != initialIndex) queryGoogleSheet();
+      if (selectEndDate.selectedIndex != initialIndex) queryDataSource();
    }
 
    function addAnotationLines() {
@@ -1256,7 +1364,7 @@ var wC = (function() {
             let endDateCheck = (m_selectEndDate.value != m_endDateAtQuery);
             let nDaysCheck = (m_selectDaysValueAtQuery != m_selectDays.value);
             if ((stationCheck || endDateCheck || nDaysCheck) && (m_retry_count <= 3)) {
-               queryGoogleSheet();
+               queryDataSource();
                console.log("retry count = " + m_retry_count);
                m_retry_count++;
             } else {
@@ -1293,15 +1401,13 @@ var wC = (function() {
       let dateString = m_endDateFromResponse.toLocaleDateString( undefined, dateFormat);      
       
       let timeString;
-      if ((m_selectDaysValueAtQuery == "24h") && (m_isToday)) {
-         timeString = ", latest: " + new Date( m_endDateFromResponse).toString().split(" ")[4]; // .slice(0,5)
-         //console.log('m_epochMax='+m_epochMax);
-         //console.log('Date.now()='+Date.now());
+      if (['24h','1','2'].includes(m_selectDaysValueAtQuery) && (m_isToday)) {
+         timeString = ", latest: " + new Date( m_endDateFromResponse).toLocaleTimeString( undefined, { hour: 'numeric', minute: '2-digit', hour12: true });
          let deltaTime_m = ((Date.now() - m_epochMax) / (60*1000)); // .toFixed(1)
          let deltaMin = Math.floor( deltaTime_m);
          let deltaSec = (60*(deltaTime_m - deltaMin)).toFixed(0);
          //let okForDelay = ((m_selectDaysValueAtQuery == "24h") && (m_isToday));
-         let delayString =  " (-" + String( deltaMin).padStart(2,"0") + ":" + String( deltaSec).padStart(2,"0") + ")";
+         let delayString =  " (age: " + String( deltaMin).padStart(2,"0") + "m " + String( deltaSec).padStart(2,"0") + "s)";
          timeString += delayString;
       } else {
          timeString = "";
@@ -1379,6 +1485,14 @@ var wC = (function() {
       m_smoothedVisTable.draw( m_editedDataTable, null);
    }
    
+   function setDataSource(source) {
+      // Set data source: 'sheets' or 'd1'
+      if (source === 'sheets' || source === 'd1') {
+         m_dataSource = source;
+         console.log('Data source set to: ' + m_dataSource);
+      }
+   }
+   
    return {
       // Objects
       
@@ -1387,8 +1501,9 @@ var wC = (function() {
       // Methods
       stepByDays: stepByDays,
       init: initializeModule,
-      queryGoogleSheet: queryGoogleSheet,
-      handleSmootherThenDraw: handleSmootherThenDraw
+      queryDataSource: queryDataSource,
+      handleSmootherThenDraw: handleSmootherThenDraw,
+      setDataSource: setDataSource
 
    };
 

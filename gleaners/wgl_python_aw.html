@@ -114,7 +114,6 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 
 <span class="sd">Description: An XML gleaner for collecting MN, WI, and IA METAR weather data.</span>
 <span class="sd">Written by: Jim Miller (7/6/2025)</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -178,7 +177,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">xml.dom.minidom</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span> <span class="c1"># In support of XML parsing</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">wgl_python_module</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">write_to_spreadsheet</span><span class="p">,</span> <span class="n">openConnections</span><span class="p">,</span> <span class="n">closeConnections</span><span class="p">,</span> <span class="n">enterInLog</span><span class="p">,</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">wgl_python_module</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">write_to_spreadsheet</span><span class="p">,</span> <span class="n">write_to_cloudflare</span><span class="p">,</span> <span class="n">openConnections</span><span class="p">,</span> <span class="n">closeConnections</span><span class="p">,</span> <span class="n">enterInLog</span><span class="p">,</span> 
     <span class="n">runSQL</span><span class="p">,</span> <span class="n">attemptWriteToDaysGleaned</span><span class="p">,</span> <span class="n">updateMaxStationDateTime</span>
 <span class="p">)</span>
 
@@ -200,6 +199,12 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
     <span class="k">return</span> <span class="n">timeString</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">utc_iso</span><span class="p">(</span> <span class="n">timeTuple</span><span class="p">):</span>
+    <span class="c1"># ISO format for D1: YYYY-MM-DD HH:MM:SS</span>
+    <span class="n">timeString</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%04d</span><span class="s2">-</span><span class="si">%02d</span><span class="s2">-</span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">timeTuple</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">timeTuple</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">timeTuple</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">timeTuple</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">timeTuple</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">timeTuple</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">timeString</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">processMultipleStations_xml</span><span class="p">(</span><span class="n">station_dictionary</span><span class="p">):</span>
     <span class="c1"># Build the URL string to get data from Multiple stations by making one query to the server.</span>
     <span class="c1"># (returned on one page).</span>
@@ -211,6 +216,17 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
                     <span class="s2">&quot;format=xml&amp;&quot;</span> <span class="o">+</span> 
                     <span class="s2">&quot;hours=2&amp;&quot;</span> <span class="o">+</span> 
                     <span class="s2">&quot;ids=&quot;</span><span class="p">)</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    # Example base for a longer time range starting at a specified date and</span>
+<span class="sd">    # time. Note that queries appear to be limited to 400 reports.</span>
+<span class="sd">    </span>
+<span class="sd">    url_base = (&quot;https://aviationweather.gov/api/data/metar?&quot; + </span>
+<span class="sd">                    &quot;format=xml&amp;&quot; + </span>
+<span class="sd">                    &quot;hours=48&amp;&quot; + </span>
+<span class="sd">                    &quot;date=202509190000&amp;&quot; +</span>
+<span class="sd">                    &quot;ids=&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Get count of stations</span>
     <span class="n">station_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">station_dictionary</span><span class="p">)</span>
@@ -242,6 +258,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
         <span class="k">return</span> <span class="s1">&#39;&#39;</span>
 
     <span class="n">rowsForSpreadsheet</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rowsForCloudflare</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1"># Check for error and warning messages in the XML. If found, write to log</span>
     <span class="c1"># and exit subroutine.</span>
@@ -274,8 +291,9 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
             <span class="c1"># successful write is indicated, bump up the counter.</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">runSQL</span><span class="p">(</span> <span class="n">sqlForStation</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sqlForStation</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
                 <span class="n">write_count</span> <span class="o">=</span> <span class="n">write_count</span> <span class="o">+</span> <span class="mi">1</span>
-                
                 <span class="n">rowsForSpreadsheet</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">sqlForStation</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="c1"># Only add to D1 if MySQL insert succeeded (to minimize rows-written traffic)</span>
+                <span class="n">rowsForCloudflare</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">sqlForStation</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="c1"># Get station name for better error reporting</span>
@@ -298,10 +316,12 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
         <span class="n">attemptWriteToDaysGleaned</span><span class="p">(</span><span class="n">database_type</span><span class="p">)</span>
         
         <span class="n">write_to_spreadsheet</span><span class="p">(</span><span class="s2">&quot;aw&quot;</span><span class="p">,</span> <span class="n">rowsForSpreadsheet</span><span class="p">)</span>
+        <span class="n">write_to_cloudflare</span><span class="p">(</span><span class="n">rowsForCloudflare</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;aw&quot;</span><span class="p">)</span>
         
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;url = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">webpage_url</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cloudflare D1 and Google Sheet (meso): No new data to send.&quot;</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> successful writes from </span><span class="si">%s</span><span class="s2"> of </span><span class="si">%s</span><span class="s2"> stations returning data.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">write_count</span><span class="p">,</span> <span class="n">n_data</span><span class="p">,</span> <span class="n">station_count</span><span class="p">))</span>
     <span class="c1">#print(&quot;station names = &quot;, station_names)</span>
@@ -543,6 +563,18 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
         <span class="s1">&#39;TempAvg&#39;</span><span class="p">,</span> <span class="s1">&#39;DewPoint&#39;</span><span class="p">,</span> <span class="s1">&#39;Pressure&#39;</span><span class="p">)</span> 
         
     <span class="n">spreadSheetRow</span> <span class="o">=</span> <span class="p">[</span><span class="n">station_name</span><span class="p">,</span> <span class="n">utc</span><span class="p">(</span> <span class="n">time_tuple_UTC</span><span class="p">),</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">temp_f</span><span class="p">),</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">dewpoint_f</span><span class="p">),</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">wind_dir_degrees</span><span class="p">),</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">wind_speed_mph</span><span class="p">),</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">wind_gust_mph</span><span class="p">),</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">altim_in_hg</span><span class="p">)]</span>
+    
+    <span class="c1"># Build the Cloudflare D1 row (use ISO format for datetime)</span>
+    <span class="n">d1Row</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;station_name&#39;</span><span class="p">:</span> <span class="n">station_name</span><span class="p">,</span>
+        <span class="s1">&#39;datetime_utc&#39;</span><span class="p">:</span> <span class="n">utc_iso</span><span class="p">(</span> <span class="n">time_tuple_UTC</span><span class="p">),</span>
+        <span class="s1">&#39;dry_bulb&#39;</span><span class="p">:</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">temp_f</span><span class="p">),</span>
+        <span class="s1">&#39;dew_point&#39;</span><span class="p">:</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">dewpoint_f</span><span class="p">),</span>
+        <span class="s1">&#39;wind_dir&#39;</span><span class="p">:</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">wind_dir_degrees</span><span class="p">),</span>
+        <span class="s1">&#39;wind_speed&#39;</span><span class="p">:</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">wind_speed_mph</span><span class="p">),</span>
+        <span class="s1">&#39;wind_gust&#39;</span><span class="p">:</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">wind_gust_mph</span><span class="p">),</span>
+        <span class="s1">&#39;barometer&#39;</span><span class="p">:</span> <span class="n">nZS</span><span class="p">(</span> <span class="n">altim_in_hg</span><span class="p">)</span>
+    <span class="p">}</span>
 
     <span class="n">sql_names</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO FifteenMinData (&quot;</span>
     <span class="n">sql_format</span> <span class="o">=</span> <span class="s2">&quot;VALUES (&quot;</span>
@@ -571,7 +603,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SQL string = &quot;</span><span class="p">,</span> <span class="n">sql_string</span><span class="p">)</span>
 
     <span class="c1"># Return SQL string and data list (to be used with error messages)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">sql_string</span><span class="p">,</span> <span class="n">sql_data</span><span class="p">,</span> <span class="n">spreadSheetRow</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">sql_string</span><span class="p">,</span> <span class="n">sql_data</span><span class="p">,</span> <span class="n">spreadSheetRow</span><span class="p">,</span> <span class="n">d1Row</span><span class="p">)</span>
 
 
 <span class="sd">&quot;&quot;&quot;</span>

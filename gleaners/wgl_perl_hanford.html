@@ -124,7 +124,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="k">use</span><span class="w"> </span><span class="nn">lib</span><span class="w"> </span><span class="s">&#39;.&#39;</span><span class="p">;</span>
 <span class="k">use</span><span class="w"> </span><span class="nn">wgl_perl_module</span><span class="w"> </span><span class="sx">qw(connect_database get_null execute_sql close_database</span>
 <span class="sx">               add_google_sheet_row clear_google_sheet_data </span>
-<span class="sx">               get_google_sheet_row_count send_to_google_sheet open_log_file)</span><span class="p">;</span>
+<span class="sx">               get_google_sheet_row_count send_to_sheetAndD1 open_log_file)</span><span class="p">;</span>
 
 <span class="k">use</span><span class="w"> </span><span class="nn">strict</span><span class="p">;</span>
 
@@ -462,12 +462,12 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$TelemOK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="k">my</span><span class="w"> </span><span class="p">(</span><span class="nv">$success</span><span class="p">,</span><span class="w"> </span><span class="nv">$error</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">execute_sql</span><span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+<span class="w">         </span>
+<span class="w">         </span><span class="c1"># Only add to Google Sheet and D1 if MySQL insert succeeded (to minimize rows-written traffic)</span>
 <span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$success</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="c1"># Add a new row to the googleSheet array in the module.</span>
-<span class="w">            </span><span class="c1">#addRowToGoogleSheet();</span>
 <span class="w">            </span><span class="n">add_google_sheet_row</span><span class="p">(</span><span class="nv">$Station</span><span class="p">,</span><span class="w"> </span><span class="nv">$TheYear</span><span class="p">,</span><span class="w"> </span><span class="nv">$TheMonth</span><span class="p">,</span><span class="w"> </span><span class="nv">$TheDay</span><span class="p">,</span><span class="w"> </span><span class="nv">$TheHour</span><span class="p">,</span><span class="w"> </span><span class="nv">$TheMin</span><span class="p">,</span><span class="w"> </span>
 <span class="w">                              </span><span class="n">cS</span><span class="p">(</span><span class="nv">$TempAvg</span><span class="p">),</span><span class="w"> </span><span class="n">cS</span><span class="p">(</span><span class="nv">$DewPoint</span><span class="p">),</span><span class="w"> </span><span class="n">cS</span><span class="p">(</span><span class="nv">$WindDir</span><span class="p">),</span><span class="w"> </span><span class="n">cS</span><span class="p">(</span><span class="nv">$WindAvg</span><span class="p">),</span><span class="w"> </span>
-<span class="w">                              </span><span class="n">cS</span><span class="p">(</span><span class="nv">$WindMax</span><span class="p">),</span><span class="w"> </span><span class="n">cS</span><span class="p">(</span><span class="nv">$BPAvg_sl</span><span class="p">),</span><span class="w"> </span><span class="nv">$log_fh</span><span class="p">);</span><span class="w">            </span>
+<span class="w">                              </span><span class="n">cS</span><span class="p">(</span><span class="nv">$WindMax</span><span class="p">),</span><span class="w"> </span><span class="n">cS</span><span class="p">(</span><span class="nv">$BPAvg_sl</span><span class="p">),</span><span class="w"> </span><span class="nv">$log_fh</span><span class="p">);</span>
 <span class="w">         </span><span class="p">}</span>
 <span class="w">      </span><span class="p">}</span>
 
@@ -767,10 +767,13 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="k">my</span><span class="w"> </span><span class="nv">$row_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_google_sheet_row_count</span><span class="p">();</span>
 <span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$row_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="c1"># Let the module handle error reporting</span>
-<span class="w">    </span><span class="n">send_to_google_sheet</span><span class="p">(</span><span class="s">&#39;hanford&#39;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">    </span><span class="n">send_to_sheetAndD1</span><span class="p">(</span><span class="s">&#39;hanford&#39;</span><span class="p">,</span><span class="w"> </span>
 <span class="w">                        </span><span class="s">&quot;C:\\Users\\Jim\\Documents\\webcontent\\waconia\\wgl_perl_hanford_data.json&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                        </span><span class="s">&quot;C:\\Users\\Jim\\Documents\\webcontent\\waconia\\wgl_perl_postToSheet.py&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="s">&quot;C:\\Users\\Jim\\Documents\\webcontent\\waconia\\wgl_perl_postToSheetAndD1.py&quot;</span><span class="p">,</span>
 <span class="w">                        </span><span class="nv">$log_fh</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">print</span><span class="w"> </span><span class="s">&quot;No new data to send to Sheet and D1 (hanford).\n&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">print</span><span class="w"> </span><span class="nv">$log_fh</span><span class="w"> </span><span class="nb">localtime</span><span class="p">(</span><span class="nb">time</span><span class="p">)</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">&quot; No new data to send to Sheet and D1 (hanford).\n&quot;</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nb">close</span><span class="p">(</span><span class="nv">$log_fh</span><span class="p">);</span>

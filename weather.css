@@ -21,7 +21,7 @@ select, button {
 }
 
 #updateButton {
-   width: 80px;
+   width: 77px;
    height: 26px;
    border-radius: 3px;
    border-width: 1px
@@ -36,7 +36,8 @@ div.pageblock {
 
 div.controls {
    /*        top R   Bot L */
-   margin: -29px 0px 0px 35px;  
+   margin: -29px 0px 0px 35px;
+   white-space: nowrap;
 }
 
 /* This css file loads in after sitemap.css and overrides the following corresponding values. */ 

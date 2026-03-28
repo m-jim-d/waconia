@@ -124,7 +124,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">wgl_python_module</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">write_to_spreadsheet</span><span class="p">,</span> <span class="n">openConnections</span><span class="p">,</span> <span class="n">closeConnections</span><span class="p">,</span> <span class="n">enterInLog</span><span class="p">,</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">wgl_python_module</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">write_to_spreadsheet</span><span class="p">,</span> <span class="n">write_to_cloudflare</span><span class="p">,</span> <span class="n">openConnections</span><span class="p">,</span> <span class="n">closeConnections</span><span class="p">,</span> <span class="n">enterInLog</span><span class="p">,</span> 
     <span class="n">runSQL</span><span class="p">,</span> <span class="n">attemptWriteToDaysGleaned</span><span class="p">,</span> <span class="n">updateMaxStationDateTime</span>
 <span class="p">)</span>
 
@@ -225,6 +225,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
         <span class="nb">print</span><span class="p">(</span><span class="n">message_str</span> <span class="o">+</span> <span class="s2">&quot;, URL = &quot;</span> <span class="o">+</span> <span class="n">webpage_url</span><span class="p">)</span>
 
     <span class="n">rowsForSpreadsheet</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rowsForCloudflare</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">write_count</span> <span class="o">=</span> <span class="mi">0</span>
     
     <span class="k">for</span> <span class="n">stationData</span> <span class="ow">in</span> <span class="n">jsonObject</span><span class="p">[</span><span class="s2">&quot;STATION&quot;</span><span class="p">]:</span>
@@ -334,6 +335,19 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
                 <span class="n">newRow</span> <span class="o">=</span> <span class="p">[</span><span class="n">stationName</span><span class="p">,</span> <span class="n">utc</span><span class="p">(</span> <span class="n">timestamp_literal</span><span class="p">),</span> <span class="n">nN</span><span class="p">(</span> <span class="n">temp_f</span><span class="p">),</span> <span class="n">nN</span><span class="p">(</span> <span class="n">dewPoint_f</span><span class="p">),</span> <span class="n">nN</span><span class="p">(</span> <span class="n">windDirection_deg</span><span class="p">),</span> <span class="n">nN</span><span class="p">(</span> <span class="n">windSpeed_mph</span><span class="p">),</span> <span class="n">nN</span><span class="p">(</span> <span class="n">windGust_mph</span><span class="p">),</span> <span class="n">nN</span><span class="p">(</span> <span class="n">pressure_inHg</span><span class="p">)]</span>
                 <span class="n">rowsForSpreadsheet</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">newRow</span><span class="p">)</span>
                 
+                <span class="c1"># Only add to D1 if MySQL insert succeeded (to minimize rows-written traffic)</span>
+                <span class="n">d1Row</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;station_name&#39;</span><span class="p">:</span> <span class="n">stationName</span><span class="p">,</span>
+                    <span class="s1">&#39;datetime_utc&#39;</span><span class="p">:</span> <span class="n">utc</span><span class="p">(</span> <span class="n">timestamp_literal</span><span class="p">),</span>
+                    <span class="s1">&#39;dry_bulb&#39;</span><span class="p">:</span> <span class="n">nN</span><span class="p">(</span> <span class="n">temp_f</span><span class="p">),</span>
+                    <span class="s1">&#39;dew_point&#39;</span><span class="p">:</span> <span class="n">nN</span><span class="p">(</span> <span class="n">dewPoint_f</span><span class="p">),</span>
+                    <span class="s1">&#39;wind_dir&#39;</span><span class="p">:</span> <span class="n">nN</span><span class="p">(</span> <span class="n">windDirection_deg</span><span class="p">),</span>
+                    <span class="s1">&#39;wind_speed&#39;</span><span class="p">:</span> <span class="n">nN</span><span class="p">(</span> <span class="n">windSpeed_mph</span><span class="p">),</span>
+                    <span class="s1">&#39;wind_gust&#39;</span><span class="p">:</span> <span class="n">nN</span><span class="p">(</span> <span class="n">windGust_mph</span><span class="p">),</span>
+                    <span class="s1">&#39;barometer&#39;</span><span class="p">:</span> <span class="n">nN</span><span class="p">(</span> <span class="n">pressure_inHg</span><span class="p">)</span>
+                <span class="p">}</span>
+                <span class="n">rowsForCloudflare</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">d1Row</span><span class="p">)</span>
+                
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">message_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Error in station </span><span class="si">{</span><span class="n">stationName</span><span class="si">}</span><span class="s2"> (ID: </span><span class="si">{</span><span class="n">station_dic</span><span class="p">[</span><span class="n">stationData</span><span class="p">[</span><span class="s1">&#39;STID&#39;</span><span class="p">]][</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> ==&gt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">enterInLog</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
@@ -355,6 +369,10 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
         <span class="n">attemptWriteToDaysGleaned</span><span class="p">(</span><span class="n">database_type</span><span class="p">)</span>
         
         <span class="n">write_to_spreadsheet</span><span class="p">(</span><span class="s2">&quot;meso&quot;</span><span class="p">,</span> <span class="n">rowsForSpreadsheet</span><span class="p">)</span>
+        <span class="n">write_to_cloudflare</span><span class="p">(</span><span class="n">rowsForCloudflare</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;meso&quot;</span><span class="p">)</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cloudflare D1 and Google Sheet (meso): No new data to send.&quot;</span><span class="p">)</span>
         
 
 <span class="k">def</span><span class="w"> </span><span class="nf">build_SQL_string</span><span class="p">(</span> <span class="n">wd</span><span class="p">):</span>
