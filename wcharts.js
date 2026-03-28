@@ -1407,7 +1407,7 @@ var wC = (function() {
          let deltaMin = Math.floor( deltaTime_m);
          let deltaSec = (60*(deltaTime_m - deltaMin)).toFixed(0);
          //let okForDelay = ((m_selectDaysValueAtQuery == "24h") && (m_isToday));
-         let delayString =  " (age: " + String( deltaMin).padStart(2,"0") + "m " + String( deltaSec).padStart(2,"0") + "s)";
+         let delayString =  " (-" + String( deltaMin).padStart(2,"0") + "m" + String( deltaSec).padStart(2,"0") + "s)";
          timeString += delayString;
       } else {
          timeString = "";
