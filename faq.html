@@ -114,17 +114,22 @@
 	<p class="auto-style1">Now there's a 
 	<a class="page" href="https://waconia.triquence.org/weather.html?station=KRLD&amp;days=5">client</a> page built 
 	around <a class="page" href="https://developers.google.com/chart/">Google Charts</a>. 
-	It queries weather data stored in
+	It queries weather data stored in a Cloudflare D1 database and
 	Google spreadsheets (cloud). All client sided; all without hosting costs.</p>
 	<p class="auto-style1">The gleaner <a class="page scroll-link" data-scroll-target="DataSources" href="#">scripts</a> 
 	continue to run, now 
-	feeding the Google spreadsheets, still hosted on a little Intel NUC 
+	feeding a Cloudflare D1 database and Google sheets, hosted on a little BeeLink (originally an Intel NUC) 
 	existing quietly on my home network.</p>
-	<p class="auto-style1">The scripts also feed a local database for my 
+	<p class="auto-style1">The scripts also feed a local MySQL database for my 
 	at-home version of the old Waconia. So the old site lives on in the comfort 
 	of my basement. The current sample charts are produced by posting to this 
 	at-home Waconia and then publishing (to a hosting service) the resulting chart images in a static html page
 	(yes, another <a class="page" href="gleaners/getChartsFor50webs.html">Python script</a>).</p>
+	<p class="auto-style1">All the code for this project is open source and available on GitHub in two repositories: 
+	the <a class="page" href="https://github.com/jhagstrand/wgl_gleaners">gleaners repository</a> contains the data collection scripts 
+	that gather weather data from various sources and populate the databases, while the 
+	<a class="page" href="https://github.com/jhagstrand/wgl_client">client repository</a> contains the web-based charting application 
+	that queries the Cloudflare D1 database and displays the weather data using Google Charts.</p>
 	
 	
 	<p align="left"><a name="contrast"></a>What's different about the 
@@ -153,7 +158,7 @@
 		</li>
 		<li>
 		<p align="left">The delta-P, 25-day, and latest-record features are not 
-		in the new chart. Also the y dimensions of the chart area to not change 
+		in the new chart. Also the y dimensions of the chart area do not change 
 		with data range.</p>
 		</li>
 	</ul>	
