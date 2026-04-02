@@ -53,8 +53,8 @@
 <div class="pageblock">
 	<p><a href="index.html">(Back home)</a></p>
 	<p><b><font face="Arial" size="5">Technology behind the chart</font></b></p>
-	<p>This describes the components used in the original Rosy.asp charting page (see related discussion in the <a href="install_rosy.html">installation 
-	guide</a>).</p>
+	<p>This describes the components used in the current Rosy.asp charting page (see related discussion in the <a href="install_rosy.html">installation 
+	guide</a>). The system has evolved from its original MS Access-based backend to a MySQL database.</p>
 	<ul>
 		<li><strong>Data-Collection Scripts</strong><ul>
 			<li><font color="#0000ff"><b>Perl</b></font>:&nbsp;Some of the data 
@@ -64,42 +64,52 @@
 			every&nbsp;5 minutes and collects all the text from these pages and 
 			then parses out wind, temperature, and pressure data.&nbsp;Perl has 
 			useful features for manipulating text data.&nbsp;This data is inserted 
-			into a MS Access database on the server.&nbsp;The charting application 
+			into a MySQL database on the server.&nbsp;The charting application 
 			then gets its data from the database.</li>
 			<li><font color="#0000ff"><b>Python</b></font>: The MN data added in 
 			2006 uses a scheduled Python script to download and parse METAR data from an XML 
-			data feed.</li>
+			data feed. Additional Python scripts handle data from other sources including mesoscale 
+			stations and airport weather data, all feeding into the central MySQL database.</li>
 		</ul>
 		</li>
 		<li><strong>Database Connectivity</strong><ul>
-			<li><font color="#0000ff"><b>MDAC (Microsoft Data Access Components)</b></font>:<b><strong>&nbsp;</strong></b>This 
-			package of components, once installed, gives you the option to use ODBC 
-			and ADO.<ul>
-				<li><font color="#0000ff"><b>ODBC (Open Database Connectivity)</b></font>:&nbsp;Database 
-				connections provide the linkages for the Perl and Python scripts 
-				and the ASP code to read and write to the MS Access database.</li>
-				<li><font color="#0000ff"><b>Active X Data Objects (ADO)</b></font>:&nbsp;ADO 
-				objects were used in both the Perl script and the ASP code.&nbsp;The 
-				data objects support queries and manipulation of the data in the 
-				Access database.</li>
-			</ul>
+			<li>
+				<font color="#0000ff"><b>ADO (ActiveX Data Objects)</b></font>:&nbsp;The ASP applications create ADO Connection
+				objects to establish database connectivity. The actual connection implementation uses:
+				<ul>
+					<li>
+						<font color="#0000ff"><b>System DSN Configuration</b></font>:&nbsp;Database connections use a pre-configured
+						system DSN named "MySQL_telem_for_ASP" which encapsulates the MySQL server connection details and
+						credentials.
+					</li>
+					<li>
+						<font color="#0000ff"><b>MySQL ODBC 5.3 Unicode Driver</b></font>:&nbsp;The DSN utilizes the 32-bit MySQL
+						ODBC Unicode driver to provide the underlying database connectivity layer.
+					</li>
+					<li>
+						<font color="#0000ff"><b>Telem Schema</b></font>:&nbsp;All database operations target the "telem" schema
+						which contains the weather station data tables.
+					</li>
+				</ul>
 			</li>
 		</ul>
 		</li>
 		<ul>
-			<li><font color="#0000ff"><b>MS Access</b></font>:&nbsp;The Perl script 
-			populates a local MS Access database (mdb file) on the server. The database 
-			stores the HMS data in a resolution of 15-minutes and the NOAA data 
-			in a resolution of 1 hour.&nbsp;One of the charting options, delta-P, 
-			makes use of SQL queries that serve to join the pressure records from 
-			different sites and calculate their differential pressures. </li>
+			<li>
+				<font color="#0000ff"><b>MySQL Database</b></font>:&nbsp;The Perl and Python scripts populate a MySQL database on
+				the server, replacing the original MS Access database. The database stores the HMS data in a resolution of
+				15-minutes and the NOAA data in a resolution of 1 hour, plus additional mesoscale and airport station data. One of
+				the charting options, delta-P, makes use of SQL queries that serve to join the pressure records from different sites
+				and calculate their differential pressures. MySQL provides improved performance, concurrency, and data integrity
+				compared to the original Access database.
+			</li>
 		</ul>
 		<li><strong>Charting Scripts</strong><ul>
 			<li><strong>Server-Sided</strong>
 			<ul>
 				<li><font color="#0000ff"><b>ASP (Active Server Pages)</b>:&nbsp;</font>This 
 			is what makes the dynamic chart possible. It collects the form parameters 
-			and runs queries on the local MS Access database.&nbsp; It then creates 
+			and runs queries on the MySQL database.&nbsp; It then creates 
 			a chart image (JPG file), using ASPChart.&nbsp;The ASP code then acts 
 			to write the HTML code (for the web page), which includes a needed reference 
 			to the image file. </li>
@@ -127,7 +137,7 @@
 		</ul>
 		</li>
 		<li><strong>Operating System:</strong> It all runs on
-		<font color="#0000ff"><b>MS Windows 7, 8 or 10</b></font>.<ul>
+		<font color="#0000ff"><b>MS Windows 7, 8, 10, and 11</b></font>.<ul>
 			<li><font color="#0000ff"><b>IIS</b></font>:&nbsp;Internet Information 
 			Server.&nbsp;This is Microsoft's web server and executes the server-sided 
 			code of the charting page (ASP). </li>
