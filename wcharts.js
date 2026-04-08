@@ -37,7 +37,7 @@ var wC = (function() {
    google.charts.load('current', {'packages':['table']});
    
    // Names starting with m_ indicate module-scope globals.
-   var m_version = 1.9;
+   var m_version = '2.0.1';
    console.log('wC version ' + m_version);
    
    var m_temperatureChart = null;
@@ -527,7 +527,7 @@ var wC = (function() {
       } else {
          //let tz_shift_hr = hoursFromUTC( m_stationName, endDate);
          //console.log("tz_shift_hr="+tz_shift_hr);
-         endTimeLocal = dateTimeWithTZ( m_stationName, m_selectEndDate.value + " 23:59:59", true);
+         endTimeLocal = new Date( dateTimeWithTZ( m_stationName, m_selectEndDate.value + " 23:59:59", true).getTime() + 1000); // +1000ms rolls to midnight; "24:00:00" is non-standard in JS Date parsing
          //console.log("endTimeLocal=" + endTimeLocal.toString());
          
          //tz_shift_hr = 0;
@@ -542,13 +542,12 @@ var wC = (function() {
       //console.log("ISO = " + endTime_UTCstring);
       let endTime_queryString = endTime_UTCstring.replace("T", " ").slice(0, 19);
       
-      
-      // Maybe modify for DLS: shave off one hour from the shift if the startTimeLocal falls outside of DLS.
-      // Then recalculate the startTimeLocal.
-      
-      // The following two calculations of startTimeLocal work equivalently.
-      //let startTimeLocal = new Date( endTimeLocal.setHours( endTimeLocal.getHours() - (m_nDaysAtQuery*24 - 0)));
-      let adder_h = ([1,2].includes( m_nDaysAtQuery)) ? (10/60) : 0; // back up another nn/60 minutes for the 1 and 2 day plots.
+      // Extra hours to query: noaa stations report hourly, so need two extra hours to include the full 24h from most recent.
+      let extra_h = (m_station_map[ m_stationName].sheet === 'noaa') ? 2 : 1; 
+      // Back up extra hours for the 24h plots. Add 5 minutes for the other cases so the trace covers the 
+      // midnight boundary (some stations report at minute 56). 
+      // Note that excess records are trimmed in handleQueryResponse.
+      let adder_h = ((m_selectDaysValueAtQuery == "24h") && m_isToday) ? extra_h : 5.0/60.0;
       let startTimeLocal = new Date( endTimeLocal.getTime() - (m_nDaysAtQuery * (24+adder_h)*3600*1000));
       
       // 2023-02-04T00:57:01.634Z
@@ -790,6 +789,7 @@ var wC = (function() {
       let tempRange = {min:200, max:-200};
       let pressureRange = {min:200, max:-200};
       m_epochMax = 0;
+      let epochTrueArray = [];
       for (var i = 0; i < m_dataTable.getNumberOfRows(); i++) {
          let UTC_date = m_dataTable.getValue(i, 0);
          
@@ -799,6 +799,7 @@ var wC = (function() {
          
          // Keep track of the max value for use in calculating the lag of the latest record behind current time.
          if (epoch_true > m_epochMax) m_epochMax = epoch_true;
+         epochTrueArray.push( epoch_true);
          
          //shift_total = hoursFromUTC( m_stationName, UTC_date);
          //console.log('shift_total='+shift_total);
@@ -844,7 +845,7 @@ var wC = (function() {
          }
          
          // Populate the array (of row arrays) that will be the source for the smoothing operations.
-         editedArray = editedArray.concat( [[shifted_date, shifted_epoch_msec, 
+         editedArray = editedArray.concat( [[shifted_date, epoch_true, 
             aN( dryBulb, "db"), 
             aN( dewPoint, "dp"),
             aN( pressure, "bp"), 
@@ -854,6 +855,18 @@ var wC = (function() {
          ]]);
          
       } 
+      
+      // For the 24h/today view, the query fetches extra data to ensure coverage (see adder_h).
+      // Trim both the data table and editedArray to only the last 24 hours relative to the newest record.
+      if ((m_selectDaysValueAtQuery == "24h") && m_isToday) {
+         let cutoff_epoch = m_epochMax - 24 * 3600 * 1000;
+         for (let i = m_dataTable.getNumberOfRows() - 1; i >= 0; i--) {
+            if (epochTrueArray[i] < cutoff_epoch) m_dataTable.removeRow(i);
+         }
+         editedArray = [editedArray[0]].concat(
+            editedArray.slice(1).filter( row => row[1] >= cutoff_epoch)
+         );
+      }
       
       m_endDateFromResponse = m_dataTable.getValue(0, 0);
       //console.log('end_date==='+m_endDateFromResponse);
@@ -1398,7 +1411,9 @@ var wC = (function() {
       }
       
       let dateFormat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      let dateString = m_endDateFromResponse.toLocaleDateString( undefined, dateFormat);      
+      // If the end date falls exactly on midnight, subtract 1ms so the chart title shows the previous day rather than the new day
+      let dateForLabel = (m_endDateFromResponse.getHours() === 0 && m_endDateFromResponse.getMinutes() === 0 && m_endDateFromResponse.getSeconds() === 0) ? new Date( m_endDateFromResponse - 1) : m_endDateFromResponse;
+      let dateString = dateForLabel.toLocaleDateString( undefined, dateFormat);      
       
       let timeString;
       if (['24h','1','2'].includes(m_selectDaysValueAtQuery) && (m_isToday)) {
