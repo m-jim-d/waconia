@@ -398,7 +398,7 @@ var wC = (function() {
             m_selectStations.value = "PHOG";
             
          } else if (m_selectRegions.value == "ak") {
-            m_selectStations.value = "PASI";
+            m_selectStations.value = "PABR.2";
             
          } else if (m_selectRegions.value == "hanford") {
             m_selectStations.value = "RMTN";
