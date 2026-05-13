@@ -169,10 +169,13 @@ var wC = (function() {
       
       // MN
       'KMKT.2':{'longName':'Mankato Airport (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},       
-      'KSOM5':{'longName':'Kasota Prairie', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'MN073':{'longName':'Mankato HW169-BER', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'XL049':{'longName':'Saint Peter (trout pond)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'XL045':{'longName':'Nicollet', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'KSOM5':{'longName':'Kasota Prairie (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'MN073':{'longName':'Mankato HW169-BER (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'XL049':{'longName':'St. Peter -- trout pond (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'XL045':{'longName':'Nicollet (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'F3063':{'longName':'Mendota Heights (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'MN090':{'longName':'Inver Grove Heights (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'G0687':{'longName':'West Saint Paul (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       
       // Peg's home (Laurie's friend)
       'KAPF':{'longName':'Naples, FL', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'meso'},       
