@@ -37,7 +37,7 @@ var wC = (function() {
    google.charts.load('current', {'packages':['table']});
    
    // Names starting with m_ indicate module-scope globals.
-   var m_version = '2.0.1';
+   var m_version = '2.0.2';
    console.log('wC version ' + m_version);
    
    var m_temperatureChart = null;
@@ -1298,7 +1298,34 @@ var wC = (function() {
       
       let stationName = m_dataTable.getValue(0,7);
       let longName_clean = m_station_map[ stationName].longName.split("(")[0];
-      let titleString = "" + longName_clean; // + " (" + stationName + ")";
+      
+      // Current conditions string: temp/dewpoint, wind direction and speed (shown only for current data).
+      let conditionsString;
+      if (['24h','1','2'].includes(m_selectDaysValueAtQuery) && (m_isToday)) {
+         let lastRow = 0;
+         let cur_db  = m_dataTable.getValue(lastRow, 1);
+         let cur_dp  = m_dataTable.getValue(lastRow, 2);
+         let cur_ws  = m_dataTable.getValue(lastRow, 3);
+         let cur_wg  = m_dataTable.getValue(lastRow, 4);
+         let cur_wd  = m_dataTable.getValue(lastRow, 5);
+         const degToCompass16 = (deg) => {
+            if (deg === null || deg === undefined) return '--';
+            let dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+            return dirs[ Math.round(((deg % 360) + 360) % 360 / 22.5) % 16 ];
+         };
+         let cur_str_db = (cur_db !== null) ? Math.round(cur_db) : '--';
+         let cur_str_dp = (cur_dp !== null) ? Math.round(cur_dp) : '--';
+         let cur_str_wind = (cur_ws !== null)
+            ? ((cur_wg !== null && cur_wg > cur_ws) ? Math.round(cur_ws) + 'G' + Math.round(cur_wg) : Math.round(cur_ws))
+            : '--';
+         let cur_str_dir = degToCompass16(cur_wd);
+         let cur_str_windDir = (cur_ws === 0) ? 'calm' : cur_str_dir + ' ' + cur_str_wind;
+         conditionsString = ' . . . . ' + cur_str_db + '/' + cur_str_dp + ' ' + cur_str_windDir;
+      } else {
+         conditionsString = '';
+      }
+
+      let titleString = longName_clean + conditionsString;
       // Show the horizontal pressure lines if pressure is the only trace. Otherwise, hide them (transparent). 
       let pressureColorMode = (m_db_allNull && m_dp_allNull && ( ! m_bp_allNull)) ? 'lightgray' : 'transparent';
       let options = {
