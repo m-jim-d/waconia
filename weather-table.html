@@ -1,0 +1,214 @@
+﻿<!doctype html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="Current weather conditions for all stations">
+
+   <title>Current Conditions</title>
+
+   <link rel="canonical" href="https://waconia.triquence.org/weather-table.html" />
+
+   <link href="sitemap.css?v=56" rel="stylesheet" type="text/css">
+   <style>
+      .conditions-table {
+         border-collapse: collapse;
+         font-family: Arial, sans-serif;
+         font-size: 14px;
+         margin-top: 8px;
+      }
+      .conditions-table th,
+      .conditions-table td {
+         border: 1px solid #ccc;
+         padding: 4px 8px;
+         white-space: nowrap;
+      }
+      .conditions-table thead tr {
+         background-color: #e0e8f0;
+      }
+      .conditions-table th {
+         font-weight: bold;
+      }
+      .conditions-table th.ct-sortable {
+         cursor: pointer;
+         user-select: none;
+         background-color: #d0e4f7;
+      }
+      .conditions-table th.ct-sortable:hover {
+         background-color: #b0cce8;
+      }
+      .conditions-table th.ct-sort-active {
+         background-color: #a8c8e8;
+      }
+      .conditions-table tbody tr:nth-child(even) {
+         background-color: #f5f5f5;
+      }
+      .conditions-table tbody tr:hover {
+         background-color: #fff8e8;
+      }
+      .ct-num {
+         text-align: right;
+      }
+      .ct-dir {
+         text-align: center;
+      }
+      .ct-age {
+         text-align: right;
+         color: #888;
+         font-size: 12px;
+      }
+      .conditions-table td a {
+         color: #333;
+         text-decoration: none;
+      }
+      .conditions-table td a:hover {
+         text-decoration: underline;
+         color: maroon;
+      }
+      #conditionsStatus {
+         font-family: Arial, sans-serif;
+         font-size: 14px;
+         color: #555;
+         margin: 8px 0;
+      }
+      .ct-titlebar {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         margin: 0 0 4px 0;
+      }
+      .ct-titlebar h2 {
+         margin: 0;
+      }
+      .page-note {
+         font-family: Arial, sans-serif;
+         font-size: 12px;
+         color: #777;
+         margin-top: 4px;
+      }
+      .ct-region {
+         font-size: 12px;
+         color: #555;
+         white-space: nowrap;
+      }
+      /* Stale rows (data older than 3 hours) */
+      .conditions-table tr.ct-stale td {
+         color: #bbb;
+      }
+      .conditions-table tr.ct-stale td a {
+         color: #bbb;
+      }
+      /* Match weather.html: keep menu icon in normal flow so title sits beside it */
+      .menuicon {
+         position: relative;
+         margin-right: 8px;
+      }
+      /* Ensure nav overlay renders above table content */
+      .overlay {
+         z-index: 100;
+      }
+      /* Split layout: table left, chart right */
+      .ct-split {
+         display: flex;
+         align-items: stretch;
+         gap: 12px;
+         margin-top: -29px;
+         margin-left: 35px;
+      }
+      .ct-left {
+         flex: 0 0 auto;
+         overflow-y: auto;
+         max-height: calc(100vh - 60px);
+      }
+      .ct-right {
+         flex: 1 1 auto;
+         min-width: 0;
+      }
+      #chartFrame {
+         width: 100%;
+         height: calc(100vh - 60px);
+         border: 1px solid #ccc;
+         background: #ffffff;
+      }
+      #chartPlaceholder {
+         font-family: Arial, sans-serif;
+         font-size: 13px;
+         color: #aaa;
+         padding: 24px;
+      }
+   </style>
+
+   <noscript>
+      <p style="font-family:Helvetica; font-size:150%; color:brown;">
+      This page requires JavaScript. Please enable it and reload.
+      </p>
+   </noscript>
+
+   <script type="text/javascript" src="jquery-3.7.1.min.js?v=56"></script>
+   <!-- loader for google charts (required by wcharts.js module) -->
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+   <script type="text/javascript" src="wcharts.js?v=56"></script>
+
+   <!-- The navigation menu -->
+   <script src="utilities.js?v=56"></script>
+   <script src="pageStuff.js?v=56"></script>
+   <script>
+      $(window).on('load', function() {
+         pS.init({"pageDesc":"Waconia: Current Conditions", "scrollAtLoad":false});
+         wC.initConditionsTable();
+      });
+
+      function loadChart(baseUrl) {
+         var dur = document.getElementById('chartDuration').value;
+         var newTab = document.getElementById('chkNewTab').checked;
+         var url = baseUrl.replace(/([?&]days=)[^&]+/, '$1' + dur);
+         if (newTab) {
+            window.open(url, '_blank');
+         } else {
+            var frame = document.getElementById('chartFrame');
+            var placeholder = document.getElementById('chartPlaceholder');
+            frame.src = url + '&embed=1';
+            frame.style.display = 'block';
+            placeholder.style.display = 'none';
+         }
+      }
+   </script>
+</head>
+
+<body id="conditionsPageBody" style="font-family: Arial;">
+
+<!-- The navigation menu -->
+<div id="navDiv"></div>
+
+<div class='pageblock'>
+<img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
+
+<div class="ct-split">
+   <div class="ct-left">
+      <div class="ct-titlebar">
+         <h2>Current Conditions</h2>
+         <button id="reloadBtn" onclick="wC.queryCurrentConditions()">Reload</button>
+         <select id="chartDuration" title="Chart duration">
+            <option value="24h">24 hours</option>
+            <option value="2" selected>2 days</option>
+            <option value="5">5 days</option>
+         </select>
+         <label style="font-size:13.3px;" title="Open chart in a new browser tab instead of the right panel">
+            <input type="checkbox" id="chkNewTab"> New tab
+         </label>
+         <span id="conditionsStatus"></span>
+      </div>
+      <p class="page-note">Most recent observation per station. Click a station name to load its chart. Click a column header to sort.</p>
+      <div id="conditionsTableDiv"></div>
+   </div>
+   <div class="ct-right">
+      <div id="chartPlaceholder">Click a station name to view its chart.</div>
+      <iframe id="chartFrame" style="display:none; border:none;" frameborder="0"></iframe>
+   </div>
+</div>
+
+</div>
+</body>
+</html>

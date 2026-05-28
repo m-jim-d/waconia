@@ -1,13 +1,14 @@
-<!doctype html>
+﻿<!doctype html>
 
 <html lang="en">
+
 <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="description" content="weather graphs using google charts and spreadsheets">
 
    <title>Charts</title>
-   
+
    <link rel="canonical" href="https://waconia.triquence.org/weather.html" />
 
    <!-- Google icon library -->
@@ -17,14 +18,25 @@
    <link href="weather.css?v=56" rel="stylesheet" type="text/css">
    <style>
    </style>
+   <script>
+      if (new URLSearchParams(window.location.search).get('embed') === '1') {
+         document.write('<style>#navDiv{display:none!important;height:0!important;margin:0!important;padding:0!important;}</style>');
+         document.addEventListener('DOMContentLoaded', function () {
+            var nav = document.getElementById('navDiv');
+            if (nav) nav.style.display = 'none';
+            var icon = document.querySelector('.menuicon');
+            if (icon) icon.style.visibility = 'hidden';
+         });
+      }
+   </script>
 
    <noscript>
       <br><br><br><br><br>
       <p style="font-family:Helvetica; font-size:150%; color:brown;">
-      triquence.org requires JavaScript.
-      <br><br> 
-      Please enable JavaScript in your browser<br>
-      and then reload this page.
+         triquence.org requires JavaScript.
+         <br><br>
+         Please enable JavaScript in your browser<br>
+         and then reload this page.
       </p>
       <br><br><br><br><br><br><br>
    </noscript>
@@ -40,8 +52,8 @@
    <script src="pageStuff.js?v=56"></script>
    <script>
       // After the page loads...
-      $(window).on('load', function() {
-         pS.init({"pageDesc":"Waconia: Charts", "scrollAtLoad":false});
+      $(window).on('load', function () {
+         pS.init({ "pageDesc": "Waconia: Charts", "scrollAtLoad": false });
          wC.init();
       });
    </script>
@@ -49,28 +61,29 @@
 
 <body id="chartPageBody" style="font-family: Arial;">
 
-<!-- The navigation menu -->
-<div id="navDiv"></div>
+   <!-- The navigation menu -->
+   <div id="navDiv"></div>
 
-<div class='pageblock'>
-<img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
-<div class='controls'>
-<button id="updateButton" onclick="wC.queryDataSource()" title="Resubmit the query to update the chart.">Update</button>
-<input type="checkbox" class="largerCheckbox" id="chkSmoother" title="
+   <div class='pageblock'>
+      <img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
+      <div class='controls'>
+         <button id="updateButton" onclick="wC.queryDataSource()"
+            title="Resubmit the query to update the chart.">Update</button>
+         <input type="checkbox" class="largerCheckbox" id="chkSmoother" title="
 Check to smooth the temperature, pressure and wind direction readings." onClick="wC.handleSmootherThenDraw()" checked>
-<select id="regions" title="Region">
-   <option value="mn">Minnesota</option>
-   <option value="pnw">Pacific NW</option>
-   <option value="hanford">Hanford Site</option>
-   <option value="Hawaii">Hawaii</option>
-   <option value="ak">Alaska</option>
-   <option value="misc">Misc</option>
-</select>
-<select id="stations" title="Station"></select>
-<select id="endDate" title="End Date"></select>
-<button onclick="wC.stepByDays('backward')" title="Step the end-date back in time by n days."><<</button>
-<button onclick="wC.stepByDays('forward' )" title="Step the end-date forward in time by n days.">>></button>
-<select id="nDays" title="
+         <select id="regions" title="Region">
+            <option value="mn">Minnesota</option>
+            <option value="pnw">Pacific NW</option>
+            <option value="hanford">Hanford Site</option>
+            <option value="Hawaii">Hawaii</option>
+            <option value="ak">Alaska</option>
+            <option value="misc">Misc</option>
+         </select>
+         <select id="stations" title="Station"></select>
+         <select id="endDate" title="End Date"></select>
+         <button onclick="wC.stepByDays('backward')" title="Step the end-date back in time by n days."><<</button>
+         <button onclick="wC.stepByDays('forward' )" title="Step the end-date forward in time by n days.">>></button>
+         <select id="nDays" title="
 Number of Days
 
 For current day, the 24h option will plot the latest 24 hours of data. 
@@ -80,33 +93,32 @@ plotting from midnight to midnight.
 The 24h plot can be useful for comparing current conditions (right edge)
 with those at the same time yesterday (left edge).
 ">
-   <option value="24h">24h</option>
-   <option value=1>1d</option>
-   <option value=2>2d</option>
-   <option value=5>5d</option>
-   <option value=10>10d</option>
-</select>
-<select id="dataSource" title="
+                  <option value="24h">24h</option>
+                  <option value=1>1d</option>
+                  <option value=2>2d</option>
+                  <option value=5>5d</option>
+                  <option value=10>10d</option>
+               </select>
+               <select id="dataSource" title="
 Data Source: Cloudflare D1 database (CF) or Google Sheets (GS)
 
 CF is faster and keeps a longer weather history.
 GS is here mainly as a backup option, if the CF database is unavailable.
 ">
-   <option value="d1" title="Cloudflare D1 database">CF</option>
-   <option value="sheets" title="Google Sheet">GS</option>
-</select>
-<br><br>
-</div>
+                  <option value="d1" title="Cloudflare D1 database">CF</option>
+                  <option value="sheets" title="Google Sheet">GS</option>
+               </select>
+               <br><br>
+      </div>
 
-<!--style="max-width:700px; height:400px" -->
-<div id="statusSpan"></div>
-<div id="chartDivA" style="max-width:1200px; max-height:900px"></div>
-<div id="chartDivB" style="max-width:1200px; max-height:900px"></div>
+      <!--style="max-width:700px; height:400px" -->
+      <div id="statusSpan"></div>
+      <div id="chartDivA" style="max-width:1200px; max-height:900px"></div>
+      <div id="chartDivB" style="max-width:1200px; max-height:900px"></div>
 
-<!--
--->
-<div id="tableDiv" style="max-width:700px; height:300px"></div>
-<div id="editedTableDiv" style="max-width:700px; height:300px"></div>
-</div>
+      <div id="tableDiv" style="max-width:700px; height:300px"></div>
+      <div id="editedTableDiv" style="max-width:700px; height:300px"></div>
+   </div>
 </body>
+
 </html>

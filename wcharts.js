@@ -309,6 +309,12 @@ var wC = (function() {
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
+   function degToCompass16( deg) {
+      if (deg === null || deg === undefined) return '--';
+      let dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+      return dirs[ Math.round(((deg % 360) + 360) % 360 / 22.5) % 16 ];
+   }
+
    function getSheetURL( station) {
       let workBook_python = "https://docs.google.com/spreadsheets/d/1o6-x2GLbAt3XbBRaMEcGkO7e7gGcCdIu-uwHy5PybwI/edit?usp=sharing";
       let workBook_perl =   "https://docs.google.com/spreadsheets/d/1WIhBWjSpB7atJ3_k0-rR93e7AQ_fZib2aeTvnI0DRXQ/edit?usp=sharing";
@@ -1308,11 +1314,6 @@ var wC = (function() {
          let cur_ws  = m_dataTable.getValue(lastRow, 3);
          let cur_wg  = m_dataTable.getValue(lastRow, 4);
          let cur_wd  = m_dataTable.getValue(lastRow, 5);
-         const degToCompass16 = (deg) => {
-            if (deg === null || deg === undefined) return '--';
-            let dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
-            return dirs[ Math.round(((deg % 360) + 360) % 360 / 22.5) % 16 ];
-         };
          let cur_str_db = (cur_db !== null) ? Math.round(cur_db) : '--';
          let cur_str_dp = (cur_dp !== null) ? Math.round(cur_dp) : '--';
          let cur_str_wind = (cur_ws !== null)
@@ -1539,7 +1540,173 @@ var wC = (function() {
          console.log('Data source set to: ' + m_dataSource);
       }
    }
-   
+
+   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   // Current Conditions Table
+   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+   var m_conditionsData = [];       // array of result objects, one per station
+   var m_conditionsSort = { col: 'region', asc: true }; // default: region/station ascending
+
+   function initConditionsTable() {
+      queryCurrentConditions();
+   }
+
+   function queryCurrentConditions() {
+      let statusEl = document.getElementById('conditionsStatus');
+      if (statusEl) statusEl.textContent = 'Loading…';
+
+      fetch( m_d1WorkerURL + '/current')
+         .then(function(response) {
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            return response.json();
+         })
+         .then(function(data) {
+            m_conditionsData = data;
+            if (statusEl) statusEl.textContent = '';
+            sortAndRenderConditions();
+         })
+         .catch(function(err) {
+            console.error('Current conditions error:', err);
+            if (statusEl) statusEl.textContent = 'Error loading conditions: ' + err.message;
+         });
+   }
+
+   function sortAndRenderConditions() {
+      let col = m_conditionsSort.col;
+      let asc = m_conditionsSort.asc;
+      let now_ms = Date.now();
+
+      // Stamp age_m on every sort/render so Reload with new data re-sorts correctly by age
+      m_conditionsData.forEach(function(r) {
+         if (r.datetime_utc) {
+            let dtStr = r.datetime_utc.includes('T') ? r.datetime_utc : r.datetime_utc.replace(' ', 'T');
+            dtStr = dtStr.replace(/\.\d+/, '');
+            if (!dtStr.endsWith('Z')) dtStr += 'Z';
+            let dt = new Date(dtStr);
+            r.age_m = isNaN(dt.getTime()) ? null : Math.round((now_ms - dt.getTime()) / 60000);
+         }
+      });
+
+      let sorted = m_conditionsData.slice().sort(function(a, b) {
+         let infoA = m_station_map[a.station_name] || {};
+         let infoB = m_station_map[b.station_name] || {};
+
+         function cmp(va, vb) {
+            if (va === null || va === undefined) return 1;
+            if (vb === null || vb === undefined) return -1;
+            if (typeof va === 'string') return asc ? va.localeCompare(vb) : vb.localeCompare(va);
+            return asc ? va - vb : vb - va;
+         }
+
+         if (col === 'region') {
+            let ra = (infoA.region || '').toLowerCase();
+            let rb = (infoB.region || '').toLowerCase();
+            let rc = ra.localeCompare(rb);
+            if (rc !== 0) return asc ? rc : -rc;
+            // secondary: station longName asc always
+            let na = infoA.longName || a.station_name;
+            let nb = infoB.longName || b.station_name;
+            return na.localeCompare(nb);
+         }
+         if (col === 'station') {
+            let na = infoA.longName || a.station_name;
+            let nb = infoB.longName || b.station_name;
+            return cmp(na, nb);
+         }
+         return cmp(a[col], b[col]);
+      });
+
+      buildConditionsTable( sorted);
+   }
+
+   function buildConditionsTable( rows) {
+      let container = document.getElementById('conditionsTableDiv');
+      if (!container) return;
+
+      let sortableCols = ['station', 'region', 'dry_bulb', 'dew_point', 'wind_speed', 'wind_gust', 'age_m'];
+
+      function colHeader( label, field) {
+         if (!sortableCols.includes(field)) return '<th class="ct-sortable" data-col="' + field + '">' + label + '</th>';
+         let col = m_conditionsSort.col;
+         let isActive = (col === field) || (col === 'region' && field === 'station');
+         let isPrimary = (col === field);
+         let icon;
+         if (isPrimary) {
+            icon = m_conditionsSort.asc ? ' &#9650;' : ' &#9660;';
+         } else if (col === 'region' && field === 'station') {
+            icon = ' &#9650;'; // station always secondary-asc under region sort
+         } else {
+            icon = ' &#8645;'; // up+down: sortable but not active
+         }
+         let cls = isActive ? 'ct-sortable ct-sort-active' : 'ct-sortable';
+         return '<th class="' + cls + '" data-col="' + field + '">' + label + icon + '</th>';
+      }
+
+      let now_ms = Date.now();
+
+      let html = '<table class="conditions-table">';
+      html += '<thead><tr>';
+      html += colHeader('Station', 'station');
+      html += colHeader('Region', 'region');
+      html += colHeader('Dry Bulb', 'dry_bulb');
+      html += colHeader('Dew Pt', 'dew_point');
+      html += '<th>Dir</th>';
+      html += colHeader('Speed', 'wind_speed');
+      html += colHeader('Gust', 'wind_gust');
+      html += colHeader('Age', 'age_m');
+      html += '</tr></thead><tbody>';
+
+      for (let i = 0; i < rows.length; i++) {
+         let r = rows[i];
+         let stationKey = r.station_name;
+         let stationInfo = m_station_map[ stationKey];
+         let longName = stationInfo ? stationInfo.longName : stationKey;
+         let chartURL = 'weather.html?station=' + encodeURIComponent(stationKey) + '&days=2';
+
+         let db  = (r.dry_bulb  !== null && r.dry_bulb  !== undefined) ? Math.round(r.dry_bulb)  : '--';
+         let dp  = (r.dew_point !== null && r.dew_point !== undefined) ? Math.round(r.dew_point) : '--';
+         let ws  = (r.wind_speed !== null && r.wind_speed !== undefined) ? Math.round(r.wind_speed) : '--';
+         let wg  = (r.wind_gust !== null && r.wind_gust !== undefined) ? Math.round(r.wind_gust)  : '--';
+         let wd  = degToCompass16( r.wind_dir);
+         let bp  = (r.barometer !== null && r.barometer !== undefined) ? Number(r.barometer).toFixed(1) : '--';
+
+         let ageStr = (r.age_m !== null && r.age_m !== undefined) ? r.age_m + 'm' : '--';
+         let isStale = (r.age_m !== null && r.age_m !== undefined) ? r.age_m > 180 : false;
+
+         html += '<tr' + (isStale ? ' class="ct-stale"' : '') + '>';
+         let regionKey = stationInfo ? (stationInfo.region || '') : '';
+         let regionDisplay = { 'ak':'Alaska', 'pnw':'Pacific NW', 'mn':'Minnesota', 'misc':'Misc', 'hanford':'Hanford Site', 'Hawaii':'Hawaii', 'hawaii':'Hawaii' }[regionKey] || regionKey || '--';
+         html += '<td><a href="' + chartURL + '" onclick="if(typeof loadChart===\'function\'){loadChart(\'' + chartURL + '\');return false;}">' + longName + '</a></td>';
+         html += '<td class="ct-region">' + regionDisplay + '</td>';
+         html += '<td class="ct-num">' + db + '</td>';
+         html += '<td class="ct-num">' + dp + '</td>';
+         html += '<td class="ct-dir">' + wd + '</td>';
+         html += '<td class="ct-num">' + ws + '</td>';
+         html += '<td class="ct-num">' + wg + '</td>';
+         html += '<td class="ct-age">' + ageStr + '</td>';
+         html += '</tr>';
+      }
+
+      html += '</tbody></table>';
+      container.innerHTML = html;
+
+      // Attach sort click handlers
+      let headers = container.querySelectorAll('.ct-sortable');
+      for (let i = 0; i < headers.length; i++) {
+         headers[i].addEventListener('click', function() {
+            let col = this.getAttribute('data-col');
+            if (m_conditionsSort.col === col) {
+               m_conditionsSort.asc = !m_conditionsSort.asc;
+            } else {
+               m_conditionsSort.col = col;
+               m_conditionsSort.asc = (col === 'region' || col === 'station'); // text cols default asc; numeric desc
+            }
+            sortAndRenderConditions();
+         });
+      }
+   }
+
    return {
       // Objects
       
@@ -1550,7 +1717,9 @@ var wC = (function() {
       init: initializeModule,
       queryDataSource: queryDataSource,
       handleSmootherThenDraw: handleSmootherThenDraw,
-      setDataSource: setDataSource
+      setDataSource: setDataSource,
+      initConditionsTable: initConditionsTable,
+      queryCurrentConditions: queryCurrentConditions
 
    };
 
