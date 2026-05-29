@@ -108,7 +108,10 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <h2></h2>
 
 <div class="highlight"><pre><span></span><span class="c1">// Cloudflare worker: weather-api</span>
-<span class="c1">// Handles GET (query), POST (insert), and scheduled cleanup for weather data</span>
+<span class="c1">// Handles GET /weather (time-range query), </span>
+<span class="c1">//         GET /weather/current (latest per station), </span>
+<span class="c1">//         POST /weather (insert), </span>
+<span class="c1">//         and scheduled cleanup</span>
 
 <span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="c1">// Scheduled cleanup - runs on cron trigger</span>
@@ -119,40 +122,44 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="w">      </span><span class="p">.</span><span class="nx">toISOString</span><span class="p">()</span>
 <span class="w">      </span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">)</span>
 <span class="w">      </span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">19</span><span class="p">);</span><span class="w">  </span><span class="c1">// Format: &quot;YYYY-MM-DD HH:MM:SS&quot;</span>
-<span class="w">    </span>
+
 <span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">env</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nx">prepare</span><span class="p">(</span>
 <span class="w">      </span><span class="s2">&quot;DELETE FROM weather_data WHERE datetime_utc &lt; ?&quot;</span>
 <span class="w">    </span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="nx">cutoffDate</span><span class="p">).</span><span class="nx">run</span><span class="p">();</span>
-<span class="w">    </span>
+
 <span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Cleanup: deleted </span><span class="si">${</span><span class="nx">result</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">changes</span><span class="si">}</span><span class="sb"> old records`</span><span class="p">);</span>
 <span class="w">  </span><span class="p">},</span>
 
 <span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span><span class="w"> </span><span class="nx">env</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">URL</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
-<span class="w">    </span>
+
 <span class="w">    </span><span class="c1">// CORS headers for browser requests</span>
 <span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">corsHeaders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="s2">&quot;Access-Control-Allow-Origin&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="s2">&quot;Access-Control-Allow-Methods&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;GET, POST, OPTIONS&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="s2">&quot;Access-Control-Allow-Headers&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Content-Type, X-API-Key&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="p">};</span>
-<span class="w">    </span>
+
 <span class="w">    </span><span class="c1">// Handle preflight</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;OPTIONS&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Response</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="nx">corsHeaders</span><span class="w"> </span><span class="p">});</span>
 <span class="w">    </span><span class="p">}</span>
-<span class="w">    </span>
+
 <span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;GET&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;/weather&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">handleQuery</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">env</span><span class="p">,</span><span class="w"> </span><span class="nx">corsHeaders</span><span class="p">);</span>
 <span class="w">      </span><span class="p">}</span>
-<span class="w">      </span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;GET&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;/weather/current&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">handleCurrent</span><span class="p">(</span><span class="nx">env</span><span class="p">,</span><span class="w"> </span><span class="nx">corsHeaders</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;POST&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;/weather&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">handleInsert</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span><span class="w"> </span><span class="nx">env</span><span class="p">,</span><span class="w"> </span><span class="nx">corsHeaders</span><span class="p">);</span>
 <span class="w">      </span><span class="p">}</span>
-<span class="w">      </span>
+
 <span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Response</span><span class="p">(</span><span class="s2">&quot;Not Found&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="mf">404</span><span class="p">,</span><span class="w"> </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="nx">corsHeaders</span><span class="w"> </span><span class="p">});</span>
-<span class="w">      </span>
+
 <span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Response</span><span class="p">(</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="w"> </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="w"> </span><span class="p">}),</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="mf">500</span><span class="p">,</span>
@@ -166,23 +173,50 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">station</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">searchParams</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;station&quot;</span><span class="p">);</span>
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">searchParams</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">);</span>
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">searchParams</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">);</span>
-<span class="w">  </span>
+
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">station</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="nx">start</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="nx">end</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Response</span><span class="p">(</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="w"> </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Missing required params: station, start, end&quot;</span><span class="w"> </span><span class="p">}),</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="mf">400</span><span class="p">,</span>
 <span class="w">      </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="nx">corsHeaders</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span><span class="w"> </span><span class="p">}</span>
 <span class="w">    </span><span class="p">});</span>
 <span class="w">  </span><span class="p">}</span>
-<span class="w">  </span>
+
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">sql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`</span>
 <span class="sb">    SELECT datetime_utc, dry_bulb, dew_point, wind_speed, wind_gust, wind_dir, barometer, station_name</span>
 <span class="sb">    FROM weather_data</span>
 <span class="sb">    WHERE station_name = ? AND datetime_utc &gt;= ? AND datetime_utc &lt;= ?</span>
 <span class="sb">    ORDER BY datetime_utc DESC</span>
 <span class="sb">  `</span><span class="p">;</span>
-<span class="w">  </span>
+
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">env</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nx">prepare</span><span class="p">(</span><span class="nx">sql</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="nx">station</span><span class="p">,</span><span class="w"> </span><span class="nx">start</span><span class="p">,</span><span class="w"> </span><span class="nx">end</span><span class="p">).</span><span class="nx">all</span><span class="p">();</span>
-<span class="w">  </span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Response</span><span class="p">(</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">results</span><span class="p">),</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="nx">corsHeaders</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">handleCurrent</span><span class="p">(</span><span class="nx">env</span><span class="p">,</span><span class="w"> </span><span class="nx">corsHeaders</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Return the most recent record for every station, within the last 48 hours</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">cutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">48</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">toISOString</span><span class="p">()</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">19</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">sql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`</span>
+<span class="sb">    SELECT datetime_utc, dry_bulb, dew_point, wind_speed, wind_gust, wind_dir, barometer, station_name</span>
+<span class="sb">    FROM (</span>
+<span class="sb">      SELECT datetime_utc, dry_bulb, dew_point, wind_speed, wind_gust, wind_dir, barometer, station_name,</span>
+<span class="sb">             ROW_NUMBER() OVER (PARTITION BY station_name ORDER BY datetime_utc DESC) AS rn</span>
+<span class="sb">      FROM weather_data</span>
+<span class="sb">      WHERE datetime_utc &gt;= &#39;</span><span class="si">${</span><span class="nx">cutoff</span><span class="si">}</span><span class="sb">&#39;</span>
+<span class="sb">        AND datetime_utc LIKE &#39;20__-__-__%&#39;</span>
+<span class="sb">    )</span>
+<span class="sb">    WHERE rn = 1</span>
+<span class="sb">    ORDER BY station_name</span>
+<span class="sb">  `</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">env</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nx">prepare</span><span class="p">(</span><span class="nx">sql</span><span class="p">).</span><span class="nx">all</span><span class="p">();</span>
+
 <span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Response</span><span class="p">(</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">results</span><span class="p">),</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="nx">corsHeaders</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span><span class="w"> </span><span class="p">}</span>
 <span class="w">  </span><span class="p">});</span>
@@ -197,15 +231,15 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="w">      </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="nx">corsHeaders</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span><span class="w"> </span><span class="p">}</span>
 <span class="w">    </span><span class="p">});</span>
 <span class="w">  </span><span class="p">}</span>
-<span class="w">  </span>
+
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">request</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
-<span class="w">  </span>
+
 <span class="w">  </span><span class="c1">// Support single record or array of records</span>
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">records</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">data</span><span class="p">];</span>
-<span class="w">  </span>
+
 <span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">inserted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span>
 <span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">duplicates</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span>
-<span class="w">  </span>
+
 <span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">record</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="k">await</span><span class="w"> </span><span class="nx">env</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nx">prepare</span><span class="p">(</span><span class="sb">`</span>
@@ -231,7 +265,7 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
-<span class="w">  </span>
+
 <span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Response</span><span class="p">(</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="w"> </span><span class="nx">inserted</span><span class="p">,</span><span class="w"> </span><span class="nx">duplicates</span><span class="w"> </span><span class="p">}),</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="nx">corsHeaders</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span><span class="w"> </span><span class="p">}</span>
 <span class="w">  </span><span class="p">});</span>
