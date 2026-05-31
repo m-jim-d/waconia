@@ -41,6 +41,9 @@
       .conditions-table th.ct-sort-active {
          background-color: #a8c8e8;
       }
+      .conditions-table th.ct-sort-secondary {
+         background-color: #a8c8e8;
+      }
       .conditions-table tbody tr:nth-child(even) {
          background-color: #f5f5f5;
       }
@@ -120,7 +123,13 @@
          flex: 0 0 auto;
          overflow-y: auto;
          max-height: calc(100vh - 60px);
+         padding-right: 8px;
+         scrollbar-width: thin;
+         scrollbar-color: #a0b8cc transparent;
       }
+      .ct-left::-webkit-scrollbar { width: 6px; }
+      .ct-left::-webkit-scrollbar-thumb { background: #a0b8cc; border-radius: 3px; }
+      .ct-left::-webkit-scrollbar-track { background: transparent; }
       .ct-right {
          flex: 1 1 auto;
          min-width: 0;
@@ -149,29 +158,65 @@
    <!-- loader for google charts (required by wcharts.js module) -->
    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-   <script type="text/javascript" src="wcharts.js?v=56"></script>
+   <script type="text/javascript" src="wcharts.js?v=80"></script>
 
    <!-- The navigation menu -->
-   <script src="utilities.js?v=56"></script>
-   <script src="pageStuff.js?v=56"></script>
+   <script src="utilities.js?v=80"></script>
+   <script src="pageStuff.js?v=80"></script>
    <script>
+      // Embedded chart iframe (chartFrame) loads weather.html?embed=1&nocontrols=1.
+      // The iframe suppresses its nav/controls via URL params and calls wC.initEmbedded().
+      // A postMessage handshake is used to avoid sending chart requests before Google Charts
+      // has finished loading inside the iframe:
+      //   - First station click: set iframe.src, store station in m_pendingStation/m_pendingDays.
+      //   - iframe fires 'iframeReady' once Google Charts is loaded and the message listener is wired.
+      //   - We set m_frameReady=true and dispatch the pending station request.
+      //   - Subsequent clicks post directly (m_frameReady is already true).
+      // See also: initEmbedded() in wcharts.js for the iframe side of this protocol.
+      var m_frameReady = false;
+      var m_pendingStation = null;
+      var m_pendingDays = null;
+
+      window.addEventListener('message', function(evt) {
+         if (evt.data && evt.data.type === 'iframeReady') {
+            m_frameReady = true;
+            // If a station click arrived before the iframe was ready, send it now
+            if (m_pendingStation) {
+               var frame = document.getElementById('chartFrame');
+               frame.contentWindow.postMessage({type: 'loadStation', station: m_pendingStation, days: m_pendingDays}, '*');
+               m_pendingStation = null;
+               m_pendingDays = null;
+            }
+         }
+      });
+
       $(window).on('load', function() {
          pS.init({"pageDesc":"Waconia: Current Conditions", "scrollAtLoad":false});
          wC.initConditionsTable();
       });
 
-      function loadChart(baseUrl) {
+      function loadChart(baseUrl, longName) {
          var dur = document.getElementById('chartDuration').value;
          var newTab = document.getElementById('chkNewTab').checked;
+         var stationMatch = baseUrl.match(/[?&]station=([^&]+)/);
+         var station = stationMatch ? decodeURIComponent(stationMatch[1]) : null;
          var url = baseUrl.replace(/([?&]days=)[^&]+/, '$1' + dur);
+         pS.logEntry('CC chart: ' + (longName || station || '?') + ', ' + dur);
          if (newTab) {
             window.open(url, '_blank');
          } else {
             var frame = document.getElementById('chartFrame');
             var placeholder = document.getElementById('chartPlaceholder');
-            frame.src = url + '&embed=1';
-            frame.style.display = 'block';
             placeholder.style.display = 'none';
+            frame.style.display = 'block';
+            if (m_frameReady && station) {
+               frame.contentWindow.postMessage({type: 'loadStation', station: station, days: dur}, '*');
+            } else {
+               // Iframe not yet loaded: set src to load it, store station to send when iframeReady fires
+               m_pendingStation = station;
+               m_pendingDays = dur;
+               frame.src = 'weather.html?embed=1&nocontrols=1';
+            }
          }
       }
    </script>
@@ -200,7 +245,7 @@
          </label>
          <span id="conditionsStatus"></span>
       </div>
-      <p class="page-note">Most recent observation per station. Click a station name to load its chart. Click a column header to sort.</p>
+      <p class="page-note">Click a column header to sort. Click a station name to view its chart. <span id="conditionsAsOf"></span></p>
       <div id="conditionsTableDiv"></div>
    </div>
    <div class="ct-right">

@@ -37,7 +37,7 @@ var wC = (function() {
    google.charts.load('current', {'packages':['table']});
    
    // Names starting with m_ indicate module-scope globals.
-   var m_version = '2.0.2';
+   var m_version = '2.0.4';
    console.log('wC version ' + m_version);
    
    var m_temperatureChart = null;
@@ -79,6 +79,7 @@ var wC = (function() {
    
    var m_readyForNewQuery = null;
    var m_retry_count = null;
+   var m_embeddedStartEpoch = null; // set by queryDataSourceEmbedded for trimming
    
    // Cloudflare D1 configuration
    var m_dataSource = 'd1'; // 'sheets' or 'd1'
@@ -506,10 +507,38 @@ var wC = (function() {
       }
    }
    
-   function queryDataSource() {
-      
+   // Returns { startTime_queryString, endTime_queryString } for the current station/days/date.
+   // stationName  - station key
+   // daysValue    - '24h', '2', '5', etc.
+   // nDays        - numeric day count
+   // isToday      - whether the selected end date is today
+   // endDateStr   - m_selectEndDate.value (date string, ignored when isToday+24h)
+   function computeQueryWindow(stationName, daysValue, nDays, isToday, endDateStr) {
+      let nowLocal = new Date();
+      // Extra hours to query: noaa stations report hourly, so need two extra hours to include the full 24h from most recent.
+      let extra_h = (m_station_map[stationName] && m_station_map[stationName].sheet === 'noaa') ? 2 : 1;
       let endTimeLocal;
       
+      // Back up extra hours for the 24h plots. Add 5 minutes for the other cases so the trace covers the 
+      // midnight boundary (some stations report at minute 56). 
+      // Note that excess records are trimmed in handleQueryResponse.      
+      let adder_h;
+      if ((daysValue === '24h') && isToday) {
+         endTimeLocal = nowLocal;
+         adder_h = extra_h;
+      } else {
+         endTimeLocal = new Date(dateTimeWithTZ(stationName, endDateStr + ' 23:59:59', true).getTime() + 1000);
+         adder_h = 5.0/60.0;
+      }
+      let startTimeLocal = new Date(endTimeLocal.getTime() - (nDays * (24 + adder_h) * 3600 * 1000));
+      return {
+         // 2023-02-04 00:40:51
+         startTime_queryString: startTimeLocal.toISOString().replace('T', ' ').slice(0, 19),
+         endTime_queryString:   endTimeLocal.toISOString().replace('T', ' ').slice(0, 19)
+      };
+   }
+
+   function queryDataSource() {
       if ( ! m_readyForNewQuery) return;
       
       // Keep track of these in case user has changed select values while waiting for the response.
@@ -519,7 +548,8 @@ var wC = (function() {
       
       changeUpdateButton("wait");
       m_readyForNewQuery = false;
-      if ( ! m_problemWithURLSearch) document.getElementById("statusSpan").textContent="";
+      let _ss = document.getElementById('statusSpan');
+      if ( ! m_problemWithURLSearch && _ss) _ss.textContent='';
       
       let nowLocal = new Date();
       
@@ -532,41 +562,8 @@ var wC = (function() {
       m_isToday = (nowLocal.toDateString() == endDate.toDateString());
       //console.log(m_isToday + ": " + nowLocal.toDateString() + "===" + endDate.toDateString());
       
-      if ((m_selectDaysValueAtQuery == "24h") && (m_isToday)) {
-         endTimeLocal = nowLocal;
-         
-      } else {
-         //let tz_shift_hr = hoursFromUTC( m_stationName, endDate);
-         //console.log("tz_shift_hr="+tz_shift_hr);
-         endTimeLocal = new Date( dateTimeWithTZ( m_stationName, m_selectEndDate.value + " 23:59:59", true).getTime() + 1000); // +1000ms rolls to midnight; "24:00:00" is non-standard in JS Date parsing
-         //console.log("endTimeLocal=" + endTimeLocal.toString());
-         
-         //tz_shift_hr = 0;
-         //endTimeLocal = new Date( endDate.getTime() + (tz_shift_hr * 3600*1000));
-      }
-      
-      //let endTimeLocal = (m_isToday) ? nowLocal: endDate;
-      
-      //console.log("UTC = " + endTimeLocal.toUTCString());
-      
-      let endTime_UTCstring = endTimeLocal.toISOString();
-      //console.log("ISO = " + endTime_UTCstring);
-      let endTime_queryString = endTime_UTCstring.replace("T", " ").slice(0, 19);
-      
-      // Extra hours to query: noaa stations report hourly, so need two extra hours to include the full 24h from most recent.
-      let extra_h = (m_station_map[ m_stationName].sheet === 'noaa') ? 2 : 1; 
-      // Back up extra hours for the 24h plots. Add 5 minutes for the other cases so the trace covers the 
-      // midnight boundary (some stations report at minute 56). 
-      // Note that excess records are trimmed in handleQueryResponse.
-      let adder_h = ((m_selectDaysValueAtQuery == "24h") && m_isToday) ? extra_h : 5.0/60.0;
-      let startTimeLocal = new Date( endTimeLocal.getTime() - (m_nDaysAtQuery * (24+adder_h)*3600*1000));
-      
-      // 2023-02-04T00:57:01.634Z
-      let startTime_UTCstring = startTimeLocal.toISOString();
-      //console.log("UTC = " + startTime_UTCstring);
-      // 2023-02-04 00:40:51
-      let startTime_queryString = startTime_UTCstring.replace("T", " ").slice(0, 19);
-      //console.log("UTC = " + startTime_queryString);
+      let { startTime_queryString, endTime_queryString } = computeQueryWindow(
+         m_stationName, m_selectDaysValueAtQuery, m_nDaysAtQuery, m_isToday, m_selectEndDate.value);
       
       // Route to appropriate data source
       if (m_dataSource === 'd1') {
@@ -603,7 +600,7 @@ var wC = (function() {
          })
          .catch(error => {
             console.error('D1 query error:', error);
-            document.getElementById("statusSpan").textContent = "D1 query failed: " + error.message;
+            let _ss2 = document.getElementById('statusSpan'); if (_ss2) _ss2.textContent = 'D1 query failed: ' + error.message;
             changeUpdateButton("update");
             m_readyForNewQuery = true;
          });
@@ -761,16 +758,17 @@ var wC = (function() {
       m_dataTable.setColumnLabel( 6, ln.bp);
       
       if (m_dataTable.getNumberOfRows() < 3) {
-         document.getElementById("statusSpan").textContent="No data returned for this date and station. Please try again.";
+         let _ss3 = document.getElementById('statusSpan'); if (_ss3) _ss3.textContent='No data returned for this date and station. Please try again.';
          changeUpdateButton("update");
          m_readyForNewQuery = true;
          if (m_temperatureChart) m_temperatureChart.clearChart();
          if (m_windChart) m_windChart.clearChart();
-         document.getElementById('tableDiv').innerHTML = "";
-         document.getElementById('editedTableDiv').innerHTML = "";
+         let _td = document.getElementById('tableDiv'); if (_td) _td.innerHTML = '';
+         let _etd = document.getElementById('editedTableDiv'); if (_etd) _etd.innerHTML = '';
          return
       } else {
-         if ( ! m_problemWithURLSearch) document.getElementById("statusSpan").textContent="";
+         let _ss4 = document.getElementById('statusSpan');
+         if ( ! m_problemWithURLSearch && _ss4) _ss4.textContent='';
       }
       
       //console.log( "response=" + JSON.stringify( response));
@@ -878,6 +876,7 @@ var wC = (function() {
             editedArray.slice(1).filter( row => row[1] >= cutoff_epoch)
          );
       }
+      m_embeddedStartEpoch = null;
       
       m_endDateFromResponse = m_dataTable.getValue(0, 0);
       //console.log('end_date==='+m_endDateFromResponse);
@@ -1050,7 +1049,8 @@ var wC = (function() {
    }
 
    function handleSmootherThenDraw() {
-      let smoother_CB_state = document.getElementById( "chkSmoother").checked;
+      let _cb = document.getElementById('chkSmoother');
+      let smoother_CB_state = _cb ? _cb.checked : true;
       
       // Smooth if checked. Run the smoother more on the ambient data.
       if (smoother_CB_state && ( ! m_alreadySmoothed)) {
@@ -1098,9 +1098,12 @@ var wC = (function() {
       if ((m_selectDaysValueAtQuery == "24h") && (m_isToday)) {
          m_editedDataTable.addColumn({type: 'string', role: 'annotation', label: 'vertLines'});
          
+         let todayStr = m_selectEndDate ? m_selectEndDate.value : m_endDateAtQuery;
+         let previousDay = m_selectEndDate
+            ? m_selectEndDate.options[ m_selectEndDate.selectedIndex + 1].text
+            : new Date( Date.parse(todayStr) - 24*3600*1000).toDateString();
+
          // row for start of prior day
-         let previousDay = m_selectEndDate.options[ m_selectEndDate.selectedIndex + 1].text;
-         //console.log('previousDay=' + previousDay);
          annotationDate = new Date( Date.parse( previousDay + " 00:00:00"));
          dayOfWeek = m_dayNamesLong[ annotationDate.getDay()];
          m_editedDataTable.addRows([[annotationDate,,,,,,,,dayOfWeek]]);
@@ -1110,16 +1113,16 @@ var wC = (function() {
          m_editedDataTable.addRows([[annotationDate,,,,,,,,'noon']]);
          
          // Row for midnight this day
-         annotationDate = new Date( Date.parse( m_selectEndDate.value + " 00:00:00"));
+         annotationDate = new Date( Date.parse( todayStr + " 00:00:00"));
          dayOfWeek = m_dayNamesLong[ annotationDate.getDay()];
          m_editedDataTable.addRows([[annotationDate,,,,,,,,dayOfWeek]]);
          
          // Row for noon this day
-         annotationDate = new Date( Date.parse( m_selectEndDate.value + " 12:00:00"));
+         annotationDate = new Date( Date.parse( todayStr + " 12:00:00"));
          m_editedDataTable.addRows([[annotationDate,,,,,,,,'noon']]);
          
          // Row for next-day midnight
-         annotationDate = new Date( Date.parse( m_selectEndDate.value + " 24:00:00"));
+         annotationDate = new Date( Date.parse( todayStr + " 24:00:00"));
          dayOfWeek = m_dayNamesLong[ annotationDate.getDay()];
          m_editedDataTable.addRows([[annotationDate,,,,,,,,dayOfWeek]]);
          
@@ -1407,14 +1410,16 @@ var wC = (function() {
             changeUpdateButton("update");
             m_readyForNewQuery = true;
             let stationCheck = (m_dataTable.getValue(0,7) != m_stationName);
-            let endDateCheck = (m_selectEndDate.value != m_endDateAtQuery);
-            let nDaysCheck = (m_selectDaysValueAtQuery != m_selectDays.value);
-            if ((stationCheck || endDateCheck || nDaysCheck) && (m_retry_count <= 3)) {
-               queryDataSource();
-               console.log("retry count = " + m_retry_count);
-               m_retry_count++;
-            } else {
-               m_retry_count = 0;
+            if (m_selectEndDate && m_selectDays) {
+               let endDateCheck = (m_selectEndDate.value != m_endDateAtQuery);
+               let nDaysCheck = (m_selectDaysValueAtQuery != m_selectDays.value);
+               if ((stationCheck || endDateCheck || nDaysCheck) && (m_retry_count <= 3)) {
+                  queryDataSource();
+                  console.log("retry count = " + m_retry_count);
+                  m_retry_count++;
+               } else {
+                  m_retry_count = 0;
+               }
             }
             m_problemWithURLSearch = false;
          }
@@ -1423,7 +1428,7 @@ var wC = (function() {
          function errorHandler() {
             //console.log("from errorHandler");
             if (m_temperatureChart) m_temperatureChart.clearChart();
-            document.getElementById("statusSpan").textContent="Temperature chart for this station has an error. Please try again.";
+            let _ss5 = document.getElementById('statusSpan'); if (_ss5) _ss5.textContent='Temperature chart for this station has an error. Please try again.';
             changeUpdateButton("update");
             m_readyForNewQuery = true;
          }
@@ -1526,11 +1531,10 @@ var wC = (function() {
       Note that I sometimes comment out the DIVs, the "containers" for these tables. 
       So, might have to uncomment them (on the weather.html) page before running this.
       */
-      if ( ! m_rawVisTable) m_rawVisTable = new google.visualization.Table( document.getElementById('tableDiv'));
-      m_rawVisTable.draw( m_dataTable, null);
-      
-      if ( ! m_smoothedVisTable) m_smoothedVisTable = new google.visualization.Table( document.getElementById('editedTableDiv'));
-      m_smoothedVisTable.draw( m_editedDataTable, null);
+      let _tvDiv = document.getElementById('tableDiv');
+      let _etvDiv = document.getElementById('editedTableDiv');
+      if (_tvDiv) { if ( ! m_rawVisTable) m_rawVisTable = new google.visualization.Table(_tvDiv); m_rawVisTable.draw(m_dataTable, null); }
+      if (_etvDiv) { if ( ! m_smoothedVisTable) m_smoothedVisTable = new google.visualization.Table(_etvDiv); m_smoothedVisTable.draw(m_editedDataTable, null); }
    }
    
    function setDataSource(source) {
@@ -1564,6 +1568,11 @@ var wC = (function() {
          .then(function(data) {
             m_conditionsData = data;
             if (statusEl) statusEl.textContent = '';
+            let asOfEl = document.getElementById('conditionsAsOf');
+            if (asOfEl) {
+               let now = new Date();
+               asOfEl.textContent = 'As of ' + now.toLocaleString('en-US', {weekday:'short', month:'short', day:'numeric', hour:'numeric', minute:'2-digit', second:'2-digit'});
+            }
             sortAndRenderConditions();
          })
          .catch(function(err) {
@@ -1595,8 +1604,16 @@ var wC = (function() {
          function cmp(va, vb) {
             if (va === null || va === undefined) return 1;
             if (vb === null || vb === undefined) return -1;
+            let fa = parseFloat(va), fb = parseFloat(vb);
+            if (!isNaN(fa) && !isNaN(fb)) return asc ? fa - fb : fb - fa;
             if (typeof va === 'string') return asc ? va.localeCompare(vb) : vb.localeCompare(va);
             return asc ? va - vb : vb - va;
+         }
+
+         function cmpDesc(va, vb) {
+            if (va === null || va === undefined) return 1;
+            if (vb === null || vb === undefined) return -1;
+            return parseFloat(vb) - parseFloat(va);
          }
 
          if (col === 'region') {
@@ -1614,6 +1631,11 @@ var wC = (function() {
             let nb = infoB.longName || b.station_name;
             return cmp(na, nb);
          }
+         function rnd(v) { return v === null || v === undefined ? null : Math.round(parseFloat(v)); }
+         if (col === 'dry_bulb')   { let r2 = cmp(rnd(a.dry_bulb),   rnd(b.dry_bulb));   return r2 !== 0 ? r2 : cmpDesc(rnd(a.dew_point),  rnd(b.dew_point)); }
+         if (col === 'dew_point')  { let r2 = cmp(rnd(a.dew_point),  rnd(b.dew_point));  return r2 !== 0 ? r2 : cmpDesc(rnd(a.dry_bulb),   rnd(b.dry_bulb)); }
+         if (col === 'wind_speed') { let r2 = cmp(rnd(a.wind_speed), rnd(b.wind_speed)); return r2 !== 0 ? r2 : cmpDesc(rnd(a.wind_gust),  rnd(b.wind_gust)); }
+         if (col === 'wind_gust')  { let r2 = cmp(rnd(a.wind_gust),  rnd(b.wind_gust));  return r2 !== 0 ? r2 : cmpDesc(rnd(a.wind_speed), rnd(b.wind_speed)); }
          return cmp(a[col], b[col]);
       });
 
@@ -1624,22 +1646,30 @@ var wC = (function() {
       let container = document.getElementById('conditionsTableDiv');
       if (!container) return;
 
-      let sortableCols = ['station', 'region', 'dry_bulb', 'dew_point', 'wind_speed', 'wind_gust', 'age_m'];
+      let sortableCols = ['station', 'region', 'dry_bulb', 'dew_point', 'wind_dir', 'wind_speed', 'wind_gust', 'age_m'];
+
+      // Map: primary col -> its secondary col
+      let secondaryOf = { 'dry_bulb':'dew_point', 'dew_point':'dry_bulb', 'wind_speed':'wind_gust', 'wind_gust':'wind_speed' };
 
       function colHeader( label, field) {
          if (!sortableCols.includes(field)) return '<th class="ct-sortable" data-col="' + field + '">' + label + '</th>';
          let col = m_conditionsSort.col;
-         let isActive = (col === field) || (col === 'region' && field === 'station');
-         let isPrimary = (col === field);
+         let isPrimary        = (col === field);
+         let isSecondaryAsc  = (col === 'region' && field === 'station');
+         let isSecondaryDesc = (secondaryOf[col] === field);
+         let isSecondary     = isSecondaryAsc || isSecondaryDesc;
+         let isActive        = isPrimary || isSecondary;
          let icon;
          if (isPrimary) {
             icon = m_conditionsSort.asc ? ' &#9650;' : ' &#9660;';
-         } else if (col === 'region' && field === 'station') {
-            icon = ' &#9650;'; // station always secondary-asc under region sort
+         } else if (isSecondaryAsc) {
+            icon = ' <span style="font-size:0.7em">&#9650;</span>'; // secondary ascending (smaller solid)
+         } else if (isSecondaryDesc) {
+            icon = ' <span style="font-size:0.7em">&#9660;</span>'; // secondary descending (smaller solid)
          } else {
             icon = ' &#8645;'; // up+down: sortable but not active
          }
-         let cls = isActive ? 'ct-sortable ct-sort-active' : 'ct-sortable';
+         let cls = isPrimary ? 'ct-sortable ct-sort-active' : isSecondary ? 'ct-sortable ct-sort-secondary' : 'ct-sortable';
          return '<th class="' + cls + '" data-col="' + field + '">' + label + icon + '</th>';
       }
 
@@ -1651,7 +1681,7 @@ var wC = (function() {
       html += colHeader('Region', 'region');
       html += colHeader('Dry Bulb', 'dry_bulb');
       html += colHeader('Dew Pt', 'dew_point');
-      html += '<th>Dir</th>';
+      html += colHeader('Dir', 'wind_dir');
       html += colHeader('Speed', 'wind_speed');
       html += colHeader('Gust', 'wind_gust');
       html += colHeader('Age', 'age_m');
@@ -1677,7 +1707,7 @@ var wC = (function() {
          html += '<tr' + (isStale ? ' class="ct-stale"' : '') + '>';
          let regionKey = stationInfo ? (stationInfo.region || '') : '';
          let regionDisplay = { 'ak':'Alaska', 'pnw':'Pacific NW', 'mn':'Minnesota', 'misc':'Misc', 'hanford':'Hanford Site', 'Hawaii':'Hawaii', 'hawaii':'Hawaii' }[regionKey] || regionKey || '--';
-         html += '<td><a href="' + chartURL + '" onclick="if(typeof loadChart===\'function\'){loadChart(\'' + chartURL + '\');return false;}">' + longName + '</a></td>';
+         html += '<td><a href="' + chartURL + '" onclick="if(typeof loadChart===\'function\'){loadChart(\'' + chartURL + '\',\'' + longName.replace(/'/g,"\\'") + '\');return false;}">' + longName + '</a></td>';
          html += '<td class="ct-region">' + regionDisplay + '</td>';
          html += '<td class="ct-num">' + db + '</td>';
          html += '<td class="ct-num">' + dp + '</td>';
@@ -1707,6 +1737,59 @@ var wC = (function() {
       }
    }
 
+   function queryDataSourceEmbedded() {
+      if (!m_readyForNewQuery) return;
+      let nowLocal = new Date();
+      m_endDateAtQuery   = nowLocal.toDateString();
+      m_isToday          = true;
+      m_readyForNewQuery = false;
+      let { startTime_queryString, endTime_queryString } = computeQueryWindow(
+         m_stationName, m_selectDaysValueAtQuery, m_nDaysAtQuery, true, nowLocal.toDateString());
+      if (m_dataSource === 'd1') {
+         queryD1(m_stationName, startTime_queryString, endTime_queryString);
+      }
+   }
+
+   function loadStation(station, days) {
+      if (!m_station_map[station]) { console.warn('loadStation: unknown station ' + station); return; }
+      m_stationName            = station;
+      m_selectDaysValueAtQuery = days;
+      m_nDaysAtQuery           = (days === '24h') ? 1 : Number(days);
+      m_nDays                  = m_nDaysAtQuery;
+      m_readyForNewQuery       = true;
+      queryDataSourceEmbedded();
+   }
+
+   // Embedded mode: weather.html is loaded inside an iframe on weather-table.html.
+   // URL params ?embed=1&nocontrols=1 suppress the nav bar and chart controls (see top of weather.html).
+   //
+   // Handshake protocol (avoids race between iframe load and parent postMessage):
+   //   1. weather-table.html sets iframe.src = 'weather.html?embed=1&nocontrols=1' on first station click,
+   //      and stores the requested station/days as m_pendingStation / m_pendingDays.
+   //   2. weather.html calls wC.initEmbedded() on load (instead of wC.init()).
+   //   3. Once Google Charts library is ready, initEmbedded registers the 'message' listener,
+   //      then posts {type:'iframeReady'} to the parent.
+   //   4. weather-table.html receives 'iframeReady', sets m_frameReady=true, and sends the
+   //      pending {type:'loadStation', station, days} postMessage into the iframe.
+   //   5. Subsequent station clicks (iframe already loaded) skip steps 1-4 and post directly.
+   //   6. loadStation() calls loadAndDrawChart() -> queryDataSourceEmbedded() to fetch and render.
+   function initEmbedded() {
+      m_readyForNewQuery = true;
+      m_retry_count = 0;
+      google.charts.setOnLoadCallback(function() {
+         window.addEventListener('message', function(evt) {
+            let d = evt.data;
+            if (d && d.type === 'loadStation') {
+               loadStation(d.station, d.days);
+            }
+         });
+         // Signal parent that Google Charts is ready to receive postMessages
+         if (window.parent !== window) {
+            window.parent.postMessage({type: 'iframeReady'}, '*');
+         }
+      });
+   }
+
    return {
       // Objects
       
@@ -1715,6 +1798,8 @@ var wC = (function() {
       // Methods
       stepByDays: stepByDays,
       init: initializeModule,
+      initEmbedded: initEmbedded,
+      loadStation: loadStation,
       queryDataSource: queryDataSource,
       handleSmootherThenDraw: handleSmootherThenDraw,
       setDataSource: setDataSource,
