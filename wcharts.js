@@ -121,9 +121,9 @@ var wC = (function() {
    var m_dayNamesLong = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
    var m_station_map = {
-      //==================================================
-      // Stations from the Meso JSON gleaner
-      //==================================================
+      //========================================================
+      // Stations from the Synoptic Data (MesoWest) JSON gleaner
+      //========================================================
       // Washington
       'KRLD':{'longName':'Richland, WA', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},      
       'KMWH':{'longName':'Moses Lake, WA', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},    
@@ -132,7 +132,7 @@ var wC = (function() {
       'K0S9':{'longName':'Port Townsend, WA', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'}, 
       
       // Alaska
-      'PABR.2':{'longName':'Utqiagvik/Barrow (Meso)', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},      
+      'PABR.2':{'longName':'Utqiagvik/Barrow (SD)', 'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},      
       //'PAWI':{'longName':'Wainwright AP',             'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       'PAQT':{'longName':'Nuiqsut AP',                'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
       'PASI':{'longName':'Sitka',                     'tz':'AK', 'dst':true, 'region':'ak', 'sheet':'meso'},
@@ -153,8 +153,8 @@ var wC = (function() {
       'KHRI':{'longName':'Hermiston, OR ', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},   
          
       // Fritz's sites on the cape...
-      'KHSE.2':{'longName':'Cape Hatteras, NC (Meso)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'meso'}, 
-      'KCQX.2':{'longName':'Chatham, MA (Meso)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'meso'},       
+      'KHSE.2':{'longName':'Cape Hatteras, NC (SD)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'meso'}, 
+      'KCQX.2':{'longName':'Chatham, MA (SD)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'meso'},       
       
       // Hawaii
       'PHOG':{'longName':'Maui Airport', 'tz':'H', 'dst':false, 'region':'Hawaii', 'sheet':'meso'},                   
@@ -169,14 +169,15 @@ var wC = (function() {
       'KJLN':{'longName':'Joplin Regional AP, MO', 'tz':'C', 'dst':true, 'region':'misc', 'sheet':'meso'},   
       
       // MN
-      'KMKT.2':{'longName':'Mankato Airport (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},       
-      'KSOM5':{'longName':'Kasota Prairie (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'MN073':{'longName':'Mankato HW169-BER (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'XL049':{'longName':'St. Peter -- trout pond (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'XL045':{'longName':'Nicollet (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'F3063':{'longName':'Mendota Heights (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'MN090':{'longName':'Inver Grove Heights (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'G0687':{'longName':'West Saint Paul (Meso)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'KMKT.2':{'longName':'Mankato Airport (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},       
+      'KSOM5':{'longName':'Kasota Prairie (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'MN073':{'longName':'Mankato HW169-BER (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'XL049':{'longName':'St. Peter / XE (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'G6147':{'longName':'St. Peter / CW (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'XL045':{'longName':'Nicollet (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'F3063':{'longName':'Mendota Heights (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'MN090':{'longName':'Inver Grove Heights (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'G0687':{'longName':'West Saint Paul (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       
       // Peg's home (Laurie's friend)
       'KAPF':{'longName':'Naples, FL', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'meso'},       
