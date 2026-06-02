@@ -151,6 +151,9 @@ var wC = (function() {
       'KDLS':{'longName':'The Dalles, OR', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},        
       'KTTD':{'longName':'Troutdale, OR', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},     
       'KHRI':{'longName':'Hermiston, OR ', 'tz':'P', 'dst':true, 'region':'pnw', 'sheet':'meso'},   
+
+      // California
+      'ISWC1':{'longName':'D V Nat Park / Stovepipe Wells, CA', 'tz':'P', 'dst':true, 'region':'misc', 'sheet':'meso'},
          
       // Fritz's sites on the cape...
       'KHSE.2':{'longName':'Cape Hatteras, NC (SD)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'meso'}, 
