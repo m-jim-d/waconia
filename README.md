@@ -37,7 +37,7 @@ These Perl and Python scripts gather weather observations from four sources:
 1. **Hanford Meteorological Station (HMS)** — screen-scraped from the HMS real-time page (Perl).
 2. **NOAA Regional Weather Roundup** — Washington and Oregon pages providing data for Portland, The Dalles, and other Columbia Basin sites (Perl).
 3. **Aviation Weather (METAR)** — XML feed from aviationweather.gov covering Minnesota airport stations (Python, since 2006).
-4. **Mesonet (Synoptic Data)** — JSON feed adding stations in the Pacific Northwest, Hawaii, Alaska, and miscellaneous locations (Python, since 2020).
+4. **Synoptic Data (originally Mesonet)** — JSON feed adding stations in the Pacific Northwest, Hawaii, Alaska, and miscellaneous locations (Python, since 2020).
 
 The gleaners write to a local MySQL database (for the at-home original site) and post to cloud backends:
 
