@@ -19,10 +19,11 @@ The charting page (`weather.html`) runs entirely in the browser using [Google Ch
 
 Each chart shows six sensor readings in two panels: ambient conditions (temperature, pressure, humidity) on top, and wind (speed, gust, direction) on the bottom. Controls let you choose a region, station, date range, and smoothing options.
 
-An older charting page (`charts.html`) preserves samples from the original server-rendered Waconia (Rosy.asp), which produces chart images on an IIS/ASP server. The legacy ASP page now uses a MySQL backend, though it can still be configured to run with MS Access.
+The current-conditions page (`weather-table.html`) shows a sortable table of the latest observations from all stations, with a split-panel layout that embeds a chart alongside the table when you click a station name.
 
 ### Other pages
 
+- **Legacy charts** (`charts.html`) — preserves samples from the original server-rendered Waconia (Rosy.asp), which produces chart images on an IIS/ASP server. The legacy ASP page now uses a MySQL backend, though it can still be configured to run with MS Access.
 - **Q&A** (`faq.html`) — details on data sources, charting options, and the history of the project.
 - **Installation guide** (`install_rosy.html`) — instructions for running the original gleaners and Rosy.asp charting page on a local network with IIS.
 
