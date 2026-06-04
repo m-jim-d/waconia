@@ -13,11 +13,16 @@
    <link href="sitemap.css?v=83" rel="stylesheet" type="text/css">
    <style>
       select, button {
-         font-size: 105%;
+         font-size: 95%;
       }
       #reloadBtn {
-         width: 77px;
-         height: 26px;
+         width: 70px;
+         height: 22px;
+         border-radius: 3px;
+         border-width: 1px;
+      }
+      #chartDuration {
+         height: 22px;
          border-radius: 3px;
          border-width: 1px;
       }
@@ -243,7 +248,7 @@
    <div class="ct-left">
       <div class="ct-titlebar">
          <h2>Current Conditions</h2>
-         <button id="reloadBtn" onclick="wC.queryCurrentConditions()">Update</button>
+         <button id="reloadBtn" title="Refresh current conditions data" onclick="wC.queryCurrentConditions()">Update</button>
          <select id="chartDuration" title="Chart duration">
             <option value="24h" title="24 hours" selected>24h</option>
             <option value="2"   title="2 days"   >2d</option>
