@@ -496,21 +496,21 @@ var wC = (function() {
       google.charts.setOnLoadCallback( queryDataSource);
    }
    
-   function changeUpdateButton( state) {
+   function changeButton( btnId, state) {
+      let btn = $("#" + btnId);
       if (state == "wait") {
-         $("#updateButton").html("Wait");
-         $("#updateButton").css("background-color", "#505050");
-         $("#updateButton").css("color", "white");
-         $("#updateButton").css("border-width", "0px");
+         btn.html("Wait");
+         btn.css({"background-color": "#505050", "color": "white",  "border-width": "0px"});
       } else if (state == "update") {
-         $("#updateButton").html("Update");
-         $("#updateButton").css("background-color", "#F0F0F0");
-         $("#updateButton").css("color", "black");
-         $("#updateButton").css("border-width", "1px");
+         btn.html("Update");
+         btn.css({"background-color": "#F0F0F0", "color": "black",  "border-width": "1px"});
       } else {
          // nothing
       }
    }
+
+   function changeUpdateButton( state) { changeButton("updateButton", state); }
+   function changeReloadButton( state) { changeButton("reloadBtn",    state); }
    
    // Returns { startTime_queryString, endTime_queryString } for the current station/days/date.
    // stationName  - station key
@@ -1563,8 +1563,9 @@ var wC = (function() {
 
    function queryCurrentConditions() {
       let statusEl = document.getElementById('conditionsStatus');
-      if (statusEl) statusEl.textContent = 'Loading…';
+      if (statusEl) statusEl.textContent = '';
 
+      changeReloadButton("wait");
       fetch( m_d1WorkerURL + '/current')
          .then(function(response) {
             if (!response.ok) throw new Error('HTTP ' + response.status);
@@ -1572,7 +1573,7 @@ var wC = (function() {
          })
          .then(function(data) {
             m_conditionsData = data;
-            if (statusEl) statusEl.textContent = '';
+            changeReloadButton("update");
             let asOfEl = document.getElementById('conditionsAsOf');
             if (asOfEl) {
                let now = new Date();
@@ -1582,6 +1583,7 @@ var wC = (function() {
          })
          .catch(function(err) {
             console.error('Current conditions error:', err);
+            changeReloadButton("update");
             if (statusEl) statusEl.textContent = 'Error loading conditions: ' + err.message;
          });
    }

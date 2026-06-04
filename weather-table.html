@@ -10,8 +10,17 @@
 
    <link rel="canonical" href="https://waconia.triquence.org/weather-table.html" />
 
-   <link href="sitemap.css?v=82" rel="stylesheet" type="text/css">
+   <link href="sitemap.css?v=83" rel="stylesheet" type="text/css">
    <style>
+      select, button {
+         font-size: 105%;
+      }
+      #reloadBtn {
+         width: 77px;
+         height: 26px;
+         border-radius: 3px;
+         border-width: 1px;
+      }
       .conditions-table {
          border-collapse: collapse;
          font-family: Arial, sans-serif;
@@ -158,11 +167,11 @@
    <!-- loader for google charts (required by wcharts.js module) -->
    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-   <script type="text/javascript" src="wcharts.js?v=82"></script>
+   <script type="text/javascript" src="wcharts.js?v=83"></script>
 
    <!-- The navigation menu -->
-   <script src="utilities.js?v=82"></script>
-   <script src="pageStuff.js?v=82"></script>
+   <script src="utilities.js?v=83"></script>
+   <script src="pageStuff.js?v=83"></script>
    <script>
       // Embedded chart iframe (chartFrame) loads weather.html?embed=1&nocontrols=1.
       // The iframe suppresses its nav/controls via URL params and calls wC.initEmbedded().
@@ -236,9 +245,9 @@
          <h2>Current Conditions</h2>
          <button id="reloadBtn" onclick="wC.queryCurrentConditions()">Update</button>
          <select id="chartDuration" title="Chart duration">
-            <option value="24h">24 hours</option>
-            <option value="2" selected>2 days</option>
-            <option value="5">5 days</option>
+            <option value="24h" title="24 hours" selected>24h</option>
+            <option value="2"   title="2 days"   >2d</option>
+            <option value="5"   title="5 days"   >5d</option>
          </select>
          <label style="font-size:13.3px;" title="Open chart in a new browser tab instead of the right panel">
             <input type="checkbox" id="chkNewTab"> New tab
