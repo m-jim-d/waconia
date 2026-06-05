@@ -132,6 +132,8 @@
          gap: 12px;
          margin-top: -29px;
          margin-left: 35px;
+         width: max-content;
+         min-width: calc(100vw - 45px);
       }
       .ct-left {
          flex: 0 0 auto;
@@ -145,8 +147,8 @@
       .ct-left::-webkit-scrollbar-thumb { background: #a0b8cc; border-radius: 3px; }
       .ct-left::-webkit-scrollbar-track { background: transparent; }
       .ct-right {
-         flex: 1 1 auto;
-         min-width: 0;
+         flex: 1 0 560px;
+         min-width: 560px;
       }
       #chartFrame {
          width: 100%;
@@ -159,6 +161,16 @@
          font-size: 13px;
          color: #aaa;
          padding: 24px;
+      }
+      @media (max-width: 900px) {
+         #conditionsPageBody {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+         }
+         #conditionsPageBody .pageblock {
+            width: max-content;
+            max-width: none;
+         }
       }
    </style>
 
