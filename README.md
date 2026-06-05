@@ -2,9 +2,10 @@
 
 Weather data collection and charting for stations in Minnesota, the Pacific Northwest, and other locations. Data is updated throughout the day, with observations ranging from every 5 minutes to every hour depending on the source.
 
-Live site (Cloudflare Pages): **[waconia.triquence.org](https://waconia.triquence.org/weather?station=KRLD&days=24h)**
-GitHub Pages: **[m-jim-d.github.io/waconia](https://m-jim-d.github.io/waconia/)**
-Firebase Hosting: **[waconia-ttc.web.app](https://waconia-ttc.web.app/weather.html?station=KRLD&days=24h)**
+- **Live site (Cloudflare Pages):** [waconia.triquence.org](https://waconia.triquence.org/weather?station=KRLD&days=24h)
+- **GitHub Pages:** [m-jim-d.github.io/waconia](https://m-jim-d.github.io/waconia/)
+- **Firebase Hosting:** [waconia-ttc.web.app](https://waconia-ttc.web.app/weather.html?station=KRLD&days=24h)
+
 ---
 
 ## Overview
