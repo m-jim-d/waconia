@@ -167,7 +167,7 @@
 		<li>New (misc) stations: Tokyo, Amundsen-Scott (South Pole), Saint Simons Island in Georgia, Joplin Regional Airport in Missouri.</li>
 		<li>Added CloudFlare (CF) backend with a D1 database. This offers shorter response times and longer weather histories.
 			The Google Sheets (GS) backend is still available as a backup (see select control in the upper right of the charting page).</li>
-		<li>Add a short sensor-values summary to the title of the temperature chart.</li>
+		<li>Added a short sensor-values summary to the title of the temperature chart.</li>
 		<li>Added a <a class="page" href="weather-table.html">Current Conditions</a> page showing the most recent observation for all stations in a sortable table.
 			Clicking a station name loads its chart in a side panel.</li>
 	</ul>
@@ -176,13 +176,12 @@
 	<blockquote>
 		<p>Data is collected from four sources:</p>
 	<ul>
-		<li type="disc">Waconia's first data source was the HMS web page (<a class="page"
-				href="http://www.hanford.gov/c.cfm/hms/realtime.cfm">http://www.hanford.gov/c.cfm/hms/realtime.cfm</a>).&nbsp;A
-			gleaner script runs every&nbsp;5 minutes and collects all the text from
-			that page and then parses out wind, temperature, and pressure
-			data.&nbsp;This data is written to a MS Access database. Here is a <a class="page"
-				href="http://www.hanford.gov/page.cfm/HMS/RealTimeMetData">map</a>
-			of the 30 HMS sites.<br>
+		<li type="disc">Waconia's first data source was the HMS web page 
+			(<a class="page" href="http://www.hanford.gov/c.cfm/hms/realtime.cfm" target="_blank">http://www.hanford.gov/c.cfm/hms/realtime.cfm</a>). 
+			A gleaner script runs every 5 minutes and collects all the text from that page and then parses out wind, temperature, and pressure data. 
+			This data is written to a MySQL database.
+			Here is a <a class="page" href="http://www.hanford.gov/page.cfm/HMS/RealTimeMetData">map</a> of the 30 HMS sites.
+			<br>
 			(Perl and Python scripts:
 			<a class="page" href="gleaners/wgl_perl_hanford.html">hanford.pl</a>,
 			<a class="page" href="gleaners/wgl_perl_module.html">module.pm</a>,
@@ -191,43 +190,37 @@
 			<br>
 		</li>
 		<li type="disc">Later, NOAA data was added from
-			<a class="page" href="http://forecast.weather.gov/product.php?site=CRH&amp;product=RWR&amp;issuedby=WA">
-				Washington</a>
-			and
-			<a class="page" href="http://forecast.weather.gov/product.php?site=CRH&amp;product=RWR&amp;issuedby=OR">
-				Oregon</a> pages.&nbsp;These NOAA sites provide data for Portland, The Dalles, and other cities
-			in the Columbia river basin not covered by HMS.&nbsp; This additional gleaning is used to make the
-			<a class="page scroll-link" data-scroll-target="11" href="#">delta-P</a> charting option available.<br>
+			<a class="page" href="http://forecast.weather.gov/product.php?site=CRH&amp;product=RWR&amp;issuedby=WA" target="_blank">Washington</a> and
+			<a class="page" href="http://forecast.weather.gov/product.php?site=CRH&amp;product=RWR&amp;issuedby=OR" target="_blank">Oregon</a> pages. 
+			These NOAA sites provide data for Portland, The Dalles, and other cities
+			in the Columbia river basin not covered by HMS. This additional gleaning is used to make the
+			<a class="page scroll-link" data-scroll-target="11" href="#">delta-P</a> charting option available.
+			<br>
 			(Perl and Python scripts: 
 			<a class="page" href="gleaners/wgl_perl_noaa.html">noaa.pl</a>, 
 			<a class="page" href="gleaners/wgl_perl_module.html">module.pm</a>,
 			<a class="page" href="gleaners/wgl_perl_postToSheetAndD1.html">postToSheet.py</a>)<br>
 			<br>
 		</li>
-		<li type="disc">Started data collection for Minnesota from Aviation Weather in 2006. 
-			Here are links to
-			<a class="page" href="https://aviationweather.gov">Aviation Weather</a>,
-			their <a class="page" href="https://aviationweather.gov/gfa/#obs">station viewer</a>, 
-			and their <a class="page" href="https://aviationweather.gov/data/api/">API</a>.
-			Here is an example single-station
+		<li type="disc">Started data collection for Minnesota stations from <a class="page" href="https://aviationweather.gov" target="_blank">Aviation Weather</a> in 2006. 
+			Here are links to their <a class="page" href="https://aviationweather.gov/gfa/#obs">station viewer</a>
+			and <a class="page" href="https://aviationweather.gov/data/api/">API</a>.
+			This is an example single-station
 			<a class="page"
 				href="https://aviationweather.gov/api/data/metar?format=xml&ids=KMKT">
 				call</a> to their XML feeder.
-			<!--
-			https://aviationweather.gov/
-	        https://aviationweather.gov/gfa/#obs
-			https://aviationweather.gov/data/api/
-	         -->
 			A Google Earth image, <a class="page" href="pictures/mn_sites.jpg">MN sites</a>, shows the
-			airports observed by this gleaner. Faribault should be handy for those that sail at Cannon Lake.<br>
+			airports observed by this gleaner. Faribault should be handy for those that sail at Cannon Lake.
+			<br>
 			(Python scripts: <a class="page" href="gleaners/wgl_python_aw.html">aw.py</a>, 
 			                 <a class="page" href="gleaners/wgl_python_module.html">module.py</a>)<br>
 							 <br>
 		</li>
-		<li type="disc">In 2020, added collection from Synoptic Data (originally MesoWest) and the JSON data from their weather API.<br>
-			Here are links to <a class="page" href="https://synopticdata.com/" target="_blank">Synoptic Data</a>,
-			the <a class="page" href="https://docs.synopticdata.com/services/weather-api" target="_blank">API</a>
-			and their <a class="page" href="https://viewer.synopticdata.com/" target="_blank">station viewer</a>.<br>
+		<li type="disc">In 2020, added collection from <a class="page" href="https://synopticdata.com/" target="_blank">Synoptic Data</a> (originally MesoWest) 
+			and their JSON feeder.
+			Here are links to their <a class="page" href="https://viewer.synopticdata.com/" target="_blank">station viewer</a>
+			and <a class="page" href="https://docs.synopticdata.com/services/weather-api" target="_blank">API</a>.
+			<br>
 			(Python scripts: <a class="page" href="gleaners/wgl_python_meso.html">meso.py</a>,
 			                 <a class="page" href="gleaners/wgl_python_module.html">module.py</a>)<br>
 
