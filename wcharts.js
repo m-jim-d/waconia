@@ -179,7 +179,7 @@ var wC = (function() {
       'G6147':{'longName':'St. Peter / CW (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'XL045':{'longName':'Nicollet (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'F3063':{'longName':'Mendota Heights (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      //'MN090':{'longName':'Inver Grove Heights (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'MN090':{'longName':'Inver Grove Heights (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'G0687':{'longName':'West Saint Paul (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'KSTP.2':{'longName':'Saint Paul / Holman Field (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       
