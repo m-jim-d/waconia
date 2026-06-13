@@ -1698,7 +1698,8 @@ var wC = (function() {
          let r = rows[i];
          let stationKey = r.station_name;
          let stationInfo = m_station_map[ stationKey];
-         let longName = stationInfo ? stationInfo.longName : stationKey;
+         if (!stationInfo) continue;
+         let longName = stationInfo.longName;
          let chartURL = 'weather.html?station=' + encodeURIComponent(stationKey) + '&days=2';
 
          let db  = (r.dry_bulb  !== null && r.dry_bulb  !== undefined) ? Math.round(r.dry_bulb)  : '--';
