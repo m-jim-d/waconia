@@ -138,7 +138,7 @@
       .ct-left {
          flex: 0 0 auto;
          overflow-y: auto;
-         max-height: calc(100vh - 60px);
+         max-height: calc(100vh - 45px);
          padding-right: 8px;
          scrollbar-width: thin;
          scrollbar-color: #a0b8cc transparent;
@@ -149,10 +149,17 @@
       .ct-right {
          flex: 1 0 560px;
          min-width: 560px;
+         overflow-y: auto;
+         max-height: calc(100vh - 45px);
+         scrollbar-width: thin;
+         scrollbar-color: #a0b8cc transparent;
       }
+      .ct-right::-webkit-scrollbar { width: 6px; }
+      .ct-right::-webkit-scrollbar-thumb { background: #a0b8cc; border-radius: 3px; }
+      .ct-right::-webkit-scrollbar-track { background: transparent; }
       #chartFrame {
          width: 100%;
-         height: calc(100vh - 60px);
+         height: calc(100vh - 45px);
          border: 1px solid #ccc;
          background: #ffffff;
       }
@@ -241,7 +248,7 @@
                // Iframe not yet loaded: set src to load it, store station to send when iframeReady fires
                m_pendingStation = station;
                m_pendingDays = dur;
-               frame.src = 'weather.html?embed=1&nocontrols=1';
+               frame.src = 'weather.html?embed=1&nocontrols=1&v=85';
             }
          }
       }

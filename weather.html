@@ -21,7 +21,7 @@
    <script>
       var _p = new URLSearchParams(window.location.search);
       if (_p.get('nocontrols') === '1') {
-         document.write('<style>.controls{display:none!important;}.menuicon{display:none!important;}.pageblock{padding-top:4px!important;}</style>');
+         document.write('<style>.controls{display:none!important;}.menuicon{display:none!important;}.pageblock{padding-top:4px!important;}html{scrollbar-width:thin;scrollbar-color:#a0b8cc transparent;}::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-thumb{background:#a0b8cc;border-radius:3px;}::-webkit-scrollbar-track{background:transparent;}</style>');
       }
       if (_p.get('embed') === '1') {
          document.write('<style>#navDiv{display:none!important;height:0!important;margin:0!important;padding:0!important;}</style>');
