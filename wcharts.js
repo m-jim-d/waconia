@@ -182,6 +182,8 @@ var wC = (function() {
       'MN090':{'longName':'Inver Grove Heights (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'G0687':{'longName':'West Saint Paul (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'KSTP.2':{'longName':'Saint Paul / Holman Field (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'XL063':{'longName':'Waconia / XE (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+
       
       // Peg's home (Laurie's friend)
       'KAPF':{'longName':'Naples, FL', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'meso'},       
