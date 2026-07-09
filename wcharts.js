@@ -1567,8 +1567,20 @@ var wC = (function() {
       let statusEl = document.getElementById('conditionsStatus');
       if (statusEl) statusEl.textContent = '';
 
+      let modeEl = document.getElementById('queryMode');
+      let mode = modeEl ? modeEl.value : 'current';
+      let durEl = document.getElementById('chartDuration');
+      let days = durEl ? durEl.value : '24h';
+
+      let fetchURL;
+      if (mode === 'current') {
+         fetchURL = m_d1WorkerURL + '/current';
+      } else {
+         fetchURL = m_d1WorkerURL + '/aggregate?mode=' + encodeURIComponent(mode) + '&days=' + encodeURIComponent(days);
+      }
+
       changeReloadButton("wait");
-      fetch( m_d1WorkerURL + '/current')
+      fetch(fetchURL)
          .then(function(response) {
             if (!response.ok) throw new Error('HTTP ' + response.status);
             return response.json();
