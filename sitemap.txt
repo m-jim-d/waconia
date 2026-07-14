@@ -1,7 +1,7 @@
-https://waconia.triquence.org/index.html
-https://waconia.triquence.org/charts.html
-https://waconia.triquence.org/weather.html
-https://waconia.triquence.org/faq.html
-https://waconia.triquence.org/install_rosy.html
-https://waconia.triquence.org/howsitdone.html
-https://waconia.triquence.org/coder/contactinfo.html
+https://waconia.triquence.org/
+https://waconia.triquence.org/charts
+https://waconia.triquence.org/weather
+https://waconia.triquence.org/faq
+https://waconia.triquence.org/install_rosy
+https://waconia.triquence.org/howsitdone
+https://waconia.triquence.org/coder/contactinfo
