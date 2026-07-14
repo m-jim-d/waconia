@@ -154,6 +154,10 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">handleCurrent</span><span class="p">(</span><span class="nx">env</span><span class="p">,</span><span class="w"> </span><span class="nx">corsHeaders</span><span class="p">);</span>
 <span class="w">      </span><span class="p">}</span>
 
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;GET&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;/weather/aggregate&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">handleAggregate</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">env</span><span class="p">,</span><span class="w"> </span><span class="nx">corsHeaders</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;POST&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;/weather&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">handleInsert</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span><span class="w"> </span><span class="nx">env</span><span class="p">,</span><span class="w"> </span><span class="nx">corsHeaders</span><span class="p">);</span>
 <span class="w">      </span><span class="p">}</span>
@@ -212,6 +216,47 @@ body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 <span class="sb">        AND datetime_utc LIKE &#39;20__-__-__%&#39;</span>
 <span class="sb">    )</span>
 <span class="sb">    WHERE rn = 1</span>
+<span class="sb">    ORDER BY station_name</span>
+<span class="sb">  `</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">env</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nx">prepare</span><span class="p">(</span><span class="nx">sql</span><span class="p">).</span><span class="nx">all</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Response</span><span class="p">(</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">results</span><span class="p">),</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="nx">corsHeaders</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">handleAggregate</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">env</span><span class="p">,</span><span class="w"> </span><span class="nx">corsHeaders</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">url</span><span class="p">.</span><span class="nx">searchParams</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s2">&quot;maximum&quot;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">();</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">daysParam</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">searchParams</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;days&quot;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Determine hours from days param (&quot;24h&quot; =&gt; 24, &quot;2&quot; =&gt; 48, &quot;5&quot; =&gt; 120, etc.)</span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">hours</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">daysParam</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">daysParam</span><span class="p">.</span><span class="nx">endsWith</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">hours</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">daysParam</span><span class="p">,</span><span class="w"> </span><span class="mf">10</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">24</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">hours</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">((</span><span class="nb">parseFloat</span><span class="p">(</span><span class="nx">daysParam</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">24</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">aggFn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">mode</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;minimum&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">&#39;MIN&#39;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;MAX&#39;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">cutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">hours</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">toISOString</span><span class="p">()</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">19</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">sql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`</span>
+<span class="sb">    SELECT station_name,</span>
+<span class="sb">           </span><span class="si">${</span><span class="nx">aggFn</span><span class="si">}</span><span class="sb">(dry_bulb)   AS dry_bulb,</span>
+<span class="sb">           </span><span class="si">${</span><span class="nx">aggFn</span><span class="si">}</span><span class="sb">(dew_point)  AS dew_point,</span>
+<span class="sb">           </span><span class="si">${</span><span class="nx">aggFn</span><span class="si">}</span><span class="sb">(wind_speed) AS wind_speed,</span>
+<span class="sb">           </span><span class="si">${</span><span class="nx">aggFn</span><span class="si">}</span><span class="sb">(wind_gust)  AS wind_gust,</span>
+<span class="sb">           </span><span class="si">${</span><span class="nx">aggFn</span><span class="si">}</span><span class="sb">(barometer)  AS barometer,</span>
+<span class="sb">           MAX(datetime_utc)   AS datetime_utc</span>
+<span class="sb">    FROM weather_data</span>
+<span class="sb">    WHERE datetime_utc &gt;= &#39;</span><span class="si">${</span><span class="nx">cutoff</span><span class="si">}</span><span class="sb">&#39;</span>
+<span class="sb">      AND datetime_utc LIKE &#39;20__-__-__%&#39;</span>
+<span class="sb">    GROUP BY station_name</span>
 <span class="sb">    ORDER BY station_name</span>
 <span class="sb">  `</span><span class="p">;</span>
 
