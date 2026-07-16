@@ -162,7 +162,7 @@ var wC = (function() {
       // Hawaii
       'PHOG':{'longName':'Maui Airport', 'tz':'H', 'dst':false, 'region':'Hawaii', 'sheet':'meso'},                   
       'PHJR':{'longName':'Oahu, Kalaeloa Airport', 'tz':'H', 'dst':false, 'region':'Hawaii', 'sheet':'meso'},         
-      'PHBK':{'longName':'Kauai, Barking Sands Airport', 'tz':'H', 'dst':false, 'region':'Hawaii', 'sheet':'meso'}, 
+      'PHBK':{'longName':'Kauai, Barking Sands AP', 'tz':'H', 'dst':false, 'region':'Hawaii', 'sheet':'meso'}, 
       
       // Kansas
       'KOJC':{'longName':'Olathe, KS', 'tz':'C', 'dst':true, 'region':'misc', 'sheet':'meso'},
@@ -181,7 +181,7 @@ var wC = (function() {
       'F3063':{'longName':'Mendota Heights (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'MN090':{'longName':'Inver Grove Heights (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'G0687':{'longName':'West Saint Paul (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'KSTP.2':{'longName':'Saint Paul / Holman Field (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      'KSTP.2':{'longName':'St. Paul / Holman Fld (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'XL063':{'longName':'Waconia / XE (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
 
       
@@ -237,7 +237,7 @@ var wC = (function() {
       // Sites near White Bear and Saint Croix River.
       'KRNH':{'longName':'New Richmond, WI', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'aw'},
       'KANE':{'longName':'Blaine', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'aw'},      
-      'KSTP':{'longName':'Saint Paul / Holman Field (AW)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'aw'},
+      'KSTP':{'longName':'St. Paul / Holman Fld (AW)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'aw'},
       
       // Fritz's site on the cape...
       'KCQX':{'longName':'Chatham, MA (AW)', 'tz':'E', 'dst':true, 'region':'misc', 'sheet':'aw'},
