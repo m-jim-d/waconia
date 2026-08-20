@@ -1,0 +1,4 @@
+User-agent: *
+
+# Block UI assets from search indexing
+Disallow: /assets/
