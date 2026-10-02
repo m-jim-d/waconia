@@ -426,9 +426,9 @@ var wC = (function() {
             m_selectStations.value = "RJTT";
          }
          m_stationName = m_selectStations.value;
-         queryDataSource();
+         flagUpdateNeeded();
       }
-      
+
       m_selectStations = document.getElementById("stations");
       function populateSelectStations( region) {
          $("#stations").empty();
@@ -452,7 +452,7 @@ var wC = (function() {
       function stationChange() {
          console.log( m_selectStations.value);
          m_stationName = m_selectStations.value;
-         queryDataSource();
+         flagUpdateNeeded();
       }
       
       m_selectEndDate = document.getElementById("endDate");
@@ -474,7 +474,7 @@ var wC = (function() {
       m_selectEndDate.addEventListener('change', dateChange);
       function dateChange() {
          console.log( m_selectEndDate.value);
-         queryDataSource();
+         flagUpdateNeeded();
       }
             
       m_selectDays = document.getElementById("nDays");
@@ -484,7 +484,7 @@ var wC = (function() {
       function changeDays( submitQuery=true) {
          m_nDays = (m_selectDays.value == "24h") ? 1 : Number( m_selectDays.value);
          //console.log( "days=" + m_nDays);
-         if (submitQuery) queryDataSource();
+         if (submitQuery) flagUpdateNeeded();
       }
       changeDays( false); // "false" initializes the chart settings without submitting the query.
       
@@ -492,7 +492,7 @@ var wC = (function() {
       m_selectDataSource.addEventListener('change', dataSourceChange);
       function dataSourceChange() {
          setDataSource( m_selectDataSource.value);
-         queryDataSource();
+         flagUpdateNeeded();
       }
       
       google.charts.setOnLoadCallback( queryDataSource);
@@ -512,6 +512,14 @@ var wC = (function() {
    }
 
    function changeUpdateButton( state) { changeButton("updateButton", state); }
+
+   // Highlight the Update button to indicate a control change requires a re-query.
+   // The highlight is cleared automatically by changeButton("wait"/"update") when
+   // queryDataSource() runs.
+   function flagUpdateNeeded() {
+      let btn = document.getElementById("updateButton");
+      if (btn) btn.style.background = "#ffffa0";
+   }
    function changeReloadButton( state) { changeButton("reloadBtn",    state); }
    
    // Returns { startTime_queryString, endTime_queryString } for the current station/days/date.
@@ -1421,8 +1429,7 @@ var wC = (function() {
                let endDateCheck = (m_selectEndDate.value != m_endDateAtQuery);
                let nDaysCheck = (m_selectDaysValueAtQuery != m_selectDays.value);
                if ((stationCheck || endDateCheck || nDaysCheck) && (m_retry_count <= 3)) {
-                  queryDataSource();
-                  console.log("retry count = " + m_retry_count);
+                  flagUpdateNeeded();
                   m_retry_count++;
                } else {
                   m_retry_count = 0;
