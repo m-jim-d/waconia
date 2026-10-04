@@ -1581,7 +1581,8 @@ var wC = (function() {
 
       let fetchURL;
       if (mode === 'current') {
-         fetchURL = m_d1WorkerURL + '/current';
+         let stationList = Object.keys(m_station_map).join(',');
+         fetchURL = m_d1WorkerURL + '/current?stations=' + encodeURIComponent(stationList);
       } else {
          fetchURL = m_d1WorkerURL + '/aggregate?mode=' + encodeURIComponent(mode) + '&days=' + encodeURIComponent(days);
       }
