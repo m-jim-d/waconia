@@ -1590,7 +1590,11 @@ var wC = (function() {
       changeReloadButton("wait");
       fetch(fetchURL)
          .then(function(response) {
-            if (!response.ok) throw new Error('HTTP ' + response.status);
+            if (!response.ok) {
+               return response.text().then(function(text) {
+                  throw new Error('HTTP ' + response.status + ': ' + text);
+               });
+            }
             return response.json();
          })
          .then(function(data) {
