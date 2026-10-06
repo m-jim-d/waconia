@@ -37,7 +37,7 @@ var wC = (function() {
    google.charts.load('current', {'packages':['table']});
    
    // Names starting with m_ indicate module-scope globals.
-   var m_version = '2.0.4';
+   var m_version = '2.0.5';
    console.log('wC version ' + m_version);
    
    var m_temperatureChart = null;
@@ -521,6 +521,34 @@ var wC = (function() {
       if (btn) btn.style.background = "#ffffa0";
    }
    function changeReloadButton( state) { changeButton("reloadBtn",    state); }
+
+   // Read D1 usage headers from the Worker response and update the status line.
+   function updateUsageDisplay(response) {
+      let el = document.getElementById('d1Usage');
+      if (!el || !response || !response.headers) return;
+
+      let q = response.headers.get('X-Rows-Read-Query');
+      let t = response.headers.get('X-Rows-Read-Today');
+      let l = response.headers.get('X-Rows-Read-Limit');
+
+      if (q === null && t === null) {
+         el.textContent = '';
+         return;
+      }
+
+      let pct = '';
+      if (t && l) {
+         let p = (100 * Number(t) / Number(l)).toFixed(1);
+         pct = ' (' + p + '% of daily limit)';
+      }
+      el.textContent = 'D1 reads: ' + (q || '0') + ' this query, ' + formatK(t || '0') + ' today' + pct;
+   }
+
+   function formatK(n) {
+      let num = Number(n);
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return String(num);
+   }
    
    // Returns { startTime_queryString, endTime_queryString } for the current station/days/date.
    // stationName  - station key
@@ -603,6 +631,7 @@ var wC = (function() {
       
       fetch(url)
          .then(response => {
+            updateUsageDisplay(response);
             if (!response.ok) {
                throw new Error('D1 query failed: ' + response.status);
             }
@@ -1587,12 +1616,22 @@ var wC = (function() {
          fetchURL = m_d1WorkerURL + '/aggregate?mode=' + encodeURIComponent(mode) + '&days=' + encodeURIComponent(days);
       }
 
+      // Debug hook: append ?gatingTest=N to the page URL to simulate N rows already
+      // read today. The Worker treats it as a floor (never lowers the real count).
+      let gateTest = new URLSearchParams(window.location.search).get('gatingTest');
+      if (gateTest) fetchURL += '&gatingTest=' + encodeURIComponent(gateTest);
+
       changeReloadButton("wait");
       fetch(fetchURL)
          .then(function(response) {
+            updateUsageDisplay(response);
             if (!response.ok) {
                return response.text().then(function(text) {
-                  throw new Error('HTTP ' + response.status + ': ' + text);
+                  let msg = text;
+                  try { msg = JSON.parse(text).error || text; } catch (e) {}
+                  let err = new Error(response.status === 429 ? msg : 'HTTP ' + response.status + ': ' + msg);
+                  err.isGated = (response.status === 429);
+                  throw err;
                });
             }
             return response.json();
@@ -1610,7 +1649,7 @@ var wC = (function() {
          .catch(function(err) {
             console.error('Current conditions error:', err);
             changeReloadButton("update");
-            if (statusEl) statusEl.textContent = 'Error loading conditions: ' + err.message;
+            if (statusEl) statusEl.textContent = err.isGated ? err.message : 'Error loading conditions: ' + err.message;
          });
    }
 
