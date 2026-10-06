@@ -541,7 +541,8 @@ var wC = (function() {
          let p = (100 * Number(t) / Number(l)).toFixed(1);
          pct = ' (' + p + '% of daily limit)';
       }
-      el.textContent = 'D1 reads: ' + (q || '0') + ' this query, ' + formatK(t || '0') + ' today' + pct;
+      let queryReads = Number(q || 0) > 10000 ? formatK(q) : (q || '0');
+      el.textContent = 'D1 reads: ' + queryReads + ' this query, ' + formatK(t || '0') + ' today' + pct;
    }
 
    function formatK(n) {
@@ -1616,7 +1617,7 @@ var wC = (function() {
          fetchURL = m_d1WorkerURL + '/aggregate?mode=' + encodeURIComponent(mode) + '&days=' + encodeURIComponent(days);
       }
 
-      // Debug hook: append ?gatingTest=N to the page URL to simulate N rows already
+      // Debug hook: append ?gatingTest=4.6M to simulate 4,600,000 rows already
       // read today. The Worker treats it as a floor (never lowers the real count).
       let gateTest = new URLSearchParams(window.location.search).get('gatingTest');
       if (gateTest) fetchURL += '&gatingTest=' + encodeURIComponent(gateTest);
