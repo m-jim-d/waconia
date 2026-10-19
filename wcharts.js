@@ -174,9 +174,9 @@ var wC = (function() {
       // MN
       'KMKT.2':{'longName':'Mankato Airport (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},       
       'KSOM5':{'longName':'Kasota Prairie (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'MN073':{'longName':'Mankato HW169-BER (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      //'MN073':{'longName':'Mankato HW169-BER (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'XL049':{'longName':'St. Peter / XE (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
-      'G6147':{'longName':'St. Peter / CW (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
+      //'G6147':{'longName':'St. Peter / CW (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'XL045':{'longName':'Nicollet (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'F3063':{'longName':'Mendota Heights (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
       'MN090':{'longName':'Inver Grove Heights (SD)', 'tz':'C', 'dst':true, 'region':'mn', 'sheet':'meso'},
