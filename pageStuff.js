@@ -214,15 +214,18 @@ window.pS = (function() {
    }
    
    function getTopicTitle( videoDivElement) {
-      // Find the sibling <p> elements containing the <strong> element with class "title_2"
-      var siblingParagraphs = videoDivElement.siblings("p").filter(function() {
-         return $(this).find("strong.title_2").length > 0;
-      });
-
-      // Get the text within the <strong> element of the first matching sibling <p> element
-      var title = siblingParagraphs.first().find("strong.title_2").text();
+      // Look for a sibling element with class "title_2" (e.g. the h3 headings on videos.html).
+      var titleElement = videoDivElement.siblings(".title_2").first();
       
-      return title;
+      // Older markup wraps a descendant with class "title_2" in a sibling <p> element.
+      if (titleElement.length == 0) {
+         var siblingParagraphs = videoDivElement.siblings("p").filter(function() {
+            return $(this).find(".title_2").length > 0;
+         });
+         titleElement = siblingParagraphs.first().find(".title_2");
+      }
+      
+      return titleElement.text();
    }
    
    function loadLargeImage( img, fileName=null) {
