@@ -51,6 +51,41 @@
          display: inline-block; 
          vertical-align: top;
       }
+      @media screen and (max-width: 640px) {
+         body {
+            margin: 12px;
+            font-size: 16px;
+            line-height: 1.5;
+         }
+         div.main {
+            min-width: 0;
+            margin: 45px 0 0;
+         }
+         div.columnA,
+         div.columnB {
+            display: block;
+            min-width: 0;
+            max-width: 100%;
+            margin-left: 0;
+         }
+         div.columnA {
+            text-align: center;
+         }
+         div.columnA img {
+            max-width: 100%;
+            height: auto;
+         }
+         div.columnB > br:first-child {
+            display: none;
+         }
+         div.columnB p {
+            overflow-wrap: break-word;
+         }
+         .menuicon {
+            top: 12px;
+            left: 12px;
+         }
+      }
    </style>   
  
    <!-- The navigation menu -->
