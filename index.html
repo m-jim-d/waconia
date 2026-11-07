@@ -59,7 +59,7 @@
          }
          div.main {
             min-width: 0;
-            margin: 45px 0 0;
+            margin: 12px 0 0;
          }
          div.columnA,
          div.columnB {
@@ -74,9 +74,18 @@
          div.columnA img {
             max-width: 100%;
             height: auto;
+            aspect-ratio: 586/445;
+            object-fit: cover;
+            object-position: bottom;
          }
-         div.columnB > br:first-child {
+         div.columnB > br {
             display: none;
+         }
+         div.columnB p:last-child {
+            margin-top: 4px;
+         }
+         div.columnB h1 {
+            text-align: center;
          }
          div.columnB p {
             overflow-wrap: break-word;
@@ -84,11 +93,6 @@
          .menuicon {
             top: 12px;
             left: 12px;
-         }
-      }
-      @media screen and (max-width: 640px) and (orientation: portrait) {
-         div.columnB h1 {
-            text-align: center;
          }
       }
    </style>   
