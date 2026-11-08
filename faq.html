@@ -55,12 +55,59 @@
       .auto-style2 {
          margin-left: 80px;
       }
+      div.pageblock h1 {
+         color: #008080;
+         font-size: 24px;
+         margin-top: 4px;
+      }
+      div.pageblock h2 {
+         color: #008080;
+         font-size: 17px;
+         margin: 14px 0 4px;
+      }
 
       /* All the links that don't have href attributes, e.g. anchors that scroll the page */
       a:not([href]) {
          cursor: pointer;
       }
-      
+
+      @media screen and (max-width: 640px) {
+         body {
+            margin: 12px;
+         }
+         div.pageblock {
+            font-size: 16px;
+            line-height: 1.5;
+            min-width: 0;
+            margin-left: 0;
+            padding-top: 6px;
+         }
+         div.pageblock h1 {
+            text-align: left;
+         }
+         .auto-style1 {
+            margin-left: 0;
+         }
+         .auto-style2 {
+            margin-left: 24px;
+         }
+         blockquote {
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 0;
+         }
+         ul, ol {
+            padding-left: 24px;
+         }
+         a, p {
+            overflow-wrap: break-word;
+         }
+         .menuicon {
+            position: static;
+            margin: 0;
+         }
+      }
+
       /* */
    </style>
 </head>
@@ -70,19 +117,19 @@
 
 <!-- The navigation menu -->
 <div id="navDiv"></div>
-<img class="menuicon" id="opener" src="assets/ui/menu_icon.svg" alt="" style="cursor:pointer;">
+<a name="TOP"></a><img class="menuicon" id="opener" src="assets/ui/menu_icon.svg" alt="" style="cursor:pointer;">
 
 <div class="pageblock">
-	<p><a name="TOP"></a><b><font face="Arial" size="5">Weather Charts Q&amp;A</font></b></p>
+	<h1>Weather Charts Q&amp;A</h1>
 	
-   <p><b>The new</b>:</p>
+   <h2>The new:</h2>
    <p>
    <a class="page scroll-link" data-scroll-target="PastAndFuture" href="#">What's the past and present for this site?</a><br>	
    <a class="page scroll-link" data-scroll-target="contrast" href="#">What's different about the new chart?</a><br>
    <a class="page scroll-link" data-scroll-target="newstuff" href="#">What's the latest?</a><br>
    <a class="page scroll-link" data-scroll-target="DataSources" href="#">What are the data sources?</a><br>
    </p>
-	<p><b>The original</b>:</p>
+	<h2>The original:</h2>
 	<p>
 	<a class="page scroll-link" data-scroll-target="Install" href="#">How do I install the original charting software?</a><br>
 	<a class="page scroll-link" data-scroll-target="makeChart" href="#">How do I make a chart?</a><br>
@@ -90,13 +137,13 @@
 	<a class="page scroll-link" data-scroll-target="24hrPlot" href="#">What is the &quot;24h&quot; checkbox?</a><br>
 	<a class="page scroll-link" data-scroll-target="RunningAverage" href="#">What is the &quot;RA&quot; checkbox?</a><br>
 	<a class="page scroll-link" data-scroll-target="theURL" href="#">What is all that stuff in the URL?</a><br>
-   <a class="page scroll-link" data-scroll-target="2" href="#">Why does a two-day chart has fewer points than a one-day chart.</a><br>
+   <a class="page scroll-link" data-scroll-target="2" href="#">Why does a two-day chart have fewer points?</a><br>
    <a class="page scroll-link" data-scroll-target="9" href="#">What data is shown in the table?</a><br>
    <a class="page scroll-link" data-scroll-target="3" href="#">How should I interpret the time axis?</a><br>
-   <a class="page scroll-link" data-scroll-target="yaxis2" href="#">When plotting wind speed, what is the secondary-y axis?</a><br>
-   <a class="page scroll-link" data-scroll-target="windoptions" href="#">Why are there two wind options, Wind (0-36) and Wind (0-40)?</a><br>
+   <a class="page scroll-link" data-scroll-target="yaxis2" href="#">When plotting wind, what is the secondary-y axis?</a><br>
+   <a class="page scroll-link" data-scroll-target="windoptions" href="#">Why are there two wind options, 0-36 and 0-40?</a><br>
    <a class="page scroll-link" data-scroll-target="5" href="#">Why do some charts grow taller?</a><br>
-	<a class="page scroll-link" data-scroll-target="11" href="#">What is the delta-P charting option (Columbia Basin sites)?</a><br>
+	<a class="page scroll-link" data-scroll-target="11" href="#">What is the delta-P charting option (Columbia Basin)?</a><br>
 	<a class="page scroll-link" data-scroll-target="7" href="#">How is the direction data aggregated, especially when the wind is out of the north?</a><br>
    <a class="page scroll-link" data-scroll-target="8" href="#">What kind of software is used to make this all work?</a><br>
    <a class="page scroll-link" data-scroll-target="Counters" href="#">What are the little numbers, in the upper left hand corner, to the right of the <strong>home</strong> link?</a>
@@ -180,8 +227,8 @@
 	<blockquote>
 		<p>Data is collected from four sources:</p>
 	<ul>
-		<li type="disc">Waconia's first data source was the HMS web page 
-			(<a class="page" href="http://www.hanford.gov/c.cfm/hms/realtime.cfm" target="_blank">http://www.hanford.gov/c.cfm/hms/realtime.cfm</a>). 
+		<li type="disc">Waconia's first data source was the
+			<a class="page" href="http://www.hanford.gov/c.cfm/hms/realtime.cfm" target="_blank">HMS web page</a>. 
 			A gleaner script runs every 5 minutes and collects all the text from that page and then parses out wind, temperature, and pressure data. 
 			This data is written to a MySQL database.
 			Here is a <a class="page" href="http://www.hanford.gov/page.cfm/HMS/RealTimeMetData">map</a> of the 30 HMS sites.
@@ -394,7 +441,7 @@
 	<p class="auto-style1">The y-axis on the right side of the plot is for wind 
 	direction. This scale is used to determine the values of the square point 
 	markers. Also see the discussion in the next FAQ.</p>
-	<p><a name="windoptions"></a>Why are there two wind options, Wind (0-36) and Wind (0-40)?&nbsp;
+	<p><a name="windoptions"></a>Why are there two wind options, 0-36 and 0-40?&nbsp;
 	<a class="page scroll-link" data-scroll-target="TOP" href="#">top</a></p>
 	<blockquote>
 		<p>Both options provide wind direction and wind speed information. The direction 
