@@ -234,6 +234,9 @@
 
       $(window).on('load', function() {
          pS.init({"pageDesc":"Waconia: Current Conditions", "scrollAtLoad":false});
+         if (window.matchMedia('(max-width: 640px)').matches) {
+            document.getElementById('chkNewTab').checked = true;
+         }
          wC.initConditionsTable();
       });
 
