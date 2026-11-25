@@ -331,8 +331,8 @@ window.pS = (function() {
                   // nothing yet...
                }
                    
-            // github server
-            } else if (window.location.href.includes("m-jim-d")) {
+            // GitHub Pages
+            } else if (window.location.href.includes("github.io")) {
                if (href.includes("https://triquence.org")) {
                   finalHref = href.replace( "https://triquence.org", "https://m-jim-d.github.io/springsandpucks");
                
@@ -349,6 +349,25 @@ window.pS = (function() {
                   // nothing yet...
                }
                
+            // Cloudflare Pages
+            } else if (window.location.href.includes("pages.dev")) {
+               if (href.includes("https://triquence.org")) {
+                  finalHref = href.replace( "https://triquence.org", "https://springsandpucks.pages.dev");
+               
+               } else if (href.includes("pet.triquence")) {
+                  finalHref = href.replace( "https://pet.triquence.org", "https://pet-3nq.pages.dev");
+                  
+               } else if (href.includes("waconia.triquence")) {
+                  finalHref = href.replace( "https://waconia.triquence.org", "https://waconia.pages.dev");
+                  
+               } else if (href.includes("bincalcs.triquence")) {
+                  finalHref = href.replace( "https://bincalcs.triquence.org", "https://bin-method-calcs.pages.dev");
+                  
+               } else {
+                  // nothing yet...
+               }
+            }
+
             // firebase server (web.app)
             } else if (window.location.href.includes("web.app")) {
                if (href.includes("https://triquence.org")) {
