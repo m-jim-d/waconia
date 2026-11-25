@@ -366,7 +366,6 @@ window.pS = (function() {
                } else {
                   // nothing yet...
                }
-            }
 
             // firebase server (web.app)
             } else if (window.location.href.includes("web.app")) {
