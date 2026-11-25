@@ -275,7 +275,6 @@ window.pS = (function() {
                   // nothing yet...
                }
 
-
             // bee IP address on local network
             } else if (window.location.href.includes("192.168.1.104/")) {
                if (href.includes("https://triquence.org")) {
@@ -312,7 +311,6 @@ window.pS = (function() {
                   // nothing yet...
                }
             
-                   
             // secure localhost only on local server
             } else if (window.location.href.includes("localhost")) {
                if (href.includes("https://triquence.org")) {
