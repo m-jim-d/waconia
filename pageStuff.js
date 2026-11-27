@@ -239,91 +239,54 @@ window.pS = (function() {
 
    function checkForAbsoluteLinks() {
       // check for absolute links...  https://triquence.org, pet.triquence, waconia.triquence, bincalcs.triquence
+
+      // Returns the first alias found in the page URL, or undefined.
+      function serverAlias( ...aliases) {
+         return aliases.find( a => window.location.href.includes( a));
+      }
+
+      // Server aliases are checked once; the page URL doesn't change per anchor.
+      const nucAlias = serverAlias( "192.168.1.106/", "nuc/");
+      const beeAlias = serverAlias( "192.168.1.104/", "bee/", "localhost/");
+      let base;
+
+      // jQuery passes index and element (value) to each callback; this === value.
       $('a').each( function( index, value) {
          let href = $(this).attr("href");
          let finalHref = null;
          
          if (href && (href != "")) {
             
-            // nuc IP address on local network
-            if (window.location.href.includes("192.168.1.106")) {
+            // nuc on local network (IP or hostname); doesn't serve bincalcs
+            if (nucAlias) {
+               base = "http://" + nucAlias;
                if (href.includes("https://triquence.org")) {
-                  finalHref = href.replace( "https://triquence.org", "http://192.168.1.106/ttc-root");
+                  finalHref = href.replace( "https://triquence.org", base + "ttc-root");
                   
                } else if (href.includes("pet.triquence")) {
-                  finalHref = href.replace( "https://pet.triquence.org", "http://192.168.1.106/pet-dev");
+                  finalHref = href.replace( "https://pet.triquence.org", base + "pet-dev");
                   
                } else if (href.includes("waconia.triquence")) {
-                  finalHref = href.replace( "https://waconia.triquence.org", "http://192.168.1.106/waconia-50webs-dev");
-                  
-               } else {
-                  // nothing yet...
-               }
-                   
-            // nuc on local network
-            } else if (window.location.href.includes("nuc/")) {
-               if (href.includes("https://triquence.org")) {
-                  finalHref = href.replace( "https://triquence.org", "http://nuc/ttc-root");
-                  
-               } else if (href.includes("pet.triquence")) {
-                  finalHref = href.replace( "https://pet.triquence.org", "http://nuc/pet-dev");
-                  
-               } else if (href.includes("waconia.triquence")) {
-                  finalHref = href.replace( "https://waconia.triquence.org", "http://nuc/waconia-50webs-dev");
+                  finalHref = href.replace( "https://waconia.triquence.org", base + "waconia-50webs-dev");
                   
                } else {
                   // nothing yet...
                }
 
-            // bee IP address on local network
-            } else if (window.location.href.includes("192.168.1.104/")) {
+            // bee on local network (IP, hostname, or secure localhost)
+            } else if (beeAlias) {
+               base = (beeAlias === "localhost/") ? "https://" + beeAlias : "http://" + beeAlias;
                if (href.includes("https://triquence.org")) {
-                  finalHref = href.replace( "https://triquence.org", "http://192.168.1.104/ttc-root");
+                  finalHref = href.replace( "https://triquence.org", base + "ttc-root");
                   
                } else if (href.includes("pet.triquence")) {
-                  finalHref = href.replace( "https://pet.triquence.org", "http://192.168.1.104/pet-dev");
+                  finalHref = href.replace( "https://pet.triquence.org", base + "pet-dev");
                   
                } else if (href.includes("waconia.triquence")) {
-                  finalHref = href.replace( "https://waconia.triquence.org", "http://192.168.1.104/waconia-50webs-dev");
+                  finalHref = href.replace( "https://waconia.triquence.org", base + "waconia-50webs-dev");
                   
                } else if (href.includes("bincalcs.triquence")) {
-                  finalHref = href.replace( "https://bincalcs.triquence.org", "http://192.168.1.104/coolrtu-js-prod");
-                  
-               } else {
-                  // nothing yet...
-               }
-
-            // bee on local network
-            } else if (window.location.href.includes("bee/")) {
-               if (href.includes("https://triquence.org")) {
-                  finalHref = href.replace( "https://triquence.org", "http://bee/ttc-root");
-                  
-               } else if (href.includes("pet.triquence")) {
-                  finalHref = href.replace( "https://pet.triquence.org", "http://bee/pet-dev");
-                  
-               } else if (href.includes("waconia.triquence")) {
-                  finalHref = href.replace( "https://waconia.triquence.org", "http://bee/waconia-50webs-dev");
-                  
-               } else if (href.includes("bincalcs.triquence")) {
-                  finalHref = href.replace( "https://bincalcs.triquence.org", "http://bee/coolrtu-js-prod");
-                  
-               } else {
-                  // nothing yet...
-               }
-            
-            // secure localhost only on local server
-            } else if (window.location.href.includes("localhost")) {
-               if (href.includes("https://triquence.org")) {
-                  finalHref = href.replace( "https://triquence.org", "https://localhost/ttc-root");
-                  
-               } else if (href.includes("pet.triquence")) {
-                  finalHref = href.replace( "https://pet.triquence.org", "https://localhost/pet-dev");
-                  
-               } else if (href.includes("waconia.triquence")) {
-                  finalHref = href.replace( "https://waconia.triquence.org", "https://localhost/waconia-50webs-dev");
-                  
-               } else if (href.includes("bincalcs.triquence")) {
-                  finalHref = href.replace( "https://bincalcs.triquence.org", "https://localhost/coolrtu-js-prod");
+                  finalHref = href.replace( "https://bincalcs.triquence.org", base + "coolrtu-js-prod");
                   
                } else {
                   // nothing yet...
